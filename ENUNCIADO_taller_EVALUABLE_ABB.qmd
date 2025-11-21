@@ -209,7 +209,7 @@ table(cut(listings0$review_scores_rating,5),
 Construye un data set con las variables 
 review_scores_rating, review_scores_cleanliness, review_scores_location, review_scores_value de listings0 y  el municipio/zona `neighbourhood_cleansed`
 
-Calcula la matriz de correlaciones entre estas variables y haz un gráfico de pares (pair plot) con la librería GGally. Comenta los resultados.
+Calcula la matriz de correlaciones entre estas variables y haz un gráfico de pares  de variables que muestre las correlaciones ([ggpairs](https://r-charts.com/correlation/ggpairs/)) con la librería GGally. Comenta los resultados.
 
 Haz un `matrixplot` de las correlaciones con la librería `corrplot`. Comenta los resultados.
 
