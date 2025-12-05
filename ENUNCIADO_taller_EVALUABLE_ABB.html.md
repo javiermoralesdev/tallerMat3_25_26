@@ -5,7 +5,7 @@ lang: es
 format:
   html:
     theme: superhero
-    toc: true
+    toc: false
     toc_depth: 4
     html-math-method: katex
     code-tools: true
@@ -17,18 +17,17 @@ format:
 
 
 
-
 # Instrucciones para el taller
 
 Se entrega en grupos que deben de estar constituidos en la actividad de grupos. Los grupos son de 2 o 3 ESTUDIANTES, loa caso especiales consultadlos con el profesor para que los autorice.
 
 **Enlaces y Bibliografía**
 
--   [R for data science, Hadley Wickham, Garret Grolemund.](https://r4ds.had.co.nz/)
--   [Fundamentos de ciencia de datos con R.](https://cdr-book.github.io/)
--   [Tablas avanzadas: kable, KableExtra.](https://haozhu233.github.io/kableExtra/awesome_table_in_html.html)
--   [Geocomputation with R, Robin Lovelace, Jakub Nowosad, Jannes Muenchow](https://r.geocompx.org/)
--   Apuntes de R-basico y tidyverse moodel MAT3.
+- [R for data science, Hadley Wickham, Garret Grolemund.](https://r4ds.had.co.nz/)
+- [Fundamentos de ciencia de datos con R.](https://cdr-book.github.io/)
+- [Tablas avanzadas: kable, KableExtra.](https://haozhu233.github.io/kableExtra/awesome_table_in_html.html)
+- [Geocomputation with R, Robin Lovelace, Jakub Nowosad, Jannes Muenchow](https://r.geocompx.org/)
+- Apuntes de R-basico y tidyverse moodel MAT3.
 
 ## Objetivo MALLORCA
 
@@ -76,12 +75,11 @@ listings0 = listings_common0 %>%
 :::
 
 
-
 **listings**
 
-Generamos la  tibble `listings0` con datos DE  8 periodos  DE  apartamentos de inside Airbnb de Mallorca Y  seleccionando cuantas variables nos parecen más interesantes.
+Generamos la tibble `listings0` con datos DE 8 periodos DE apartamentos de inside Airbnb de Mallorca Y seleccionando cuantas variables nos parecen más interesantes.
 
-Separararemos la fecha del scrapping que es en la que se observaron  los datos de cada apartamento  nos quedaremos con los apartamentos que aparecen en las 8 periodos "scrapeados".
+Separararemos la fecha del scrapping que es en la que se observaron los datos de cada apartamento nos quedaremos con los apartamentos que aparecen en las 8 periodos "scrapeados".
 
 
 ::: {.cell}
@@ -96,10 +94,7 @@ listings0= listings0 %>%
 :::
 
 
-Ahora  analizamos  las fechas de los scrapings y el número de veces que aparecen 
- cada  apartamentos.
-
-
+Ahora analizamos las fechas de los scrapings y el número de veces que aparecen cada apartamentos.
 
 
 ::: {.cell}
@@ -122,11 +117,10 @@ table(listings0$date)
 :::
 :::
 
+
 Hay 8 periodos de scrapping y vamos a quedarnos con los apartamentos que aparecen en todos los periodos
 
-
 Vemos que cada apartamento aparece 8 veces una por periodo.
-
 
 
 ::: {.cell}
@@ -148,13 +142,11 @@ table(table(listings0$id))
 :::
 
 
-
-
 Notemos que cada apartamento:
 
--   queda identificado por id y por date que nos da el periodo en la que apareció el dato.
--   así que cada apartamento aparece 8 veces ya que hemos elegido solo los apartamentos que aparecen en las 8 muestras.
--   Las muestras son 2023-12-17, 2024-03-23, 2024-06-19, 2024-09-13, 2024-12-14, 2025-03-07, 2025-06-15, 2025-09-21,
+- queda identificado por id y por date que nos da el periodo en la que apareció el dato.
+- así que cada apartamento aparece 8 veces ya que hemos elegido solo los apartamentos que aparecen en las 8 muestras.
+- Las muestras son 2023-12-17, 2024-03-23, 2024-06-19, 2024-09-13, 2024-12-14, 2025-03-07, 2025-06-15, 2025-09-21,
 
 
 ::: {.cell}
@@ -306,7 +298,7 @@ geojson_sf <- sf::st_read("data/mallorca/2025-09-21/neighbourhoods.geojson")
 
 ```
 Reading layer `neighbourhoods' from data source 
-  `C:\Users\pausa\Documents\GitHub\tallerMat3_25_26\data\mallorca\2025-09-21\neighbourhoods.geojson' 
+  `/home/javier/Documentos/Dev/R/tallerMat3_25_26/data/mallorca/2025-09-21/neighbourhoods.geojson' 
   using driver `GeoJSON'
 Simple feature collection with 53 features and 2 fields
 Geometry type: MULTIPOLYGON
@@ -346,6 +338,7 @@ Presenta los resultados con una tabla de kableExtra.
 
 Resolución:
 
+
 ::: {.cell}
 
 ```{.r .cell-code}
@@ -365,23 +358,24 @@ listings0 %>%
         col.names = c("Municipio", "Fecha", "Media Precio", "Desv. Típica Precio", "Mediana Precio", 
                       "Media Nº Reseñas", "Desv. Típica Nº Reseñas", "Mediana Nº Reseñas"),
         caption = "Estadísticos descriptivos de Precio y Número de Reseñas por Municipio y Periodo") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)%>% 
+ scroll_box(width = "1250px", height = "400px")
 ```
 
 ::: {.cell-output-display}
 `````{=html}
-<table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:1250px; "><table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>Estadísticos descriptivos de Precio y Número de Reseñas por Municipio y Periodo</caption>
  <thead>
   <tr>
-   <th style="text-align:left;"> Municipio </th>
-   <th style="text-align:left;"> Fecha </th>
-   <th style="text-align:right;"> Media Precio </th>
-   <th style="text-align:right;"> Desv. Típica Precio </th>
-   <th style="text-align:right;"> Mediana Precio </th>
-   <th style="text-align:right;"> Media Nº Reseñas </th>
-   <th style="text-align:right;"> Desv. Típica Nº Reseñas </th>
-   <th style="text-align:right;"> Mediana Nº Reseñas </th>
+   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> Municipio </th>
+   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> Fecha </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Media Precio </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Desv. Típica Precio </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Mediana Precio </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Media Nº Reseñas </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Desv. Típica Nº Reseñas </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Mediana Nº Reseñas </th>
   </tr>
  </thead>
 <tbody>
@@ -4626,7 +4620,7 @@ listings0 %>%
    <td style="text-align:right;"> 19.0 </td>
   </tr>
 </tbody>
-</table>
+</table></div>
 
 `````
 :::
@@ -4635,8 +4629,7 @@ listings0 %>%
 
 ## Pregunta 2 (**1punto**)
 
-Consideremos las variables `price` y `number_of_reviews` de Pollença y Palma del periodo "2024-09-13", del fichero `listing_common0_select.RData`. 
-Estudiad si estos datos se aproximan a una distribución normal gráficamente. Para ello, dibujad el histograma, la función "kernel-density" que aproxima la densidad y la densidad de la normal de media y varianza las de las muestras de las variables `price` (para precios mayores de 50 y menores de 400) y `number_of_reviews` para Palma y 	
+Consideremos las variables `price` y `number_of_reviews` de Pollença y Palma del periodo "2024-09-13", del fichero `listing_common0_select.RData`. Estudiad si estos datos se aproximan a una distribución normal gráficamente. Para ello, dibujad el histograma, la función "kernel-density" que aproxima la densidad y la densidad de la normal de media y varianza las de las muestras de las variables `price` (para precios mayores de 50 y menores de 400) y `number_of_reviews` para Palma y\
 Pollença
 
 ## Pregunta 3 (**1punto**)
@@ -4645,31 +4638,27 @@ Con los datos de `listings0` de todos los periodos, contrastar si la media del p
 
 ## Pregunta 4 (**1punto**)
 
-Con los  datos de `listings0`, contrastar si las medias de los precios en Alcudia entre los periodos  2025-06-15 y   2025-09-21 son iguales contra que son menores en 2023. Construid la hipótesis nula y alternativa, calculad el $p$-valor y el intervalo de confianza asociado al contraste.
+Con los datos de `listings0`, contrastar si las medias de los precios en Alcudia entre los periodos 2025-06-15 y 2025-09-21 son iguales contra que son menores en 2023. Construid la hipótesis nula y alternativa, calculad el $p$-valor y el intervalo de confianza asociado al contraste.
 
-Haced un diagrama de caja comparativo de los precios  en Alcudia  por periodo y coméntalo.
+Haced un diagrama de caja comparativo de los precios en Alcudia por periodo y coméntalo.
 
 ## Pregunta 5 (**1 punto**)
 
-Comparar con un bopxlot de las valoraciones medias `review_scores_rating` para Alcudia, Palma, Calvià y
-Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.
-
+Comparar con un bopxlot de las valoraciones medias `review_scores_rating` para Alcudia, Palma, Calvià y Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.
 
 ## Pregunta 6 (**1 punto**)
 
 Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de valoración `review_scores_rating` mayor que 4 en Alcudia y en Calvià son iguales contra que son distintas. Construid un intervalo de confianza para la diferencia de proporciones.
 
-
 ## Pregunta 7 (**1punto**)
 
-Calcular la proporción de apartamentos de los periodos 2025-06-15 y  2025-09-21  con media de valoración `review_scores_rating` mayor que 4 en Palma  y en Pollença son iguales contra que son distintas.
+Calcular la proporción de apartamentos de los periodos 2025-06-15 y 2025-09-21 con media de valoración `review_scores_rating` mayor que 4 en Palma y en Pollença son iguales contra que son distintas.
 
 ## Pregunta 8 (**1punto**)
 
-Agrupa las variables `review_scores_rating` y `review_scores_location` de `listings0` en 5 categorías cada una y construid una tabla de contingencia con las dos variables agrupadas. Agrupar de forma que no cruces de categorías vacías. Contratar si esta varibles son independientes con  un test $\chi^2$. 
+Agrupa las variables `review_scores_rating` y `review_scores_location` de `listings0` en 5 categorías cada una y construid una tabla de contingencia con las dos variables agrupadas. Agrupar de forma que no cruces de categorías vacías. Contratar si esta varibles son independientes con un test $\chi^2$.
 
-Buscan información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde  la salida de chisq.test interpretarlo  en esta caso
-
+Buscan información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde la salida de chisq.test interpretarlo en esta caso
 
 
 ::: {.cell}
@@ -4696,14 +4685,11 @@ table(cut(listings0$review_scores_rating,5),
 :::
 
 
-
-
 ## Pregunta 9 (**3 puntos**)
 
-Construye un data set con las variables 
-review_scores_rating, review_scores_cleanliness, review_scores_location, review_scores_value de listings0 y  el municipio/zona `neighbourhood_cleansed`
+Construye un data set con las variables review_scores_rating, review_scores_cleanliness, review_scores_location, review_scores_value de listings0 y el municipio/zona `neighbourhood_cleansed`
 
-Calcula la matriz de correlaciones entre estas variables y haz un gráfico de pares  de variables que muestre las correlaciones ([ggpairs](https://r-charts.com/correlation/ggpairs/)) con la librería GGally. Comenta los resultados.
+Calcula la matriz de correlaciones entre estas variables y haz un gráfico de pares de variables que muestre las correlaciones ([ggpairs](https://r-charts.com/correlation/ggpairs/)) con la librería GGally. Comenta los resultados.
 
 Haz un `matrixplot` de las correlaciones con la librería `corrplot`. Comenta los resultados.
 
@@ -4913,6 +4899,4 @@ F-statistic:  5237 on 1 and 580 DF,  p-value: < 2.2e-16
 
 :::
 :::
-
-
 
