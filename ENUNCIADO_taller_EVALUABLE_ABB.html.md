@@ -4930,8 +4930,7 @@ La representación gráfica es la siguiente:
 
 ```{.r .cell-code}
 library(ggplot2)
-tbl2filtrado=tbl2 %>% filter(Rank>10) %>% filter(Rank<1000)
-ggplot(tbl2filtrado,aes(x=Log_Rank,y=Log_Freq))+
+ggplot(tbl2,aes(x=Log_Rank,y=Log_Freq))+
   geom_point()+
   geom_smooth(method="lm",se=FALSE,color="red")+
   labs(title="Ley de Zipf para la longitud de los comentarios",

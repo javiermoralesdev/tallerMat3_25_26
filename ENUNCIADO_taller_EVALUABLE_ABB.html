@@ -4887,12 +4887,11 @@ F-statistic:  5237 on 1 and 580 DF,  p-value: &lt; 2.2e-16</code></pre>
 <details class="code-fold">
 <summary>Código</summary>
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>tbl2filtrado<span class="ot">=</span>tbl2 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&lt;</span><span class="dv">1000</span>)</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tbl2filtrado,<span class="fu">aes</span>(<span class="at">x=</span>Log_Rank,<span class="at">y=</span>Log_Freq))<span class="sc">+</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>,<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Ley de Zipf para la longitud de los comentarios"</span>,</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Log(Rango)"</span>,<span class="at">y=</span><span class="st">"Log(Frecuencia)"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tbl2,<span class="fu">aes</span>(<span class="at">x=</span>Log_Rank,<span class="at">y=</span>Log_Freq))<span class="sc">+</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>,<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Ley de Zipf para la longitud de los comentarios"</span>,</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Log(Rango)"</span>,<span class="at">y=</span><span class="st">"Log(Frecuencia)"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -5649,14 +5648,13 @@ F-statistic:  5237 on 1 and 580 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb42-313"><a href="#cb42-313" aria-hidden="true" tabindex="-1"></a>La representación gráfica es la siguiente:</span>
 <span id="cb42-316"><a href="#cb42-316" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb42-317"><a href="#cb42-317" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb42-318"><a href="#cb42-318" aria-hidden="true" tabindex="-1"></a>tbl2filtrado<span class="ot">=</span>tbl2 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&lt;</span><span class="dv">1000</span>)</span>
-<span id="cb42-319"><a href="#cb42-319" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tbl2filtrado,<span class="fu">aes</span>(<span class="at">x=</span>Log_Rank,<span class="at">y=</span>Log_Freq))<span class="sc">+</span></span>
-<span id="cb42-320"><a href="#cb42-320" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb42-321"><a href="#cb42-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>,<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
-<span id="cb42-322"><a href="#cb42-322" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Ley de Zipf para la longitud de los comentarios"</span>,</span>
-<span id="cb42-323"><a href="#cb42-323" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Log(Rango)"</span>,<span class="at">y=</span><span class="st">"Log(Frecuencia)"</span>)</span>
-<span id="cb42-324"><a href="#cb42-324" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb42-325"><a href="#cb42-325" aria-hidden="true" tabindex="-1"></a>El modelo con menor R² es el de log(Freq) contra log(Rank) con un R²= <span class="in">`r round(summary(sol3)$r.squared,4)`</span>. La pendiente es <span class="in">`r round(coef(sol3)[2],4)`</span>. Por tanto, la ley de Zipf **se cumple/no se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.</span>
+<span id="cb42-318"><a href="#cb42-318" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tbl2,<span class="fu">aes</span>(<span class="at">x=</span>Log_Rank,<span class="at">y=</span>Log_Freq))<span class="sc">+</span></span>
+<span id="cb42-319"><a href="#cb42-319" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb42-320"><a href="#cb42-320" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>,<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
+<span id="cb42-321"><a href="#cb42-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Ley de Zipf para la longitud de los comentarios"</span>,</span>
+<span id="cb42-322"><a href="#cb42-322" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Log(Rango)"</span>,<span class="at">y=</span><span class="st">"Log(Frecuencia)"</span>)</span>
+<span id="cb42-323"><a href="#cb42-323" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb42-324"><a href="#cb42-324" aria-hidden="true" tabindex="-1"></a>El modelo con menor R² es el de log(Freq) contra log(Rank) con un R²= <span class="in">`r round(summary(sol3)$r.squared,4)`</span>. La pendiente es <span class="in">`r round(coef(sol3)[2],4)`</span>. Por tanto, la ley de Zipf **se cumple/no se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.</span>
 </code><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
