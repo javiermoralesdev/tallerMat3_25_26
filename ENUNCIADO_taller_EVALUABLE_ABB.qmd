@@ -177,7 +177,7 @@ listings0 %>%
         col.names = c("Municipio", "Fecha", "Media Precio", "Desv. Típica Precio", "Mediana Precio", 
                       "Media Nº Reseñas", "Desv. Típica Nº Reseñas", "Mediana Nº Reseñas"),
         caption = "Estadísticos descriptivos de Precio y Número de Reseñas por Municipio y Periodo") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = FALSE)
 ```
 
 ## Pregunta 2 (**1punto**)
@@ -239,6 +239,8 @@ Haz un `matrixplot` de las correlaciones con la librería `corrplot`. Comenta lo
 La [Zipf's law es una ley empírica](https://en.wikipedia.org/wiki/Zipf%27s_law#Word_frequencies_in_natural_languages) que dice que la frecuencia de las palabras en un texto es inversamente proporcional a su rango. Decidid si la ley se ajusta a los datos de la longitud de los comentarios de los apartamentos de la muestra "2025-09-21" Mallorca, haced lo mismo para description de `listings0`. Para ello, haced un análisis de regresión lineal de la frecuencia de las longitudes de los comentarios/descripciones de los apartamentos de Mallorca y el rango de las longitudes de los comentarios. Justificad la respuesta, estadísticamente y gráficamente.
 
 Como ayuda estudiar el siguiente código, utilizadlo y comentadlo.
+
+Resolución:
 
 ```{r}
 library(stringr)
