@@ -5,7 +5,7 @@ lang: es
 format:
   html:
     theme: superhero
-    toc: true
+    toc: false
     toc_depth: 4
     html-math-method: katex
     code-tools: true
@@ -365,23 +365,24 @@ listings0 %>%
         col.names = c("Municipio", "Fecha", "Media Precio", "Desv. Típica Precio", "Mediana Precio", 
                       "Media Nº Reseñas", "Desv. Típica Nº Reseñas", "Mediana Nº Reseñas"),
         caption = "Estadísticos descriptivos de Precio y Número de Reseñas por Municipio y Periodo") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)%>% 
+ scroll_box(width = "1700px", height = "500px")
 ```
 
 ::: {.cell-output-display}
 `````{=html}
-<table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:1700px; "><table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>Estadísticos descriptivos de Precio y Número de Reseñas por Municipio y Periodo</caption>
  <thead>
   <tr>
-   <th style="text-align:left;"> Municipio </th>
-   <th style="text-align:left;"> Fecha </th>
-   <th style="text-align:right;"> Media Precio </th>
-   <th style="text-align:right;"> Desv. Típica Precio </th>
-   <th style="text-align:right;"> Mediana Precio </th>
-   <th style="text-align:right;"> Media Nº Reseñas </th>
-   <th style="text-align:right;"> Desv. Típica Nº Reseñas </th>
-   <th style="text-align:right;"> Mediana Nº Reseñas </th>
+   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> Municipio </th>
+   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> Fecha </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Media Precio </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Desv. Típica Precio </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Mediana Precio </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Media Nº Reseñas </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Desv. Típica Nº Reseñas </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Mediana Nº Reseñas </th>
   </tr>
  </thead>
 <tbody>
@@ -4626,7 +4627,7 @@ listings0 %>%
    <td style="text-align:right;"> 19.0 </td>
   </tr>
 </tbody>
-</table>
+</table></div>
 
 `````
 :::
@@ -4668,7 +4669,7 @@ Calcular la proporción de apartamentos de los periodos 2025-06-15 y  2025-09-21
 
 Agrupa las variables `review_scores_rating` y `review_scores_location` de `listings0` en 5 categorías cada una y construid una tabla de contingencia con las dos variables agrupadas. Agrupar de forma que no cruces de categorías vacías. Contratar si esta varibles son independientes con  un test $\chi^2$. 
 
-Buscan información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde  la salida de chisq.test interpretarlo  en esta caso
+Buscar información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde  la salida de chisq.test interpretarlo  en esta caso
 
 
 
@@ -4713,10 +4714,13 @@ La [Zipf's law es una ley empírica](https://en.wikipedia.org/wiki/Zipf%27s_law#
 
 Como ayuda estudiar el siguiente código, utilizadlo y comentadlo.
 
+Resolución del problema:
+
 
 ::: {.cell}
 
 ```{.r .cell-code}
+# analisis de la longitud de los comentarios
 library(stringr)
 # para las reseñas
 head(reviews)
@@ -4915,4 +4919,28 @@ F-statistic:  5237 on 1 and 580 DF,  p-value: < 2.2e-16
 :::
 
 
+Voy a hacer la regresión lineal de log(Freq) contra log(Rank) que es la que mejor se ajusta
 
+$$\log(Freq) = a + b \log(Rank) + \epsilon
+$$
+donde $a$ es la ordenada en el origen y $b$ la pendiente de la recta de regresión lineal. Si la ley de Zipf se cumple $b$ debe ser cercano a -1.
+La representación gráfica es la siguiente:
+
+::: {.cell}
+
+```{.r .cell-code}
+library(ggplot2)
+tbl2filtrado=tbl2 %>% filter(Rank>10) %>% filter(Rank<1000)
+ggplot(tbl2filtrado,aes(x=Log_Rank,y=Log_Freq))+
+  geom_point()+
+  geom_smooth(method="lm",se=FALSE,color="red")+
+  labs(title="Ley de Zipf para la longitud de los comentarios",
+       x="Log(Rango)",y="Log(Frecuencia)")
+```
+
+::: {.cell-output-display}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-14-1.png){width=672}
+:::
+:::
+
+El modelo con menor R² es el de log(Freq) contra log(Rank) con un R²= 0.9003. La pendiente es -3.1595. Por tanto, la ley de Zipf **se cumple/no se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.
