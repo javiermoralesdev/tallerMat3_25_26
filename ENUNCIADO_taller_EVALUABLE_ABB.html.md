@@ -4644,6 +4644,49 @@ Pollença
 
 Con los datos de `listings0` de todos los periodos, contrastar si la media del precio en Alcudia es igual a la de Palma **contra** que es mayor que en Palma para los precios mayores que 50 euros y menores de 400. Construid la hipótesis nula y alternativa, calculad el $p$-valor y el intervalo de confianza asociado al contraste. Justifica técnicamente la conclusión del contraste.
 
+Resolución del problema:
+
+::: {.cell}
+
+```{.r .cell-code}
+alcudia_prices <- listings0 %>%
+  filter(neighbourhood_cleansed == "Alcúdia",
+         price > 50, price < 400) %>%
+  pull(price)
+
+palma_prices <- listings0 %>%
+  filter(neighbourhood_cleansed == "Palma de Mallorca",
+         price > 50, price < 400) %>%
+  pull(price)
+
+t_test_result <- t.test(alcudia_prices, palma_prices,
+                        alternative = "greater",
+                        var.equal = FALSE)
+t_test_result
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+	Welch Two Sample t-test
+
+data:  alcudia_prices and palma_prices
+t = 5.1623, df = 5180.6, p-value = 1.265e-07
+alternative hypothesis: true difference in means is greater than 0
+95 percent confidence interval:
+ 7.02432     Inf
+sample estimates:
+mean of x mean of y 
+ 193.9472  183.6373 
+```
+
+
+:::
+:::
+
+Conclusión:
+
 ## Pregunta 4 (**1punto**)
 
 Con los  datos de `listings0`, contrastar si las medias de los precios en Alcudia entre los periodos  2025-06-15 y   2025-09-21 son iguales contra que son menores en 2023. Construid la hipótesis nula y alternativa, calculad el $p$-valor y el intervalo de confianza asociado al contraste.
@@ -4749,7 +4792,7 @@ barplot(table(length_rewiews))
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-11-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-12-1.png){width=672}
 :::
 
 ```{.r .cell-code}
@@ -4759,7 +4802,7 @@ barplot(table(length_description))
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-11-2.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-12-2.png){width=672}
 :::
 :::
 
@@ -4921,8 +4964,7 @@ F-statistic:  5237 on 1 and 580 DF,  p-value: < 2.2e-16
 
 Voy a hacer la regresión lineal de log(Freq) contra log(Rank) que es la que mejor se ajusta
 
-$$\log(Freq) = a + b \log(Rank) + \epsilon
-$$
+$$\log(Freq) = a + b \log(Rank) + \epsilon $$
 donde $a$ es la ordenada en el origen y $b$ la pendiente de la recta de regresión lineal. Si la ley de Zipf se cumple $b$ debe ser cercano a -1.
 La representación gráfica es la siguiente:
 
@@ -4938,7 +4980,7 @@ ggplot(tbl2,aes(x=Log_Rank,y=Log_Freq))+
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-14-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-1.png){width=672}
 :::
 :::
 
