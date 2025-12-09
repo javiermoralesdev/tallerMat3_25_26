@@ -350,6 +350,7 @@ Resolución:
 
 ```{.r .cell-code}
 library(kableExtra)
+
 listings0 %>%
   group_by(neighbourhood_cleansed, date) %>%
   summarise(
@@ -361,12 +362,19 @@ listings0 %>%
     median_reviews = median(number_of_reviews, na.rm = TRUE)
   ) %>%
   ungroup() %>%
-  kable(format = "html", 
-        col.names = c("Municipio", "Fecha", "Media Precio", "Desv. Típica Precio", "Mediana Precio", 
-                      "Media Nº Reseñas", "Desv. Típica Nº Reseñas", "Mediana Nº Reseñas"),
-        caption = "Estadísticos descriptivos de Precio y Número de Reseñas por Municipio y Periodo") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)%>% 
- scroll_box(width = "1700px", height = "500px")
+  kable(
+    format = "html", 
+    col.names = c("Municipio", "Fecha", "Media Precio", "Desv. Típica Precio",
+                  "Mediana Precio", "Media Nº Reseñas", "Desv. Típica Nº Reseñas",
+                  "Mediana Nº Reseñas"),
+    caption = "Estadísticos descriptivos de Precio y Número de Reseñas por Municipio y Periodo"
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"), 
+    full_width = FALSE
+  ) %>%
+  row_spec(0, background = "#2B3E50", color = "#EBEBEB") %>%  # <---- Color cabecera
+  scroll_box(width = "1700px", height = "500px")
 ```
 
 ::: {.cell-output-display}
@@ -375,14 +383,14 @@ listings0 %>%
 <caption>Estadísticos descriptivos de Precio y Número de Reseñas por Municipio y Periodo</caption>
  <thead>
   <tr>
-   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> Municipio </th>
-   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> Fecha </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Media Precio </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Desv. Típica Precio </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Mediana Precio </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Media Nº Reseñas </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Desv. Típica Nº Reseñas </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Mediana Nº Reseñas </th>
+   <th style="text-align:left;color: rgba(235, 235, 235, 255) !important;background-color: rgba(43, 62, 80, 255) !important;position: sticky; top:0; background-color: #FFFFFF;"> Municipio </th>
+   <th style="text-align:left;color: rgba(235, 235, 235, 255) !important;background-color: rgba(43, 62, 80, 255) !important;position: sticky; top:0; background-color: #FFFFFF;"> Fecha </th>
+   <th style="text-align:right;color: rgba(235, 235, 235, 255) !important;background-color: rgba(43, 62, 80, 255) !important;position: sticky; top:0; background-color: #FFFFFF;"> Media Precio </th>
+   <th style="text-align:right;color: rgba(235, 235, 235, 255) !important;background-color: rgba(43, 62, 80, 255) !important;position: sticky; top:0; background-color: #FFFFFF;"> Desv. Típica Precio </th>
+   <th style="text-align:right;color: rgba(235, 235, 235, 255) !important;background-color: rgba(43, 62, 80, 255) !important;position: sticky; top:0; background-color: #FFFFFF;"> Mediana Precio </th>
+   <th style="text-align:right;color: rgba(235, 235, 235, 255) !important;background-color: rgba(43, 62, 80, 255) !important;position: sticky; top:0; background-color: #FFFFFF;"> Media Nº Reseñas </th>
+   <th style="text-align:right;color: rgba(235, 235, 235, 255) !important;background-color: rgba(43, 62, 80, 255) !important;position: sticky; top:0; background-color: #FFFFFF;"> Desv. Típica Nº Reseñas </th>
+   <th style="text-align:right;color: rgba(235, 235, 235, 255) !important;background-color: rgba(43, 62, 80, 255) !important;position: sticky; top:0; background-color: #FFFFFF;"> Mediana Nº Reseñas </th>
   </tr>
  </thead>
 <tbody>
@@ -4710,7 +4718,7 @@ listings0 %>%
   geom_boxplot(outlier.color = "red", outlier.size = 2) +
   labs(title = "Distribución de las Valoraciones Medias por Municipio",
        x = "Municipio",
-       y = "Valoración Media (review_scores_rating)") +
+       y = "Valoración Media") +
    scale_x_discrete(labels = c("Alcúdia" = "Alcúdia",
                               "Palma de Mallorca" = "Palma",
                               "Calvià" = "Calvià",
