@@ -4745,6 +4745,95 @@ Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de 
 
 Calcular la proporción de apartamentos de los periodos 2025-06-15 y  2025-09-21  con media de valoración `review_scores_rating` mayor que 4 en Palma  y en Pollença son iguales contra que son distintas.
 
+Resolución del problema:
+
+::: {.cell}
+
+```{.r .cell-code}
+df <- listings0 %>%
+  filter(date %in% c(as.Date("2025-06-15"), as.Date("2025-09-21")),
+         neighbourhood_cleansed %in% c("Palma de Mallorca", "Pollença")) %>%
+  mutate(high_rating = review_scores_rating > 4) %>%
+  group_by(neighbourhood_cleansed, date) %>%
+  summarise(
+    successes = sum(high_rating, na.rm = TRUE),
+    n = n(),
+    .groups = "drop"
+  )
+
+# Test Palma
+prop_test_palma <- prop.test(
+  x = df$successes[df$neighbourhood_cleansed == "Palma de Mallorca"],
+  n = df$n[df$neighbourhood_cleansed == "Palma de Mallorca"]
+)
+
+# Test Pollença
+prop_test_pollenca <- prop.test(
+  x = df$successes[df$neighbourhood_cleansed == "Pollença"],
+  n = df$n[df$neighbourhood_cleansed == "Pollença"]
+)
+
+prop_test_palma
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+	2-sample test for equality of proportions with continuity correction
+
+data:  df$successes[df$neighbourhood_cleansed == "Palma de Mallorca"] out of df$n[df$neighbourhood_cleansed == "Palma de Mallorca"]
+X-squared = 0.027345, df = 1, p-value = 0.8687
+alternative hypothesis: two.sided
+95 percent confidence interval:
+ -0.02940975  0.02148896
+sample estimates:
+   prop 1    prop 2 
+0.9603960 0.9643564 
+```
+
+
+:::
+
+```{.r .cell-code}
+prop_test_pollenca
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+	2-sample test for equality of proportions with continuity correction
+
+data:  df$successes[df$neighbourhood_cleansed == "Pollença"] out of df$n[df$neighbourhood_cleansed == "Pollença"]
+X-squared = 0.65557, df = 1, p-value = 0.4181
+alternative hypothesis: two.sided
+95 percent confidence interval:
+ -0.04205137  0.01694152
+sample estimates:
+   prop 1    prop 2 
+0.7715003 0.7840552 
+```
+
+
+:::
+:::
+
+*Conclusión de los resultados obtenidos:*
+ Hemos realizado un contraste de igualdad de proporciones para comparar el porcentaje de apartamentos con review_scores_rating > 4 (entre los periodos 2025-06-15 y 2025-09-21), de forma independiente para los municipios de Palma y Pollença.
+
+En ambos casos se aplicó un test bilateral de igualdad de proporciones (prop.test).
+
+Los resultados obtenidos fueron:
+
+Palma: p-value = 0.8687 → no se rechaza H₀.
+No hay evidencia de diferencias significativas entre los dos periodos.
+
+Pollença: p-value = 0.4181 → no se rechaza H₀.
+Tampoco se observan diferencias significativas entre periodos.
+
+Por tanto para ninguno de los dos municipios existen diferencias estadísticamente significativas en la proporción de apartamentos con valoración mayor que 4 entre los periodos comparados.
+
 ## Pregunta 8 (**1punto**)
 
 Agrupa las variables `review_scores_rating` y `review_scores_location` de `listings0` en 5 categorías cada una y construid una tabla de contingencia con las dos variables agrupadas. Agrupar de forma que no cruces de categorías vacías. Contratar si esta varibles son independientes con  un test $\chi^2$. 
@@ -4829,7 +4918,7 @@ barplot(table(length_rewiews))
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-13-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-14-1.png){width=672}
 :::
 
 ```{.r .cell-code}
@@ -4839,7 +4928,7 @@ barplot(table(length_description))
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-13-2.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-14-2.png){width=672}
 :::
 :::
 
@@ -5017,7 +5106,7 @@ ggplot(tbl2,aes(x=Log_Rank,y=Log_Freq))+
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-16-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-17-1.png){width=672}
 :::
 :::
 
