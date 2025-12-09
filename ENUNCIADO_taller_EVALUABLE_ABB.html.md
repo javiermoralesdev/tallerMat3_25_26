@@ -4685,7 +4685,7 @@ mean of x mean of y
 :::
 :::
 
-Conclusión:
+Conclusión: Al ejecutar el test, nos damos cuenta que los alojamientos en Alcúdia son significativamente más caros que en Palma de Mallorca. La diferencia de media estimada es de ≈ 10 € a favor de Alcúdia, y el p valor es tan insignificante (Aprox 0.000001) que rechazamos la hipótesis nula (La cuál era que μAlcúdia ≤ μPalma).
 
 ## Pregunta 4 (**1punto**)
 
@@ -4697,6 +4697,35 @@ Haced un diagrama de caja comparativo de los precios  en Alcudia  por periodo y 
 
 Comparar con un bopxlot de las valoraciones medias `review_scores_rating` para Alcudia, Palma, Calvià y
 Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.
+
+Resolución del problema:
+
+::: {.cell}
+
+```{.r .cell-code}
+library(ggplot2)
+listings0 %>%
+  filter(neighbourhood_cleansed %in% c("Alcúdia", "Palma de Mallorca", "Calvià", "Pollença")) %>%
+  ggplot(aes(x = neighbourhood_cleansed, y = review_scores_rating, fill = neighbourhood_cleansed)) +
+  geom_boxplot(outlier.color = "red", outlier.size = 2) +
+  labs(title = "Distribución de las Valoraciones Medias por Municipio",
+       x = "Municipio",
+       y = "Valoración Media (review_scores_rating)") +
+   scale_x_discrete(labels = c("Alcúdia" = "Alcúdia",
+                              "Palma de Mallorca" = "Palma",
+                              "Calvià" = "Calvià",
+                              "Pollença" = "Pollença")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+::: {.cell-output-display}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-11-1.png){width=672}
+:::
+:::
+
 
 
 ## Pregunta 6 (**1 punto**)
@@ -4792,7 +4821,7 @@ barplot(table(length_rewiews))
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-12-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-13-1.png){width=672}
 :::
 
 ```{.r .cell-code}
@@ -4802,7 +4831,7 @@ barplot(table(length_description))
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-12-2.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-13-2.png){width=672}
 :::
 :::
 
@@ -4980,7 +5009,7 @@ ggplot(tbl2,aes(x=Log_Rank,y=Log_Freq))+
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-16-1.png){width=672}
 :::
 :::
 
