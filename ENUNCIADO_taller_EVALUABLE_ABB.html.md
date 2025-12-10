@@ -1,6 +1,6 @@
 ---
 title: "ENUNCIADO taller en grupo Mat3 GIN 2025-2026"
-author: "Taller"
+author: "Pau Salillas Justo, José Javier Morales Caravaca"
 lang: es
 format:
   html:
@@ -4632,6 +4632,131 @@ listings0 %>%
 Consideremos las variables `price` y `number_of_reviews` de Pollença y Palma del periodo "2024-09-13", del fichero `listing_common0_select.RData`. Estudiad si estos datos se aproximan a una distribución normal gráficamente. Para ello, dibujad el histograma, la función "kernel-density" que aproxima la densidad y la densidad de la normal de media y varianza las de las muestras de las variables `price` (para precios mayores de 50 y menores de 400) y `number_of_reviews` para Palma y\
 Pollença
 
+
+::: {.cell}
+
+```{.r .cell-code}
+load("clean_data/mallorca/listing_common0_select.RData")
+
+ls()
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+[1] "geojson_sf"              "listings_common0"       
+[3] "listings_common0_select" "listings0"              
+[5] "municipios"              "reviews"                
+```
+
+
+:::
+
+```{.r .cell-code}
+library(dplyr)
+
+df2 <- listings_common0_select %>%
+filter(neighbourhood_cleansed %in% c("Palma de Mallorca", "Pollença"),
+date == as.Date("2024-09-13"),
+price > 50, price < 400)
+
+str(df2)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+tibble [2,174 × 16] (S3: tbl_df/tbl/data.frame)
+ $ date                  : Date[1:2174], format: "2024-09-13" "2024-09-13" ...
+ $ id                    : chr [1:2174] "69998" "843097" "193426" "922689" ...
+ $ price                 : num [1:2174] 100 222 210 221 159 195 123 110 145 100 ...
+ $ longitude             : num [1:2174] 2.65 3.06 3.08 2.79 2.66 ...
+ $ latitude              : num [1:2174] 39.6 39.9 39.9 39.6 39.6 ...
+ $ property_type         : chr [1:2174] "Entire loft" "Entire home" "Entire rental unit" "Entire chalet" ...
+ $ room_type             : chr [1:2174] "Entire home/apt" "Entire home/apt" "Entire home/apt" "Entire home/apt" ...
+ $ accommodates          : num [1:2174] 2 7 5 4 2 4 5 2 4 2 ...
+ $ bedrooms              : num [1:2174] 1 3 3 2 1 2 2 2 2 2 ...
+ $ beds                  : num [1:2174] 1 7 4 3 1 2 2 3 3 4 ...
+ $ number_of_reviews     : num [1:2174] 263 54 104 71 328 629 99 92 81 6 ...
+ $ review_scores_rating  : num [1:2174] 4.95 4.87 4.86 4.94 4.79 4.7 4.73 4.77 4.63 3.83 ...
+ $ review_scores_value   : num [1:2174] 4.81 4.78 4.74 4.87 4.6 4.71 4.72 4.7 4.59 2.8 ...
+ $ host_is_superhost     : logi [1:2174] TRUE NA FALSE TRUE TRUE TRUE ...
+ $ host_name             : chr [1:2174] "Lor" "Fernando" "Eva Balaguer" "Joan" ...
+ $ neighbourhood_cleansed: chr [1:2174] "Palma de Mallorca" "Pollença" "Pollença" "Palma de Mallorca" ...
+```
+
+
+:::
+
+```{.r .cell-code}
+# Función para graficar histograma de una variable
+plot_histogram_with_density <- function(data, variable, title) {
+  ggplot(data, aes_string(x = variable)) +
+    geom_histogram(aes(y = ..density..), bins = 30, fill = "lightblue", color = "black", alpha = 0.7) +
+    geom_density(color = "red", size = 1) +
+    stat_function(fun = dnorm, 
+                  args = list(mean = mean(data[[variable]], na.rm = TRUE), 
+                              sd = sd(data[[variable]], na.rm = TRUE)), 
+                  color = "blue", size = 1, linetype = "dashed") +
+    labs(title = title, x = variable, y = "Densidad") +
+    theme_minimal()
+}
+
+# Graficar para 'price' en Palma
+plot_histogram_with_density(
+  filter(df2, neighbourhood_cleansed == "Palma de Mallorca"),
+  "price",
+  "Histograma y Densidad de Precio en Palma (2024-09-13)"
+)
+```
+
+::: {.cell-output-display}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-10-1.png){width=672}
+:::
+
+```{.r .cell-code}
+# Graficar para 'price' en Pollença
+plot_histogram_with_density(
+  filter(df2, neighbourhood_cleansed == "Pollença"),
+  "price",
+  "Histograma y Densidad de Precio en Pollença (2024-09-13)"
+)
+```
+
+::: {.cell-output-display}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-10-2.png){width=672}
+:::
+
+```{.r .cell-code}
+# Graficar para 'number_of_reviews' en Palma
+plot_histogram_with_density(
+  filter(df2, neighbourhood_cleansed == "Palma de Mallorca"),
+  "number_of_reviews",
+  "Histograma y Densidad de Número de Reseñas en Palma (2024-09-13)"
+)
+```
+
+::: {.cell-output-display}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-10-3.png){width=672}
+:::
+
+```{.r .cell-code}
+# Graficar para 'number_of_reviews' en Pollença
+plot_histogram_with_density(
+  filter(df2, neighbourhood_cleansed == "Pollença"),
+  "number_of_reviews",
+  "Histograma y Densidad de Número de Reseñas en Pollença (2024-09-13)"
+)
+```
+
+::: {.cell-output-display}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-10-4.png){width=672}
+:::
+:::
+
+Como se puede observar en los siguientes gráficos, la variable que más se aproxima a la normal es el precio en Pollença. Las demás variables tienen una media demasiado desplazada a la derecha. Esto puede deberse a que, en comparación al número de apartamentos y de alquileres, la cantidad de reseñas es bastante menor puesto que, proporcionalmente, pocos clientes dejan reseñas
+
+
 ## Pregunta 3 (**1punto**)
 
 Con los datos de `listings0` de todos los periodos, contrastar si la media del precio en Alcudia es igual a la de Palma **contra** que es mayor que en Palma para los precios mayores que 50 euros y menores de 400. Construid la hipótesis nula y alternativa, calculad el $p$-valor y el intervalo de confianza asociado al contraste. Justifica técnicamente la conclusión del contraste.
@@ -4642,6 +4767,86 @@ Con los datos de `listings0`, contrastar si las medias de los precios en Alcudia
 
 Haced un diagrama de caja comparativo de los precios en Alcudia por periodo y coméntalo.
 
+El contraste es:
+
+- **H₀:** μ(0615) = μ(0921)  
+- **H₁:** μ(0615) < μ(0921)
+
+Para ello se usa un **test t de dos muestras independientes**, con un nivel de significación del 5%.
+
+---
+
+### 1. Filtrado de datos
+
+
+::: {.cell}
+
+```{.r .cell-code}
+library(dplyr)
+
+df4 <- listings0 %>%
+  filter(neighbourhood_cleansed == "Alcúdia",
+         date %in% as.Date(c("2025-06-15", "2025-09-21")))
+
+precios_0615 <- df4 %>%
+filter(date == as.Date("2025-06-15")) %>%
+pull(price)
+
+precios_0921 <- df4 %>%
+filter(date == as.Date("2025-09-21")) %>%
+pull(price)
+
+t.test(
+precios_0615,
+precios_0921,
+alternative = "less"
+)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+	Welch Two Sample t-test
+
+data:  precios_0615 and precios_0921
+t = 0.88858, df = 1822.3, p-value = 0.8128
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+     -Inf 263.4871
+sample estimates:
+mean of x mean of y 
+ 909.0679  816.6827 
+```
+
+
+:::
+:::
+
+Dado que el $$p$$-valor es mayor que 0.05, no se rechaza la hipótesis nula. Por lo tanto, no hay evidencia suficiente para afirmar que el precio medio en Alcúdia el 15 de junio de 2025 es menor que el 21 de septiembre de 2025.
+
+
+::: {.cell}
+
+```{.r .cell-code}
+library(ggplot2)
+
+ggplot(df4, aes(x = factor(date), y = price)) +
+geom_boxplot() +
+labs(title = "Comparación de precios en Alcúdia",
+x = "Fecha",
+y = "Precio") +
+theme_minimal()
+```
+
+::: {.cell-output-display}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-12-1.png){width=672}
+:::
+:::
+
+
+Como se puede apreciar en el diagrama anterior, los precios en Alcúdia parecen ser similares en ambos periodos, con medianas y rangos imparables. No se observan diferencias significativas en la distribución de los precios entre las dos fechas. Lo que refuerza la conclusión del contraste de hipótesis.
+
 ## Pregunta 5 (**1 punto**)
 
 Comparar con un bopxlot de las valoraciones medias `review_scores_rating` para Alcudia, Palma, Calvià y Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.
@@ -4649,6 +4854,73 @@ Comparar con un bopxlot de las valoraciones medias `review_scores_rating` para A
 ## Pregunta 6 (**1 punto**)
 
 Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de valoración `review_scores_rating` mayor que 4 en Alcudia y en Calvià son iguales contra que son distintas. Construid un intervalo de confianza para la diferencia de proporciones.
+
+### 1. Filtrado de los datos
+
+
+::: {.cell}
+
+```{.r .cell-code}
+library(dplyr)
+
+df6 <- listings0 %>%
+  filter(neighbourhood_cleansed %in% c("Alcúdia", "Calvià"),
+         date == as.Date("2025-09-21"))
+
+df6 <- df6 %>%
+mutate(success = review_scores_rating > 4)
+
+conteos <- df6 %>%
+group_by(neighbourhood_cleansed) %>%
+summarise(
+x = sum(success, na.rm = TRUE),   # nº de apartamentos con rating > 4
+n = n()                           # total de apartamentos
+)
+
+conteos
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+# A tibble: 2 × 3
+  neighbourhood_cleansed     x     n
+  <chr>                  <int> <int>
+1 Alcúdia                  855   955
+2 Calvià                   159   183
+```
+
+
+:::
+
+```{.r .cell-code}
+x <- conteos$x # éxitos
+n <- conteos$n # totales
+
+
+prop.test(x, n)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+	2-sample test for equality of proportions with continuity correction
+
+data:  x out of n
+X-squared = 0.84987, df = 1, p-value = 0.3566
+alternative hypothesis: two.sided
+95 percent confidence interval:
+ -0.02944199  0.08231298
+sample estimates:
+   prop 1    prop 2 
+0.8952880 0.8688525 
+```
+
+
+:::
+:::
+
 
 ## Pregunta 7 (**1punto**)
 
@@ -4731,7 +5003,7 @@ barplot(table(length_rewiews))
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-11-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-1.png){width=672}
 :::
 
 ```{.r .cell-code}
@@ -4741,7 +5013,7 @@ barplot(table(length_description))
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-11-2.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-2.png){width=672}
 :::
 :::
 
