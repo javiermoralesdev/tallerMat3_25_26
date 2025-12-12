@@ -96,8 +96,7 @@ listings0= listings0 %>%
 :::
 
 
-Ahora  analizamos  las fechas de los scrapings y el número de veces que aparecen 
- cada  apartamentos.
+Ahora  analizamos  las fechas de los scrapings y el número de veces que aparecen cada  apartamentos.
 
 
 
@@ -4652,7 +4651,17 @@ Pollença
 
 Con los datos de `listings0` de todos los periodos, contrastar si la media del precio en Alcudia es igual a la de Palma **contra** que es mayor que en Palma para los precios mayores que 50 euros y menores de 400. Construid la hipótesis nula y alternativa, calculad el $p$-valor y el intervalo de confianza asociado al contraste. Justifica técnicamente la conclusión del contraste.
 
-Resolución del problema:
+### Resolución del problema:  
+Realizaremos un contraste de hipótesis para comparar las medias de los precios entre Alcúdia y Palma de Mallorca:  
+
+$$
+\left\{
+\begin{array}{lr}
+H_0: & \mu_{Alcúdia} \leq \mu_{Palma} \\
+H_a: & \mu_{Alcúdia} > \mu_{Palma}
+\end{array}
+\right.
+$$
 
 ::: {.cell}
 
@@ -4693,7 +4702,8 @@ mean of x mean of y
 :::
 :::
 
-Conclusión: Al ejecutar el test, nos damos cuenta que los alojamientos en Alcúdia son significativamente más caros que en Palma de Mallorca. La diferencia de media estimada es de ≈ 10 € a favor de Alcúdia, y el p valor es tan insignificante (Aprox 0.000001) que rechazamos la hipótesis nula (La cuál era que μAlcúdia ≤ μPalma).
+### Conclusión:   
+Al ejecutar el test, nos damos cuenta que los alojamientos en Alcúdia son significativamente más caros que en Palma de Mallorca. La diferencia de media estimada es de ≈ 10 € a favor de Alcúdia, y el p valor es tan insignificante (Aprox 0.000001) que rechazamos la hipótesis nula (La cuál era que μAlcúdia = μPalma).
 
 ## Pregunta 4 (**1punto**)
 
@@ -4819,7 +4829,7 @@ sample estimates:
 :::
 :::
 
-*Conclusión de los resultados obtenidos:*
+Conclusión de los resultados obtenidos:
  Hemos realizado un contraste de igualdad de proporciones para comparar el porcentaje de apartamentos con review_scores_rating > 4 (entre los periodos 2025-06-15 y 2025-09-21), de forma independiente para los municipios de Palma y Pollença.
 
 En ambos casos se aplicó un test bilateral de igualdad de proporciones (prop.test).

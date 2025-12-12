@@ -18,7 +18,7 @@ format:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE,
-                      warning = FALSE,cache=FALSE)
+                      warning = FALSE,cache=TRUE)
 # packages
 library(tidyverse)
 ```
@@ -79,8 +79,7 @@ listings0= listings0 %>%
     .after=id)
 ```
 
-Ahora  analizamos  las fechas de los scrapings y el número de veces que aparecen 
- cada  apartamentos.
+Ahora  analizamos  las fechas de los scrapings y el número de veces que aparecen cada  apartamentos.
 
 
 
@@ -187,7 +186,6 @@ listings0 %>%
   ) %>%
   row_spec(0, background = "#2B3E50", color = "#EBEBEB") %>%  # <---- Color cabecera
   scroll_box(width = "1700px", height = "500px")
-
 ```
 
 ## Pregunta 2 (**1punto**)
@@ -200,7 +198,17 @@ Pollença
 
 Con los datos de `listings0` de todos los periodos, contrastar si la media del precio en Alcudia es igual a la de Palma **contra** que es mayor que en Palma para los precios mayores que 50 euros y menores de 400. Construid la hipótesis nula y alternativa, calculad el $p$-valor y el intervalo de confianza asociado al contraste. Justifica técnicamente la conclusión del contraste.
 
-Resolución del problema:
+### Resolución del problema:  
+Realizaremos un contraste de hipótesis para comparar las medias de los precios entre Alcúdia y Palma de Mallorca:  
+
+$$
+\left\{
+\begin{array}{lr}
+H_0: & \mu_{Alcúdia} \leq \mu_{Palma} \\
+H_a: & \mu_{Alcúdia} > \mu_{Palma}
+\end{array}
+\right.
+$$
 ```{r}
 alcudia_prices <- listings0 %>%
   filter(neighbourhood_cleansed == "Alcúdia",
@@ -217,7 +225,8 @@ t_test_result <- t.test(alcudia_prices, palma_prices,
                         var.equal = FALSE)
 t_test_result
 ```
-Conclusión: Al ejecutar el test, nos damos cuenta que los alojamientos en Alcúdia son significativamente más caros que en Palma de Mallorca. La diferencia de media estimada es de ≈ 10 € a favor de Alcúdia, y el p valor es tan insignificante (Aprox 0.000001) que rechazamos la hipótesis nula (La cuál era que μAlcúdia ≤ μPalma).
+### Conclusión:   
+Al ejecutar el test, nos damos cuenta que los alojamientos en Alcúdia son significativamente más caros que en Palma de Mallorca. La diferencia de media estimada es de ≈ 10 € a favor de Alcúdia, y el p valor es tan insignificante (Aprox 0.000001) que rechazamos la hipótesis nula (La cuál era que μAlcúdia = μPalma).
 
 ## Pregunta 4 (**1punto**)
 
