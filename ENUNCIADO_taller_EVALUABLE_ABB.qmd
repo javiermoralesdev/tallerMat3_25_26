@@ -239,7 +239,7 @@ Haced un diagrama de caja comparativo de los precios  en Alcudia  por periodo y 
 Comparar con un bopxlot de las valoraciones medias `review_scores_rating` para Alcudia, Palma, Calvià y
 Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.
 
-Resolución del problema:
+### Resolución del problema:
 ```{r}
 library(ggplot2)
 listings0 %>%
@@ -258,7 +258,25 @@ listings0 %>%
         plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
         axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-
+### Gráfico con Jitter
+```{r}
+listings0 %>%
+  filter(neighbourhood_cleansed %in% c("Alcúdia", "Palma de Mallorca", "Calvià", "Pollença")) %>%
+  ggplot(aes(x = neighbourhood_cleansed, y = review_scores_rating, fill = neighbourhood_cleansed)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.7) +  # Evitar que los outliers se dibujen dos veces
+  geom_jitter(width = 0.2, alpha = 0.3, color = "blue") +  # Añadir puntos con jitter
+  labs(title = "Distribución Valoraciones Medias por Municipio con Jitter",
+       x = "Municipio",
+       y = "Valoración Media") +
+   scale_x_discrete(labels = c("Alcúdia" = "Alcúdia",
+                              "Palma de Mallorca" = "Palma",
+                              "Calvià" = "Calvià",
+                              "Pollença" = "Pollença")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 ## Pregunta 6 (**1 punto**)
 

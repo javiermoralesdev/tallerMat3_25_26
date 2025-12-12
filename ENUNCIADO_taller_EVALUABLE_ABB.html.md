@@ -4657,7 +4657,7 @@ Realizaremos un contraste de hipótesis de muestras **independientes** para comp
 $$
 \left\{
 \begin{array}{lr}
-H_0: & \mu_{Alcúdia} \leq \mu_{Palma} \\
+H_0: & \mu_{Alcúdia} = \mu_{Palma} \\
 H_1: & \mu_{Alcúdia} > \mu_{Palma}
 \end{array}
 \right.
@@ -4711,59 +4711,12 @@ Con los  datos de `listings0`, contrastar si las medias de los precios en Alcudi
 
 Haced un diagrama de caja comparativo de los precios  en Alcudia  por periodo y coméntalo.
 
-### Resolución del problema:
-Realizaremos un contraste de hipótesis de muestras **dependientes** para comparar las medias de los precios en Alcúdia entre los periodos 2025-06-15 y 2025-09-21:
-$$
-\left\{\begin{array}{lr}
-H_0: & \mu_{2025-06-15} \geq \mu_{2025-09-21} \\
-H_1: & \mu_{2025-06-15} < \mu_{2025-09-21}
-\end{array}\right.
-$$
-
-::: {.cell}
-
-```{.r .cell-code}
-alcudia_june_prices <- listings0 %>%
-  filter(neighbourhood_cleansed == "Alcúdia",
-         date == as.Date("2025-06-15")) %>%
-  pull(price)
-alcudia_sept_prices <- listings0 %>%
-  filter(neighbourhood_cleansed == "Alcúdia",
-         date == as.Date("2025-09-21")) %>%
-  pull(price)
-t_test_result_alcudia <- t.test(alcudia_june_prices, alcudia_sept_prices,
-                                 alternative = "less",
-                                 var.equal = FALSE)
-t_test_result_alcudia
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-
-	Welch Two Sample t-test
-
-data:  alcudia_june_prices and alcudia_sept_prices
-t = 0.88858, df = 1822.3, p-value = 0.8128
-alternative hypothesis: true difference in means is less than 0
-95 percent confidence interval:
-     -Inf 263.4871
-sample estimates:
-mean of x mean of y 
- 909.0679  816.6827 
-```
-
-
-:::
-:::
-
-
 ## Pregunta 5 (**1 punto**)
 
 Comparar con un bopxlot de las valoraciones medias `review_scores_rating` para Alcudia, Palma, Calvià y
 Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.
 
-Resolución del problema:
+### Resolución del problema:
 
 ::: {.cell}
 
@@ -4787,10 +4740,37 @@ listings0 %>%
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-12-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-11-1.png){width=672}
 :::
 :::
 
+### Gráfico con Jitter
+
+::: {.cell}
+
+```{.r .cell-code}
+listings0 %>%
+  filter(neighbourhood_cleansed %in% c("Alcúdia", "Palma de Mallorca", "Calvià", "Pollença")) %>%
+  ggplot(aes(x = neighbourhood_cleansed, y = review_scores_rating, fill = neighbourhood_cleansed)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.7) +  # Evitar que los outliers se dibujen dos veces
+  geom_jitter(width = 0.2, alpha = 0.3, color = "blue") +  # Añadir puntos con jitter
+  labs(title = "Distribución Valoraciones Medias por Municipio con Jitter",
+       x = "Municipio",
+       y = "Valoración Media") +
+   scale_x_discrete(labels = c("Alcúdia" = "Alcúdia",
+                              "Palma de Mallorca" = "Palma",
+                              "Calvià" = "Calvià",
+                              "Pollença" = "Pollença")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+::: {.cell-output-display}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-12-1.png){width=672}
+:::
+:::
 
 
 ## Pregunta 6 (**1 punto**)
