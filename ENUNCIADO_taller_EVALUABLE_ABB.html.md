@@ -4652,13 +4652,13 @@ Pollença
 Con los datos de `listings0` de todos los periodos, contrastar si la media del precio en Alcudia es igual a la de Palma **contra** que es mayor que en Palma para los precios mayores que 50 euros y menores de 400. Construid la hipótesis nula y alternativa, calculad el $p$-valor y el intervalo de confianza asociado al contraste. Justifica técnicamente la conclusión del contraste.
 
 ### Resolución del problema:  
-Realizaremos un contraste de hipótesis para comparar las medias de los precios entre Alcúdia y Palma de Mallorca:  
+Realizaremos un contraste de hipótesis de muestras **independientes** para comparar las medias de los precios entre Alcúdia y Palma de Mallorca:  
 
 $$
 \left\{
 \begin{array}{lr}
 H_0: & \mu_{Alcúdia} \leq \mu_{Palma} \\
-H_a: & \mu_{Alcúdia} > \mu_{Palma}
+H_1: & \mu_{Alcúdia} > \mu_{Palma}
 \end{array}
 \right.
 $$
@@ -4703,13 +4703,60 @@ mean of x mean of y
 :::
 
 ### Conclusión:   
-Al ejecutar el test, nos damos cuenta que los alojamientos en Alcúdia son significativamente más caros que en Palma de Mallorca. La diferencia de media estimada es de ≈ 10 € a favor de Alcúdia, y el p valor es tan insignificante (Aprox 0.000001) que rechazamos la hipótesis nula (La cuál era que μAlcúdia = μPalma).
+Al realizar el contraste, nos damos cuenta que los alojamientos en Alcúdia son significativamente más caros que en Palma de Mallorca. La diferencia de media estimada es de ≈ 10 € a favor de Alcúdia, y el p valor es tan insignificante (Aprox 0.000001) que rechazamos la hipótesis nula (La cuál era que μAlcúdia = μPalma).
 
 ## Pregunta 4 (**1punto**)
 
 Con los  datos de `listings0`, contrastar si las medias de los precios en Alcudia entre los periodos  2025-06-15 y   2025-09-21 son iguales contra que son menores en 2023. Construid la hipótesis nula y alternativa, calculad el $p$-valor y el intervalo de confianza asociado al contraste.
 
 Haced un diagrama de caja comparativo de los precios  en Alcudia  por periodo y coméntalo.
+
+### Resolución del problema:
+Realizaremos un contraste de hipótesis de muestras **dependientes** para comparar las medias de los precios en Alcúdia entre los periodos 2025-06-15 y 2025-09-21:
+$$
+\left\{\begin{array}{lr}
+H_0: & \mu_{2025-06-15} \geq \mu_{2025-09-21} \\
+H_1: & \mu_{2025-06-15} < \mu_{2025-09-21}
+\end{array}\right.
+$$
+
+::: {.cell}
+
+```{.r .cell-code}
+alcudia_june_prices <- listings0 %>%
+  filter(neighbourhood_cleansed == "Alcúdia",
+         date == as.Date("2025-06-15")) %>%
+  pull(price)
+alcudia_sept_prices <- listings0 %>%
+  filter(neighbourhood_cleansed == "Alcúdia",
+         date == as.Date("2025-09-21")) %>%
+  pull(price)
+t_test_result_alcudia <- t.test(alcudia_june_prices, alcudia_sept_prices,
+                                 alternative = "less",
+                                 var.equal = FALSE)
+t_test_result_alcudia
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+	Welch Two Sample t-test
+
+data:  alcudia_june_prices and alcudia_sept_prices
+t = 0.88858, df = 1822.3, p-value = 0.8128
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+     -Inf 263.4871
+sample estimates:
+mean of x mean of y 
+ 909.0679  816.6827 
+```
+
+
+:::
+:::
+
 
 ## Pregunta 5 (**1 punto**)
 
@@ -4740,7 +4787,7 @@ listings0 %>%
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-11-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-12-1.png){width=672}
 :::
 :::
 
@@ -4928,7 +4975,7 @@ barplot(table(length_rewiews))
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-14-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-1.png){width=672}
 :::
 
 ```{.r .cell-code}
@@ -4938,7 +4985,7 @@ barplot(table(length_description))
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-14-2.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-2.png){width=672}
 :::
 :::
 
@@ -5116,7 +5163,7 @@ ggplot(tbl2,aes(x=Log_Rank,y=Log_Freq))+
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-17-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-18-1.png){width=672}
 :::
 :::
 
