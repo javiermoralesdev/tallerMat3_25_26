@@ -4769,8 +4769,12 @@ Haced un diagrama de caja comparativo de los precios en Alcudia por periodo y co
 
 El contraste es:
 
-- **H₀:** μ(0615) = μ(0921)  
-- **H₁:** μ(0615) < μ(0921)
+$$
+\left\{\begin{array}{l}
+H_0: \mu_{15junio} = \mu_{21septiembre} \\
+H_1: \mu_{15junio} < \mu_{21septiembre}
+\end{array}\right.
+$$
 
 Para ello se usa un **test t de dos muestras independientes**, con un nivel de significación del 5%.
 
@@ -4786,7 +4790,8 @@ library(dplyr)
 
 df4 <- listings0 %>%
   filter(neighbourhood_cleansed == "Alcúdia",
-         date %in% as.Date(c("2025-06-15", "2025-09-21")))
+         date %in% as.Date(c("2025-06-15", "2025-09-21")),
+         price > 50, price < 400)
 
 precios_0615 <- df4 %>%
 filter(date == as.Date("2025-06-15")) %>%
@@ -4810,20 +4815,20 @@ alternative = "less"
 	Welch Two Sample t-test
 
 data:  precios_0615 and precios_0921
-t = 0.88858, df = 1822.3, p-value = 0.8128
+t = 0.37113, df = 1399.8, p-value = 0.6447
 alternative hypothesis: true difference in means is less than 0
 95 percent confidence interval:
-     -Inf 263.4871
+     -Inf 8.763054
 sample estimates:
 mean of x mean of y 
- 909.0679  816.6827 
+ 217.2018  215.5894 
 ```
 
 
 :::
 :::
 
-Dado que el $$p$$-valor es mayor que 0.05, no se rechaza la hipótesis nula. Por lo tanto, no hay evidencia suficiente para afirmar que el precio medio en Alcúdia el 15 de junio de 2025 es menor que el 21 de septiembre de 2025.
+Dado que el $p$-valor es mayor que 0.05, no se rechaza la hipótesis nula. Por lo tanto, no hay evidencia suficiente para afirmar que el precio medio en Alcúdia el 15 de junio de 2025 es menor que el 21 de septiembre de 2025.
 
 
 ::: {.cell}
@@ -4845,7 +4850,7 @@ theme_minimal()
 :::
 
 
-Como se puede apreciar en el diagrama anterior, los precios en Alcúdia parecen ser similares en ambos periodos, con medianas y rangos imparables. No se observan diferencias significativas en la distribución de los precios entre las dos fechas. Lo que refuerza la conclusión del contraste de hipótesis.
+Como se puede apreciar en el diagrama anterior, los precios en Alcúdia parecen ser similares en ambos periodos. No se observan diferencias significativas en la distribución de los precios entre las dos fechas. Lo que refuerza la conclusión del contraste de hipótesis.
 
 ## Pregunta 5 (**1 punto**)
 
@@ -5011,10 +5016,14 @@ X-squared
 
 
 Siendo
-- **H₀:** Las variables son independientes 
-- **H₁:** Las variables no son independientes
+$$
+\left\{\begin{array}{l}
+H_0: \text{Las variables son independientes} \\
+H_1: \text{Las variables no son independientes}
+\end{array}\right.
+$$
 
-Dado que el $$p$$-valor es menor que 0.05, se rechaza la hipótesis nula. Por lo tanto, hay evidencia suficiente para afirmar que las variables `review_scores_rating` y `review_scores_location` no son independientes.
+Dado que el $p$-valor es menor que 0.05, se rechaza la hipótesis nula. Por lo tanto, hay evidencia suficiente para afirmar que las variables `review_scores_rating` y `review_scores_location` no son independientes.
 
 ## Pregunta 9 (**3 puntos**)
 
