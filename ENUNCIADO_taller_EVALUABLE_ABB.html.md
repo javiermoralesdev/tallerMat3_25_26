@@ -4932,12 +4932,29 @@ Agrupa las variables `review_scores_rating` y `review_scores_location` de `listi
 
 Buscan información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde la salida de chisq.test interpretarlo en esta caso
 
+### 1. Crear categorías para ambas variables
+
 
 ::: {.cell}
 
 ```{.r .cell-code}
-table(cut(listings0$review_scores_rating,5),
-      cut(listings0$review_scores_location,5))
+library(dplyr)
+
+df8 <- listings0 %>%
+  filter(!is.na(review_scores_rating),
+         !is.na(review_scores_location))
+
+
+# crear 5 categorías iguales (cortes uniformes)
+
+df8 <- df8 %>%
+  mutate(
+    cat_rating   = cut(review_scores_rating, breaks = 5),
+    cat_location = cut(review_scores_location, breaks = 5)
+  )
+
+tabla <- table(df8$cat_rating, df8$cat_location)
+tabla
 ```
 
 ::: {.cell-output .cell-output-stdout}
@@ -4954,8 +4971,50 @@ table(cut(listings0$review_scores_rating,5),
 
 
 :::
+
+```{.r .cell-code}
+chi <- chisq.test(tabla)
+chi
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+	Pearson's Chi-squared test
+
+data:  tabla
+X-squared = 28398, df = 16, p-value < 2.2e-16
+```
+
+
 :::
 
+```{.r .cell-code}
+chi_value <- chi$statistic      # valor de χ²
+n_total   <- sum(tabla)         # total de observaciones
+
+coef_contingencia <- sqrt( chi_value / (chi_value + n_total) )
+coef_contingencia
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+X-squared 
+  0.55222 
+```
+
+
+:::
+:::
+
+
+Siendo
+- **H₀:** Las variables son independientes 
+- **H₁:** Las variables no son independientes
+
+Dado que el $$p$$-valor es menor que 0.05, se rechaza la hipótesis nula. Por lo tanto, hay evidencia suficiente para afirmar que las variables `review_scores_rating` y `review_scores_location` no son independientes.
 
 ## Pregunta 9 (**3 puntos**)
 
