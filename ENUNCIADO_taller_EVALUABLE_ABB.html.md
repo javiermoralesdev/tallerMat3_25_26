@@ -4787,23 +4787,24 @@ Para ello se usa un **test t de dos muestras independientes**, con un nivel de s
 
 ```{.r .cell-code}
 library(dplyr)
-
 df4 <- listings0 %>%
   filter(neighbourhood_cleansed == "Alcúdia",
-         date %in% as.Date(c("2025-06-15", "2025-09-21")),
-         price > 50, price < 400)
+         date %in% as.Date(c("2025-06-15", "2025-09-21"))) %>%
+  group_by(id) %>%
+  filter(n() == 2) %>%
+  arrange(id, date)
+
 
 precios_0615 <- df4 %>%
-filter(date == as.Date("2025-06-15")) %>%
-pull(price)
+filter(date == as.Date("2025-06-15"))
 
 precios_0921 <- df4 %>%
-filter(date == as.Date("2025-09-21")) %>%
-pull(price)
+filter(date == as.Date("2025-09-21"))
+
 
 t.test(
-precios_0615,
-precios_0921,
+precios_0615$price,
+precios_0921$price,
 alternative = "less"
 )
 ```
@@ -4814,14 +4815,14 @@ alternative = "less"
 
 	Welch Two Sample t-test
 
-data:  precios_0615 and precios_0921
-t = 0.37113, df = 1399.8, p-value = 0.6447
+data:  precios_0615$price and precios_0921$price
+t = 0.88858, df = 1822.3, p-value = 0.8128
 alternative hypothesis: true difference in means is less than 0
 95 percent confidence interval:
-     -Inf 8.763054
+     -Inf 263.4871
 sample estimates:
 mean of x mean of y 
- 217.2018  215.5894 
+ 909.0679  816.6827 
 ```
 
 

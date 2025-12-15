@@ -4813,38 +4813,39 @@ H_1: \mu_{15junio} &lt; \mu_{21septiembre}
 <details class="code-fold">
 <summary>Código</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>df4 <span class="ot">&lt;-</span> listings0 <span class="sc">%&gt;%</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(neighbourhood_cleansed <span class="sc">==</span> <span class="st">"Alcúdia"</span>,</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>         date <span class="sc">%in%</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">"2025-06-15"</span>, <span class="st">"2025-09-21"</span>)),</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>         price <span class="sc">&gt;</span> <span class="dv">50</span>, price <span class="sc">&lt;</span> <span class="dv">400</span>)</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>precios_0615 <span class="ot">&lt;-</span> df4 <span class="sc">%&gt;%</span></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(date <span class="sc">==</span> <span class="fu">as.Date</span>(<span class="st">"2025-06-15"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="fu">pull</span>(price)</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>precios_0921 <span class="ot">&lt;-</span> df4 <span class="sc">%&gt;%</span></span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(date <span class="sc">==</span> <span class="fu">as.Date</span>(<span class="st">"2025-09-21"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="fu">pull</span>(price)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>df4 <span class="ot">&lt;-</span> listings0 <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(neighbourhood_cleansed <span class="sc">==</span> <span class="st">"Alcúdia"</span>,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>         date <span class="sc">%in%</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">"2025-06-15"</span>, <span class="st">"2025-09-21"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">n</span>() <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(id, date)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>precios_0615 <span class="ot">&lt;-</span> df4 <span class="sc">%&gt;%</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(date <span class="sc">==</span> <span class="fu">as.Date</span>(<span class="st">"2025-06-15"</span>))</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>precios_0921 <span class="ot">&lt;-</span> df4 <span class="sc">%&gt;%</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(date <span class="sc">==</span> <span class="fu">as.Date</span>(<span class="st">"2025-09-21"</span>))</span>
 <span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(</span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>precios_0615,</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>precios_0921,</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a><span class="at">alternative =</span> <span class="st">"less"</span></span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>precios_0615<span class="sc">$</span>price,</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>precios_0921<span class="sc">$</span>price,</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a><span class="at">alternative =</span> <span class="st">"less"</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
 
-data:  precios_0615 and precios_0921
-t = 0.37113, df = 1399.8, p-value = 0.6447
+data:  precios_0615$price and precios_0921$price
+t = 0.88858, df = 1822.3, p-value = 0.8128
 alternative hypothesis: true difference in means is less than 0
 95 percent confidence interval:
-     -Inf 8.763054
+     -Inf 263.4871
 sample estimates:
 mean of x mean of y 
- 217.2018  215.5894 </code></pre>
+ 909.0679  816.6827 </code></pre>
 </div>
 </div>
 <p>Dado que el <span class="math inline">p</span>-valor es mayor que 0.05, no se rechaza la hipótesis nula. Por lo tanto, no hay evidencia suficiente para afirmar que el precio medio en Alcúdia el 15 de junio de 2025 es menor que el 21 de septiembre de 2025.</p>
@@ -5897,180 +5898,181 @@ F-statistic:  5237 on 1 and 580 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb60-285"><a href="#cb60-285" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb60-288"><a href="#cb60-288" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb60-289"><a href="#cb60-289" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb60-290"><a href="#cb60-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-291"><a href="#cb60-291" aria-hidden="true" tabindex="-1"></a>df4 <span class="ot">&lt;-</span> listings0 <span class="sc">%&gt;%</span></span>
-<span id="cb60-292"><a href="#cb60-292" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(neighbourhood_cleansed <span class="sc">==</span> <span class="st">"Alcúdia"</span>,</span>
-<span id="cb60-293"><a href="#cb60-293" aria-hidden="true" tabindex="-1"></a>         date <span class="sc">%in%</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">"2025-06-15"</span>, <span class="st">"2025-09-21"</span>)),</span>
-<span id="cb60-294"><a href="#cb60-294" aria-hidden="true" tabindex="-1"></a>         price <span class="sc">&gt;</span> <span class="dv">50</span>, price <span class="sc">&lt;</span> <span class="dv">400</span>)</span>
-<span id="cb60-295"><a href="#cb60-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-296"><a href="#cb60-296" aria-hidden="true" tabindex="-1"></a>precios_0615 <span class="ot">&lt;-</span> df4 <span class="sc">%&gt;%</span></span>
-<span id="cb60-297"><a href="#cb60-297" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(date <span class="sc">==</span> <span class="fu">as.Date</span>(<span class="st">"2025-06-15"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb60-298"><a href="#cb60-298" aria-hidden="true" tabindex="-1"></a><span class="fu">pull</span>(price)</span>
-<span id="cb60-299"><a href="#cb60-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-300"><a href="#cb60-300" aria-hidden="true" tabindex="-1"></a>precios_0921 <span class="ot">&lt;-</span> df4 <span class="sc">%&gt;%</span></span>
-<span id="cb60-301"><a href="#cb60-301" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(date <span class="sc">==</span> <span class="fu">as.Date</span>(<span class="st">"2025-09-21"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb60-302"><a href="#cb60-302" aria-hidden="true" tabindex="-1"></a><span class="fu">pull</span>(price)</span>
+<span id="cb60-290"><a href="#cb60-290" aria-hidden="true" tabindex="-1"></a>df4 <span class="ot">&lt;-</span> listings0 <span class="sc">%&gt;%</span></span>
+<span id="cb60-291"><a href="#cb60-291" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(neighbourhood_cleansed <span class="sc">==</span> <span class="st">"Alcúdia"</span>,</span>
+<span id="cb60-292"><a href="#cb60-292" aria-hidden="true" tabindex="-1"></a>         date <span class="sc">%in%</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">"2025-06-15"</span>, <span class="st">"2025-09-21"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb60-293"><a href="#cb60-293" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span></span>
+<span id="cb60-294"><a href="#cb60-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">n</span>() <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb60-295"><a href="#cb60-295" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(id, date)</span>
+<span id="cb60-296"><a href="#cb60-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-297"><a href="#cb60-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-298"><a href="#cb60-298" aria-hidden="true" tabindex="-1"></a>precios_0615 <span class="ot">&lt;-</span> df4 <span class="sc">%&gt;%</span></span>
+<span id="cb60-299"><a href="#cb60-299" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(date <span class="sc">==</span> <span class="fu">as.Date</span>(<span class="st">"2025-06-15"</span>))</span>
+<span id="cb60-300"><a href="#cb60-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-301"><a href="#cb60-301" aria-hidden="true" tabindex="-1"></a>precios_0921 <span class="ot">&lt;-</span> df4 <span class="sc">%&gt;%</span></span>
+<span id="cb60-302"><a href="#cb60-302" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(date <span class="sc">==</span> <span class="fu">as.Date</span>(<span class="st">"2025-09-21"</span>))</span>
 <span id="cb60-303"><a href="#cb60-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-304"><a href="#cb60-304" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(</span>
-<span id="cb60-305"><a href="#cb60-305" aria-hidden="true" tabindex="-1"></a>precios_0615,</span>
-<span id="cb60-306"><a href="#cb60-306" aria-hidden="true" tabindex="-1"></a>precios_0921,</span>
-<span id="cb60-307"><a href="#cb60-307" aria-hidden="true" tabindex="-1"></a><span class="at">alternative =</span> <span class="st">"less"</span></span>
-<span id="cb60-308"><a href="#cb60-308" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb60-309"><a href="#cb60-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-310"><a href="#cb60-310" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb60-311"><a href="#cb60-311" aria-hidden="true" tabindex="-1"></a>Dado que el $p$-valor es mayor que 0.05, no se rechaza la hipótesis nula. Por lo tanto, no hay evidencia suficiente para afirmar que el precio medio en Alcúdia el 15 de junio de 2025 es menor que el 21 de septiembre de 2025.</span>
-<span id="cb60-312"><a href="#cb60-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-315"><a href="#cb60-315" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb60-316"><a href="#cb60-316" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb60-317"><a href="#cb60-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-318"><a href="#cb60-318" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df4, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(date), <span class="at">y =</span> price)) <span class="sc">+</span></span>
-<span id="cb60-319"><a href="#cb60-319" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb60-320"><a href="#cb60-320" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Comparación de precios en Alcúdia"</span>,</span>
-<span id="cb60-321"><a href="#cb60-321" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Fecha"</span>,</span>
-<span id="cb60-322"><a href="#cb60-322" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Precio"</span>) <span class="sc">+</span></span>
-<span id="cb60-323"><a href="#cb60-323" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_minimal</span>()</span>
-<span id="cb60-324"><a href="#cb60-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-325"><a href="#cb60-325" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb60-326"><a href="#cb60-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-327"><a href="#cb60-327" aria-hidden="true" tabindex="-1"></a>Como se puede apreciar en el diagrama anterior, los precios en Alcúdia parecen ser similares en ambos periodos. No se observan diferencias significativas en la distribución de los precios entre las dos fechas. Lo que refuerza la conclusión del contraste de hipótesis.</span>
-<span id="cb60-328"><a href="#cb60-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-329"><a href="#cb60-329" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 5 (**1 punto**)</span></span>
-<span id="cb60-330"><a href="#cb60-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-331"><a href="#cb60-331" aria-hidden="true" tabindex="-1"></a>Comparar con un bopxlot de las valoraciones medias <span class="in">`review_scores_rating`</span> para Alcudia, Palma, Calvià y Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.</span>
-<span id="cb60-332"><a href="#cb60-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-333"><a href="#cb60-333" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 6 (**1 punto**)</span></span>
-<span id="cb60-334"><a href="#cb60-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-335"><a href="#cb60-335" aria-hidden="true" tabindex="-1"></a>Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de valoración <span class="in">`review_scores_rating`</span> mayor que 4 en Alcudia y en Calvià son iguales contra que son distintas. Construid un intervalo de confianza para la diferencia de proporciones.</span>
-<span id="cb60-336"><a href="#cb60-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-337"><a href="#cb60-337" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. Filtrado de los datos</span></span>
-<span id="cb60-338"><a href="#cb60-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-341"><a href="#cb60-341" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb60-342"><a href="#cb60-342" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb60-343"><a href="#cb60-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-344"><a href="#cb60-344" aria-hidden="true" tabindex="-1"></a>df6 <span class="ot">&lt;-</span> listings0 <span class="sc">%&gt;%</span></span>
-<span id="cb60-345"><a href="#cb60-345" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(neighbourhood_cleansed <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Alcúdia"</span>, <span class="st">"Calvià"</span>),</span>
-<span id="cb60-346"><a href="#cb60-346" aria-hidden="true" tabindex="-1"></a>         date <span class="sc">==</span> <span class="fu">as.Date</span>(<span class="st">"2025-09-21"</span>))</span>
-<span id="cb60-347"><a href="#cb60-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-348"><a href="#cb60-348" aria-hidden="true" tabindex="-1"></a>df6 <span class="ot">&lt;-</span> df6 <span class="sc">%&gt;%</span></span>
-<span id="cb60-349"><a href="#cb60-349" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">success =</span> review_scores_rating <span class="sc">&gt;</span> <span class="dv">4</span>)</span>
-<span id="cb60-350"><a href="#cb60-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-351"><a href="#cb60-351" aria-hidden="true" tabindex="-1"></a>conteos <span class="ot">&lt;-</span> df6 <span class="sc">%&gt;%</span></span>
-<span id="cb60-352"><a href="#cb60-352" aria-hidden="true" tabindex="-1"></a><span class="fu">group_by</span>(neighbourhood_cleansed) <span class="sc">%&gt;%</span></span>
-<span id="cb60-353"><a href="#cb60-353" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise</span>(</span>
-<span id="cb60-354"><a href="#cb60-354" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="fu">sum</span>(success, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),   <span class="co"># nº de apartamentos con rating &gt; 4</span></span>
-<span id="cb60-355"><a href="#cb60-355" aria-hidden="true" tabindex="-1"></a><span class="at">n =</span> <span class="fu">n</span>()                           <span class="co"># total de apartamentos</span></span>
-<span id="cb60-356"><a href="#cb60-356" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb60-357"><a href="#cb60-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-358"><a href="#cb60-358" aria-hidden="true" tabindex="-1"></a>conteos</span>
-<span id="cb60-359"><a href="#cb60-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-360"><a href="#cb60-360" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> conteos<span class="sc">$</span>x <span class="co"># éxitos</span></span>
-<span id="cb60-361"><a href="#cb60-361" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> conteos<span class="sc">$</span>n <span class="co"># totales</span></span>
-<span id="cb60-362"><a href="#cb60-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-304"><a href="#cb60-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-305"><a href="#cb60-305" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(</span>
+<span id="cb60-306"><a href="#cb60-306" aria-hidden="true" tabindex="-1"></a>precios_0615<span class="sc">$</span>price,</span>
+<span id="cb60-307"><a href="#cb60-307" aria-hidden="true" tabindex="-1"></a>precios_0921<span class="sc">$</span>price,</span>
+<span id="cb60-308"><a href="#cb60-308" aria-hidden="true" tabindex="-1"></a><span class="at">alternative =</span> <span class="st">"less"</span></span>
+<span id="cb60-309"><a href="#cb60-309" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb60-310"><a href="#cb60-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-311"><a href="#cb60-311" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb60-312"><a href="#cb60-312" aria-hidden="true" tabindex="-1"></a>Dado que el $p$-valor es mayor que 0.05, no se rechaza la hipótesis nula. Por lo tanto, no hay evidencia suficiente para afirmar que el precio medio en Alcúdia el 15 de junio de 2025 es menor que el 21 de septiembre de 2025.</span>
+<span id="cb60-313"><a href="#cb60-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-316"><a href="#cb60-316" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb60-317"><a href="#cb60-317" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb60-318"><a href="#cb60-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-319"><a href="#cb60-319" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df4, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(date), <span class="at">y =</span> price)) <span class="sc">+</span></span>
+<span id="cb60-320"><a href="#cb60-320" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb60-321"><a href="#cb60-321" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Comparación de precios en Alcúdia"</span>,</span>
+<span id="cb60-322"><a href="#cb60-322" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Fecha"</span>,</span>
+<span id="cb60-323"><a href="#cb60-323" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Precio"</span>) <span class="sc">+</span></span>
+<span id="cb60-324"><a href="#cb60-324" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_minimal</span>()</span>
+<span id="cb60-325"><a href="#cb60-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-326"><a href="#cb60-326" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb60-327"><a href="#cb60-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-328"><a href="#cb60-328" aria-hidden="true" tabindex="-1"></a>Como se puede apreciar en el diagrama anterior, los precios en Alcúdia parecen ser similares en ambos periodos. No se observan diferencias significativas en la distribución de los precios entre las dos fechas. Lo que refuerza la conclusión del contraste de hipótesis.</span>
+<span id="cb60-329"><a href="#cb60-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-330"><a href="#cb60-330" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 5 (**1 punto**)</span></span>
+<span id="cb60-331"><a href="#cb60-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-332"><a href="#cb60-332" aria-hidden="true" tabindex="-1"></a>Comparar con un bopxlot de las valoraciones medias <span class="in">`review_scores_rating`</span> para Alcudia, Palma, Calvià y Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.</span>
+<span id="cb60-333"><a href="#cb60-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-334"><a href="#cb60-334" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 6 (**1 punto**)</span></span>
+<span id="cb60-335"><a href="#cb60-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-336"><a href="#cb60-336" aria-hidden="true" tabindex="-1"></a>Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de valoración <span class="in">`review_scores_rating`</span> mayor que 4 en Alcudia y en Calvià son iguales contra que son distintas. Construid un intervalo de confianza para la diferencia de proporciones.</span>
+<span id="cb60-337"><a href="#cb60-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-338"><a href="#cb60-338" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. Filtrado de los datos</span></span>
+<span id="cb60-339"><a href="#cb60-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-342"><a href="#cb60-342" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb60-343"><a href="#cb60-343" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb60-344"><a href="#cb60-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-345"><a href="#cb60-345" aria-hidden="true" tabindex="-1"></a>df6 <span class="ot">&lt;-</span> listings0 <span class="sc">%&gt;%</span></span>
+<span id="cb60-346"><a href="#cb60-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(neighbourhood_cleansed <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Alcúdia"</span>, <span class="st">"Calvià"</span>),</span>
+<span id="cb60-347"><a href="#cb60-347" aria-hidden="true" tabindex="-1"></a>         date <span class="sc">==</span> <span class="fu">as.Date</span>(<span class="st">"2025-09-21"</span>))</span>
+<span id="cb60-348"><a href="#cb60-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-349"><a href="#cb60-349" aria-hidden="true" tabindex="-1"></a>df6 <span class="ot">&lt;-</span> df6 <span class="sc">%&gt;%</span></span>
+<span id="cb60-350"><a href="#cb60-350" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">success =</span> review_scores_rating <span class="sc">&gt;</span> <span class="dv">4</span>)</span>
+<span id="cb60-351"><a href="#cb60-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-352"><a href="#cb60-352" aria-hidden="true" tabindex="-1"></a>conteos <span class="ot">&lt;-</span> df6 <span class="sc">%&gt;%</span></span>
+<span id="cb60-353"><a href="#cb60-353" aria-hidden="true" tabindex="-1"></a><span class="fu">group_by</span>(neighbourhood_cleansed) <span class="sc">%&gt;%</span></span>
+<span id="cb60-354"><a href="#cb60-354" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise</span>(</span>
+<span id="cb60-355"><a href="#cb60-355" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="fu">sum</span>(success, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),   <span class="co"># nº de apartamentos con rating &gt; 4</span></span>
+<span id="cb60-356"><a href="#cb60-356" aria-hidden="true" tabindex="-1"></a><span class="at">n =</span> <span class="fu">n</span>()                           <span class="co"># total de apartamentos</span></span>
+<span id="cb60-357"><a href="#cb60-357" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb60-358"><a href="#cb60-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-359"><a href="#cb60-359" aria-hidden="true" tabindex="-1"></a>conteos</span>
+<span id="cb60-360"><a href="#cb60-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-361"><a href="#cb60-361" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> conteos<span class="sc">$</span>x <span class="co"># éxitos</span></span>
+<span id="cb60-362"><a href="#cb60-362" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> conteos<span class="sc">$</span>n <span class="co"># totales</span></span>
 <span id="cb60-363"><a href="#cb60-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-364"><a href="#cb60-364" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(x, n)</span>
-<span id="cb60-365"><a href="#cb60-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-366"><a href="#cb60-366" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb60-367"><a href="#cb60-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-368"><a href="#cb60-368" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 7 (**1punto**)</span></span>
-<span id="cb60-369"><a href="#cb60-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-370"><a href="#cb60-370" aria-hidden="true" tabindex="-1"></a>Calcular la proporción de apartamentos de los periodos 2025-06-15 y 2025-09-21 con media de valoración <span class="in">`review_scores_rating`</span> mayor que 4 en Palma y en Pollença son iguales contra que son distintas.</span>
-<span id="cb60-371"><a href="#cb60-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-372"><a href="#cb60-372" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 8 (**1punto**)</span></span>
-<span id="cb60-373"><a href="#cb60-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-374"><a href="#cb60-374" aria-hidden="true" tabindex="-1"></a>Agrupa las variables <span class="in">`review_scores_rating`</span> y <span class="in">`review_scores_location`</span> de <span class="in">`listings0`</span> en 5 categorías cada una y construid una tabla de contingencia con las dos variables agrupadas. Agrupar de forma que no cruces de categorías vacías. Contratar si esta varibles son independientes con un test $\chi^2$.</span>
-<span id="cb60-375"><a href="#cb60-375" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-376"><a href="#cb60-376" aria-hidden="true" tabindex="-1"></a>Buscan información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde la salida de chisq.test interpretarlo en esta caso</span>
-<span id="cb60-377"><a href="#cb60-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-378"><a href="#cb60-378" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. Crear categorías para ambas variables</span></span>
-<span id="cb60-379"><a href="#cb60-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-382"><a href="#cb60-382" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb60-383"><a href="#cb60-383" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb60-384"><a href="#cb60-384" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-385"><a href="#cb60-385" aria-hidden="true" tabindex="-1"></a>df8 <span class="ot">&lt;-</span> listings0 <span class="sc">%&gt;%</span></span>
-<span id="cb60-386"><a href="#cb60-386" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(review_scores_rating),</span>
-<span id="cb60-387"><a href="#cb60-387" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(review_scores_location))</span>
-<span id="cb60-388"><a href="#cb60-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-364"><a href="#cb60-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-365"><a href="#cb60-365" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(x, n)</span>
+<span id="cb60-366"><a href="#cb60-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-367"><a href="#cb60-367" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb60-368"><a href="#cb60-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-369"><a href="#cb60-369" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 7 (**1punto**)</span></span>
+<span id="cb60-370"><a href="#cb60-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-371"><a href="#cb60-371" aria-hidden="true" tabindex="-1"></a>Calcular la proporción de apartamentos de los periodos 2025-06-15 y 2025-09-21 con media de valoración <span class="in">`review_scores_rating`</span> mayor que 4 en Palma y en Pollença son iguales contra que son distintas.</span>
+<span id="cb60-372"><a href="#cb60-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-373"><a href="#cb60-373" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 8 (**1punto**)</span></span>
+<span id="cb60-374"><a href="#cb60-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-375"><a href="#cb60-375" aria-hidden="true" tabindex="-1"></a>Agrupa las variables <span class="in">`review_scores_rating`</span> y <span class="in">`review_scores_location`</span> de <span class="in">`listings0`</span> en 5 categorías cada una y construid una tabla de contingencia con las dos variables agrupadas. Agrupar de forma que no cruces de categorías vacías. Contratar si esta varibles son independientes con un test $\chi^2$.</span>
+<span id="cb60-376"><a href="#cb60-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-377"><a href="#cb60-377" aria-hidden="true" tabindex="-1"></a>Buscan información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde la salida de chisq.test interpretarlo en esta caso</span>
+<span id="cb60-378"><a href="#cb60-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-379"><a href="#cb60-379" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. Crear categorías para ambas variables</span></span>
+<span id="cb60-380"><a href="#cb60-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-383"><a href="#cb60-383" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb60-384"><a href="#cb60-384" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb60-385"><a href="#cb60-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-386"><a href="#cb60-386" aria-hidden="true" tabindex="-1"></a>df8 <span class="ot">&lt;-</span> listings0 <span class="sc">%&gt;%</span></span>
+<span id="cb60-387"><a href="#cb60-387" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(review_scores_rating),</span>
+<span id="cb60-388"><a href="#cb60-388" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(review_scores_location))</span>
 <span id="cb60-389"><a href="#cb60-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-390"><a href="#cb60-390" aria-hidden="true" tabindex="-1"></a><span class="co"># crear 5 categorías iguales (cortes uniformes)</span></span>
-<span id="cb60-391"><a href="#cb60-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-392"><a href="#cb60-392" aria-hidden="true" tabindex="-1"></a>df8 <span class="ot">&lt;-</span> df8 <span class="sc">%&gt;%</span></span>
-<span id="cb60-393"><a href="#cb60-393" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb60-394"><a href="#cb60-394" aria-hidden="true" tabindex="-1"></a>    <span class="at">cat_rating   =</span> <span class="fu">cut</span>(review_scores_rating, <span class="at">breaks =</span> <span class="dv">5</span>),</span>
-<span id="cb60-395"><a href="#cb60-395" aria-hidden="true" tabindex="-1"></a>    <span class="at">cat_location =</span> <span class="fu">cut</span>(review_scores_location, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
-<span id="cb60-396"><a href="#cb60-396" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb60-397"><a href="#cb60-397" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-398"><a href="#cb60-398" aria-hidden="true" tabindex="-1"></a>tabla <span class="ot">&lt;-</span> <span class="fu">table</span>(df8<span class="sc">$</span>cat_rating, df8<span class="sc">$</span>cat_location)</span>
-<span id="cb60-399"><a href="#cb60-399" aria-hidden="true" tabindex="-1"></a>tabla</span>
-<span id="cb60-400"><a href="#cb60-400" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-401"><a href="#cb60-401" aria-hidden="true" tabindex="-1"></a>chi <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(tabla)</span>
-<span id="cb60-402"><a href="#cb60-402" aria-hidden="true" tabindex="-1"></a>chi</span>
-<span id="cb60-403"><a href="#cb60-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-404"><a href="#cb60-404" aria-hidden="true" tabindex="-1"></a>chi_value <span class="ot">&lt;-</span> chi<span class="sc">$</span>statistic      <span class="co"># valor de χ²</span></span>
-<span id="cb60-405"><a href="#cb60-405" aria-hidden="true" tabindex="-1"></a>n_total   <span class="ot">&lt;-</span> <span class="fu">sum</span>(tabla)         <span class="co"># total de observaciones</span></span>
-<span id="cb60-406"><a href="#cb60-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-407"><a href="#cb60-407" aria-hidden="true" tabindex="-1"></a>coef_contingencia <span class="ot">&lt;-</span> <span class="fu">sqrt</span>( chi_value <span class="sc">/</span> (chi_value <span class="sc">+</span> n_total) )</span>
-<span id="cb60-408"><a href="#cb60-408" aria-hidden="true" tabindex="-1"></a>coef_contingencia</span>
-<span id="cb60-409"><a href="#cb60-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-410"><a href="#cb60-410" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb60-411"><a href="#cb60-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-412"><a href="#cb60-412" aria-hidden="true" tabindex="-1"></a>Siendo</span>
-<span id="cb60-413"><a href="#cb60-413" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb60-414"><a href="#cb60-414" aria-hidden="true" tabindex="-1"></a>\left<span class="sc">\{</span>\begin{array}{l}</span>
-<span id="cb60-415"><a href="#cb60-415" aria-hidden="true" tabindex="-1"></a>H_0: \text{Las variables son independientes} <span class="sc">\\</span></span>
-<span id="cb60-416"><a href="#cb60-416" aria-hidden="true" tabindex="-1"></a>H_1: \text{Las variables no son independientes}</span>
-<span id="cb60-417"><a href="#cb60-417" aria-hidden="true" tabindex="-1"></a>\end{array}\right.</span>
-<span id="cb60-418"><a href="#cb60-418" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb60-419"><a href="#cb60-419" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-420"><a href="#cb60-420" aria-hidden="true" tabindex="-1"></a>Dado que el $p$-valor es menor que 0.05, se rechaza la hipótesis nula. Por lo tanto, hay evidencia suficiente para afirmar que las variables <span class="in">`review_scores_rating`</span> y <span class="in">`review_scores_location`</span> no son independientes.</span>
-<span id="cb60-421"><a href="#cb60-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-422"><a href="#cb60-422" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 9 (**3 puntos**)</span></span>
-<span id="cb60-423"><a href="#cb60-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-424"><a href="#cb60-424" aria-hidden="true" tabindex="-1"></a>Construye un data set con las variables review_scores_rating, review_scores_cleanliness, review_scores_location, review_scores_value de listings0 y el municipio/zona <span class="in">`neighbourhood_cleansed`</span></span>
-<span id="cb60-425"><a href="#cb60-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-426"><a href="#cb60-426" aria-hidden="true" tabindex="-1"></a>Calcula la matriz de correlaciones entre estas variables y haz un gráfico de pares de variables que muestre las correlaciones (<span class="co">[</span><span class="ot">ggpairs</span><span class="co">](https://r-charts.com/correlation/ggpairs/)</span>) con la librería GGally. Comenta los resultados.</span>
-<span id="cb60-427"><a href="#cb60-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-428"><a href="#cb60-428" aria-hidden="true" tabindex="-1"></a>Haz un <span class="in">`matrixplot`</span> de las correlaciones con la librería <span class="in">`corrplot`</span>. Comenta los resultados.</span>
-<span id="cb60-429"><a href="#cb60-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-430"><a href="#cb60-430" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 10 (**2 puntos**)</span></span>
-<span id="cb60-431"><a href="#cb60-431" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-432"><a href="#cb60-432" aria-hidden="true" tabindex="-1"></a>La <span class="co">[</span><span class="ot">Zipf's law es una ley empírica</span><span class="co">](https://en.wikipedia.org/wiki/Zipf%27s_law#Word_frequencies_in_natural_languages)</span> que dice que la frecuencia de las palabras en un texto es inversamente proporcional a su rango. Decidid si la ley se ajusta a los datos de la longitud de los comentarios de los apartamentos de la muestra "2025-09-21" Mallorca, haced lo mismo para description de <span class="in">`listings0`</span>. Para ello, haced un análisis de regresión lineal de la frecuencia de las longitudes de los comentarios/descripciones de los apartamentos de Mallorca y el rango de las longitudes de los comentarios. Justificad la respuesta, estadísticamente y gráficamente.</span>
-<span id="cb60-433"><a href="#cb60-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-434"><a href="#cb60-434" aria-hidden="true" tabindex="-1"></a>Como ayuda estudiar el siguiente código, utilizadlo y comentadlo.</span>
-<span id="cb60-435"><a href="#cb60-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-438"><a href="#cb60-438" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb60-439"><a href="#cb60-439" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb60-440"><a href="#cb60-440" aria-hidden="true" tabindex="-1"></a><span class="co"># para las reseñas</span></span>
-<span id="cb60-441"><a href="#cb60-441" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reviews)</span>
-<span id="cb60-442"><a href="#cb60-442" aria-hidden="true" tabindex="-1"></a>length_rewiews<span class="ot">=</span>stringr<span class="sc">::</span><span class="fu">str_count</span>(reviews<span class="sc">$</span>comments,<span class="st">"</span><span class="sc">\\</span><span class="st">w+"</span>)</span>
-<span id="cb60-443"><a href="#cb60-443" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(length_rewiews))</span>
-<span id="cb60-444"><a href="#cb60-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-445"><a href="#cb60-445" aria-hidden="true" tabindex="-1"></a><span class="co">#para las descripciones</span></span>
-<span id="cb60-446"><a href="#cb60-446" aria-hidden="true" tabindex="-1"></a>length_description<span class="ot">=</span>stringr<span class="sc">::</span><span class="fu">str_count</span>(listings0<span class="sc">$</span>description,<span class="st">"</span><span class="sc">\\</span><span class="st">w+"</span>)</span>
-<span id="cb60-447"><a href="#cb60-447" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(length_description))</span>
-<span id="cb60-448"><a href="#cb60-448" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb60-449"><a href="#cb60-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-450"><a href="#cb60-450" aria-hidden="true" tabindex="-1"></a>Y ahora se calculan los rango os lo dejo para reviews par desctption lo haceís vosotros</span>
-<span id="cb60-451"><a href="#cb60-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-454"><a href="#cb60-454" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb60-455"><a href="#cb60-455" aria-hidden="true" tabindex="-1"></a>aux<span class="ot">=</span><span class="fu">table</span>(length_rewiews)</span>
-<span id="cb60-456"><a href="#cb60-456" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aux)</span>
-<span id="cb60-457"><a href="#cb60-457" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">names</span>(aux))</span>
-<span id="cb60-458"><a href="#cb60-458" aria-hidden="true" tabindex="-1"></a>tbl<span class="ot">=</span><span class="fu">tibble</span>( <span class="at">L=</span><span class="fu">as.numeric</span>(<span class="fu">names</span>(aux)),<span class="at">Freq=</span><span class="fu">as.numeric</span>(aux),</span>
-<span id="cb60-459"><a href="#cb60-459" aria-hidden="true" tabindex="-1"></a>            <span class="at">Rank=</span><span class="fu">rank</span>(L),<span class="at">Log_Freq=</span><span class="fu">log</span>(Freq),<span class="at">Log_Rank=</span><span class="fu">log</span>(Rank))</span>
-<span id="cb60-460"><a href="#cb60-460" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(tbl)</span>
-<span id="cb60-461"><a href="#cb60-461" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb60-462"><a href="#cb60-462" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-465"><a href="#cb60-465" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb60-466"><a href="#cb60-466" aria-hidden="true" tabindex="-1"></a>tbl2<span class="ot">=</span>tbl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&lt;</span><span class="dv">1000</span>)</span>
-<span id="cb60-467"><a href="#cb60-467" aria-hidden="true" tabindex="-1"></a>sol1<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Rank)</span>
-<span id="cb60-468"><a href="#cb60-468" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol1)</span>
-<span id="cb60-469"><a href="#cb60-469" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-470"><a href="#cb60-470" aria-hidden="true" tabindex="-1"></a>sol2<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Log_Rank)</span>
-<span id="cb60-471"><a href="#cb60-471" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol2)</span>
-<span id="cb60-472"><a href="#cb60-472" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-473"><a href="#cb60-473" aria-hidden="true" tabindex="-1"></a>sol3<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Log_Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Log_Rank)</span>
-<span id="cb60-474"><a href="#cb60-474" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol3)</span>
-<span id="cb60-475"><a href="#cb60-475" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb60-390"><a href="#cb60-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-391"><a href="#cb60-391" aria-hidden="true" tabindex="-1"></a><span class="co"># crear 5 categorías iguales (cortes uniformes)</span></span>
+<span id="cb60-392"><a href="#cb60-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-393"><a href="#cb60-393" aria-hidden="true" tabindex="-1"></a>df8 <span class="ot">&lt;-</span> df8 <span class="sc">%&gt;%</span></span>
+<span id="cb60-394"><a href="#cb60-394" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb60-395"><a href="#cb60-395" aria-hidden="true" tabindex="-1"></a>    <span class="at">cat_rating   =</span> <span class="fu">cut</span>(review_scores_rating, <span class="at">breaks =</span> <span class="dv">5</span>),</span>
+<span id="cb60-396"><a href="#cb60-396" aria-hidden="true" tabindex="-1"></a>    <span class="at">cat_location =</span> <span class="fu">cut</span>(review_scores_location, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
+<span id="cb60-397"><a href="#cb60-397" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb60-398"><a href="#cb60-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-399"><a href="#cb60-399" aria-hidden="true" tabindex="-1"></a>tabla <span class="ot">&lt;-</span> <span class="fu">table</span>(df8<span class="sc">$</span>cat_rating, df8<span class="sc">$</span>cat_location)</span>
+<span id="cb60-400"><a href="#cb60-400" aria-hidden="true" tabindex="-1"></a>tabla</span>
+<span id="cb60-401"><a href="#cb60-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-402"><a href="#cb60-402" aria-hidden="true" tabindex="-1"></a>chi <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(tabla)</span>
+<span id="cb60-403"><a href="#cb60-403" aria-hidden="true" tabindex="-1"></a>chi</span>
+<span id="cb60-404"><a href="#cb60-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-405"><a href="#cb60-405" aria-hidden="true" tabindex="-1"></a>chi_value <span class="ot">&lt;-</span> chi<span class="sc">$</span>statistic      <span class="co"># valor de χ²</span></span>
+<span id="cb60-406"><a href="#cb60-406" aria-hidden="true" tabindex="-1"></a>n_total   <span class="ot">&lt;-</span> <span class="fu">sum</span>(tabla)         <span class="co"># total de observaciones</span></span>
+<span id="cb60-407"><a href="#cb60-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-408"><a href="#cb60-408" aria-hidden="true" tabindex="-1"></a>coef_contingencia <span class="ot">&lt;-</span> <span class="fu">sqrt</span>( chi_value <span class="sc">/</span> (chi_value <span class="sc">+</span> n_total) )</span>
+<span id="cb60-409"><a href="#cb60-409" aria-hidden="true" tabindex="-1"></a>coef_contingencia</span>
+<span id="cb60-410"><a href="#cb60-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-411"><a href="#cb60-411" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb60-412"><a href="#cb60-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-413"><a href="#cb60-413" aria-hidden="true" tabindex="-1"></a>Siendo</span>
+<span id="cb60-414"><a href="#cb60-414" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb60-415"><a href="#cb60-415" aria-hidden="true" tabindex="-1"></a>\left<span class="sc">\{</span>\begin{array}{l}</span>
+<span id="cb60-416"><a href="#cb60-416" aria-hidden="true" tabindex="-1"></a>H_0: \text{Las variables son independientes} <span class="sc">\\</span></span>
+<span id="cb60-417"><a href="#cb60-417" aria-hidden="true" tabindex="-1"></a>H_1: \text{Las variables no son independientes}</span>
+<span id="cb60-418"><a href="#cb60-418" aria-hidden="true" tabindex="-1"></a>\end{array}\right.</span>
+<span id="cb60-419"><a href="#cb60-419" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb60-420"><a href="#cb60-420" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-421"><a href="#cb60-421" aria-hidden="true" tabindex="-1"></a>Dado que el $p$-valor es menor que 0.05, se rechaza la hipótesis nula. Por lo tanto, hay evidencia suficiente para afirmar que las variables <span class="in">`review_scores_rating`</span> y <span class="in">`review_scores_location`</span> no son independientes.</span>
+<span id="cb60-422"><a href="#cb60-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-423"><a href="#cb60-423" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 9 (**3 puntos**)</span></span>
+<span id="cb60-424"><a href="#cb60-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-425"><a href="#cb60-425" aria-hidden="true" tabindex="-1"></a>Construye un data set con las variables review_scores_rating, review_scores_cleanliness, review_scores_location, review_scores_value de listings0 y el municipio/zona <span class="in">`neighbourhood_cleansed`</span></span>
+<span id="cb60-426"><a href="#cb60-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-427"><a href="#cb60-427" aria-hidden="true" tabindex="-1"></a>Calcula la matriz de correlaciones entre estas variables y haz un gráfico de pares de variables que muestre las correlaciones (<span class="co">[</span><span class="ot">ggpairs</span><span class="co">](https://r-charts.com/correlation/ggpairs/)</span>) con la librería GGally. Comenta los resultados.</span>
+<span id="cb60-428"><a href="#cb60-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-429"><a href="#cb60-429" aria-hidden="true" tabindex="-1"></a>Haz un <span class="in">`matrixplot`</span> de las correlaciones con la librería <span class="in">`corrplot`</span>. Comenta los resultados.</span>
+<span id="cb60-430"><a href="#cb60-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-431"><a href="#cb60-431" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 10 (**2 puntos**)</span></span>
+<span id="cb60-432"><a href="#cb60-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-433"><a href="#cb60-433" aria-hidden="true" tabindex="-1"></a>La <span class="co">[</span><span class="ot">Zipf's law es una ley empírica</span><span class="co">](https://en.wikipedia.org/wiki/Zipf%27s_law#Word_frequencies_in_natural_languages)</span> que dice que la frecuencia de las palabras en un texto es inversamente proporcional a su rango. Decidid si la ley se ajusta a los datos de la longitud de los comentarios de los apartamentos de la muestra "2025-09-21" Mallorca, haced lo mismo para description de <span class="in">`listings0`</span>. Para ello, haced un análisis de regresión lineal de la frecuencia de las longitudes de los comentarios/descripciones de los apartamentos de Mallorca y el rango de las longitudes de los comentarios. Justificad la respuesta, estadísticamente y gráficamente.</span>
+<span id="cb60-434"><a href="#cb60-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-435"><a href="#cb60-435" aria-hidden="true" tabindex="-1"></a>Como ayuda estudiar el siguiente código, utilizadlo y comentadlo.</span>
+<span id="cb60-436"><a href="#cb60-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-439"><a href="#cb60-439" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb60-440"><a href="#cb60-440" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb60-441"><a href="#cb60-441" aria-hidden="true" tabindex="-1"></a><span class="co"># para las reseñas</span></span>
+<span id="cb60-442"><a href="#cb60-442" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reviews)</span>
+<span id="cb60-443"><a href="#cb60-443" aria-hidden="true" tabindex="-1"></a>length_rewiews<span class="ot">=</span>stringr<span class="sc">::</span><span class="fu">str_count</span>(reviews<span class="sc">$</span>comments,<span class="st">"</span><span class="sc">\\</span><span class="st">w+"</span>)</span>
+<span id="cb60-444"><a href="#cb60-444" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(length_rewiews))</span>
+<span id="cb60-445"><a href="#cb60-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-446"><a href="#cb60-446" aria-hidden="true" tabindex="-1"></a><span class="co">#para las descripciones</span></span>
+<span id="cb60-447"><a href="#cb60-447" aria-hidden="true" tabindex="-1"></a>length_description<span class="ot">=</span>stringr<span class="sc">::</span><span class="fu">str_count</span>(listings0<span class="sc">$</span>description,<span class="st">"</span><span class="sc">\\</span><span class="st">w+"</span>)</span>
+<span id="cb60-448"><a href="#cb60-448" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(length_description))</span>
+<span id="cb60-449"><a href="#cb60-449" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb60-450"><a href="#cb60-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-451"><a href="#cb60-451" aria-hidden="true" tabindex="-1"></a>Y ahora se calculan los rango os lo dejo para reviews par desctption lo haceís vosotros</span>
+<span id="cb60-452"><a href="#cb60-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-455"><a href="#cb60-455" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb60-456"><a href="#cb60-456" aria-hidden="true" tabindex="-1"></a>aux<span class="ot">=</span><span class="fu">table</span>(length_rewiews)</span>
+<span id="cb60-457"><a href="#cb60-457" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aux)</span>
+<span id="cb60-458"><a href="#cb60-458" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">names</span>(aux))</span>
+<span id="cb60-459"><a href="#cb60-459" aria-hidden="true" tabindex="-1"></a>tbl<span class="ot">=</span><span class="fu">tibble</span>( <span class="at">L=</span><span class="fu">as.numeric</span>(<span class="fu">names</span>(aux)),<span class="at">Freq=</span><span class="fu">as.numeric</span>(aux),</span>
+<span id="cb60-460"><a href="#cb60-460" aria-hidden="true" tabindex="-1"></a>            <span class="at">Rank=</span><span class="fu">rank</span>(L),<span class="at">Log_Freq=</span><span class="fu">log</span>(Freq),<span class="at">Log_Rank=</span><span class="fu">log</span>(Rank))</span>
+<span id="cb60-461"><a href="#cb60-461" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(tbl)</span>
+<span id="cb60-462"><a href="#cb60-462" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb60-463"><a href="#cb60-463" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-466"><a href="#cb60-466" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb60-467"><a href="#cb60-467" aria-hidden="true" tabindex="-1"></a>tbl2<span class="ot">=</span>tbl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&lt;</span><span class="dv">1000</span>)</span>
+<span id="cb60-468"><a href="#cb60-468" aria-hidden="true" tabindex="-1"></a>sol1<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Rank)</span>
+<span id="cb60-469"><a href="#cb60-469" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol1)</span>
+<span id="cb60-470"><a href="#cb60-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-471"><a href="#cb60-471" aria-hidden="true" tabindex="-1"></a>sol2<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Log_Rank)</span>
+<span id="cb60-472"><a href="#cb60-472" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol2)</span>
+<span id="cb60-473"><a href="#cb60-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-474"><a href="#cb60-474" aria-hidden="true" tabindex="-1"></a>sol3<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Log_Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Log_Rank)</span>
+<span id="cb60-475"><a href="#cb60-475" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol3)</span>
+<span id="cb60-476"><a href="#cb60-476" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
