@@ -343,7 +343,7 @@ Del fichero con los datos de listings `listings0` calcula los estadísticos desc
 
 Presenta los resultados con una tabla de kableExtra.
 
-Resolución:
+### Resolución del problema:
 
 ::: {.cell}
 
@@ -4716,7 +4716,8 @@ Haced un diagrama de caja comparativo de los precios  en Alcudia  por periodo y 
 Comparar con un bopxlot de las valoraciones medias `review_scores_rating` para Alcudia, Palma, Calvià y
 Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.
 
-### Resolución del problema:
+### Resolución del problema:  
+### Gráfico bopxlot
 
 ::: {.cell}
 
@@ -4744,7 +4745,7 @@ listings0 %>%
 :::
 :::
 
-### Gráfico con Jitter
+### Gráfico bopxlot con Jitter
 
 ::: {.cell}
 
@@ -4773,8 +4774,23 @@ listings0 %>%
 :::
 
 
-## Pregunta 6 (**1 punto**)
+#### Análisis a partir del boxplot (Sin jitter y con jitter):  
+- **Palma** presenta la mediana más alta de las cuatro localidades, situada muy próxima al valor máximo de la escala. Además el rango es reducido, lo que indica alta homogeneidad en las valoraciones.  
 
+- **Calvià** muestra un comportamiento muy similar al de Palma, con una mediana elevada y una dispersión ligeramente mayor, aunque sigue concentrando la mayoría de observaciones en valores altos (entre 4.5 y 5).  
+
+- **Alcúdia** presenta una mediana ligeramente inferior a Palma y Calvià. Aunque la mayoría de las valoraciones son altas, se observan varios valores atípicos bajos, lo que indica la existencia de algunos alojamientos con valoraciones sensiblemente peores.  
+
+- **Pollença** es el municipio con la mayor dispersión. Su mediana es algo inferior a la de Palma y Calvià y se observa una presencia notable de valores extremos bajos, incluyendo valoraciones muy reducidas.  
+
+#### El gráfico con jitter refuerza las conclusiones del boxplot:  
+- **En Palma y Calvià** se aprecia una alta concentración de puntos en el intervalo [4.5, 5], confirmando la estabilidad y consistencia de las valoraciones altas.  
+
+- **En Alcúdia**, aunque la mayor parte de las observaciones también se concentran en valores elevados, se observa una dispersión algo mayor y una mayor frecuencia de valoraciones por debajo de 4.  
+
+- **En Pollença**, el jitter revela claramente una distribución más heterogénea, con una cola inferior más pronunciada y una mayor presencia de apartamentos con valoraciones bajas.  
+
+## Pregunta 6 (**1 punto**)
 Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de valoración `review_scores_rating` mayor que 4 en Alcudia y en Calvià son iguales contra que son distintas. Construid un intervalo de confianza para la diferencia de proporciones.
 
 
@@ -4782,7 +4798,7 @@ Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de 
 
 Calcular la proporción de apartamentos de los periodos 2025-06-15 y  2025-09-21  con media de valoración `review_scores_rating` mayor que 4 en Palma  y en Pollença son iguales contra que son distintas.
 
-Resolución del problema:  
+### Resolución del problema:  
 **Hipotesis nula y alternativa:**  
 $$
 \left\{
@@ -4865,17 +4881,16 @@ sample estimates:
 :::
 :::
 
-**Conclusión de los resultados obtenidos:**  
-Hemos realizado un contraste de igualdad de proporciones para comparar el porcentaje de apartamentos con review_scores_rating > 4 (entre los periodos 2025-06-15 y 2025-09-21), de forma independiente para los municipios de Palma y Pollença.
+#### Conclusión de los resultados obtenidos:    
+Hemos realizado un contraste de igualdad de proporciones para comparar el porcentaje de apartamentos con review_scores_rating > 4 (entre los periodos 2025-06-15 y 2025-09-21), de forma independiente para los municipios de Palma y Pollença.  
 
 En ambos casos se aplicó un test bilateral de igualdad de proporciones (prop.test).
 
-**Los resultados obtenidos fueron:**
-
-**Palma:** p-value = 0.8687 → no se rechaza H₀.
+#### Los resultados obtenidos fueron:  
+- **Palma:** p-value = 0.8687 → no se rechaza H₀.
 No hay evidencia de diferencias significativas entre los dos periodos.
 
-**Pollença:** p-value = 0.4181 → no se rechaza H₀.
+- **Pollença:** p-value = 0.4181 → no se rechaza H₀.
 Tampoco se observan diferencias significativas entre periodos.
 
 Por tanto para **ninguno** de los dos municipios **existen diferencias estadísticamente significativas** en la proporción de apartamentos con valoración mayor que 4 entre los periodos comparados.
@@ -4922,7 +4937,9 @@ review_scores_rating, review_scores_cleanliness, review_scores_location, review_
 Calcula la matriz de correlaciones entre estas variables y haz un gráfico de pares  de variables que muestre las correlaciones ([ggpairs](https://r-charts.com/correlation/ggpairs/)) con la librería GGally. Comenta los resultados.
 
 Haz un `matrixplot` de las correlaciones con la librería `corrplot`. Comenta los resultados.
-Resolución del problema:
+
+### Resolución del problema:  
+
 
 ::: {.cell}
 
@@ -4964,16 +4981,16 @@ corrplot(cor_matrix, method = "circle", type = "upper",
 ### Interpretación del gráfico de pares con correlaciones:  
 El gráfico analiza la relación entre cuatro dimensiones de las reseñas: rating general, limpieza, ubicación y valor.  
   
-**Por un lado tenemos la relación con el rating general**  
--**Valor (review_scores_value)**: Correlación alta y positiva (r = 0.784). Por lo cual, indica que la percepción de “precio–calidad” es el factor más asociado a la calificación general. A mayor valoración del valor recibido, mayor es el rating total.  
--**Limpieza (review_scores_cleanliness)**: Correlación fuerte (r = 0.711). La limpieza es un factor clave en la satisfacción global del huésped.  
--**Ubicación (review_scores_location)**: Correlación moderada (r = 0.464). La ubicación influye, pero menos que limpieza y valor.  
+#### Por un lado tenemos la relación con el rating general  
+- **Valor (review_scores_value)**: Correlación alta y positiva (r = 0.784). Por lo cual, indica que la percepción de “precio–calidad” es el factor más asociado a la calificación general. A mayor valoración del valor recibido, mayor es el rating total.  
+- **Limpieza (review_scores_cleanliness)**: Correlación fuerte (r = 0.711). La limpieza es un factor clave en la satisfacción global del huésped.  
+- **Ubicación (review_scores_location)**: Correlación moderada (r = 0.464). La ubicación influye, pero menos que limpieza y valor.  
 **Por lo que podemos concluir, que el rating general depende principalmente de valor y limpieza, más que de la ubicación.**  
   
-**También vemos las siguientes relaciones:**  
--**Limpieza – Valor (r = 0.647)**: Con una relación fuerte, los alojamientos más limpios tienden a percibirse como de mejor valor.  
--**Ubicación – Valor (r = 0.480)**: Relación más moderada: una buena ubicación mejora la percepción del valor, pero no la determina completamente.  
--**Ubicación – Limpieza (r = 0.340)**: Relación entre débil y moderada, lo que sugiere que son relativamente independientes.  
+#### También vemos las siguientes relaciones:  
+- **Limpieza – Valor (r = 0.647)**: Con una relación fuerte, los alojamientos más limpios tienden a percibirse como de mejor valor.  
+- **Ubicación – Valor (r = 0.480)**: Relación más moderada: una buena ubicación mejora la percepción del valor, pero no la determina completamente.  
+- **Ubicación – Limpieza (r = 0.340)**: Relación entre débil y moderada, lo que sugiere que son relativamente independientes.  
   
 **Además observamos que en la forma de las distribuciones las distribuciones están sesgadas hacia valores altos (4–5). Lo que indica una alta satisfacción general y poca variabilidad en puntuaciones bajas.**
 
