@@ -352,6 +352,27 @@ review_scores_rating, review_scores_cleanliness, review_scores_location, review_
 Calcula la matriz de correlaciones entre estas variables y haz un gráfico de pares  de variables que muestre las correlaciones ([ggpairs](https://r-charts.com/correlation/ggpairs/)) con la librería GGally. Comenta los resultados.
 
 Haz un `matrixplot` de las correlaciones con la librería `corrplot`. Comenta los resultados.
+Resolución del problema:
+```{r}
+library(GGally)
+library(corrplot)
+data_corr <- listings0 %>%
+  select(review_scores_rating,
+         review_scores_cleanliness,
+         review_scores_location,
+         review_scores_value,
+         neighbourhood_cleansed)
+# Matriz de correlaciones
+cor_matrix <- cor(data_corr %>% select(-neighbourhood_cleansed), use = "complete.obs")
+# Gráfico de pares con ggpairs
+ggpairs(data_corr %>% select(-neighbourhood_cleansed),
+        upper = list(continuous = wrap("cor", size = 4))) +
+  labs(title = "Gráfico de Pares con Correlaciones")
+# Matrixplot de correlaciones con corrplot
+corrplot(cor_matrix, method = "circle", type = "upper",
+         tl.col = "black", tl.srt = 45,
+         title = "Matriz de Correlaciones")
+```
 
 ## Pregunta 10 (**2 puntos**)
 

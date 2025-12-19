@@ -4913,6 +4913,43 @@ review_scores_rating, review_scores_cleanliness, review_scores_location, review_
 Calcula la matriz de correlaciones entre estas variables y haz un gráfico de pares  de variables que muestre las correlaciones ([ggpairs](https://r-charts.com/correlation/ggpairs/)) con la librería GGally. Comenta los resultados.
 
 Haz un `matrixplot` de las correlaciones con la librería `corrplot`. Comenta los resultados.
+Resolución del problema:
+
+::: {.cell}
+
+```{.r .cell-code}
+library(GGally)
+library(corrplot)
+data_corr <- listings0 %>%
+  select(review_scores_rating,
+         review_scores_cleanliness,
+         review_scores_location,
+         review_scores_value,
+         neighbourhood_cleansed)
+# Matriz de correlaciones
+cor_matrix <- cor(data_corr %>% select(-neighbourhood_cleansed), use = "complete.obs")
+# Gráfico de pares con ggpairs
+ggpairs(data_corr %>% select(-neighbourhood_cleansed),
+        upper = list(continuous = wrap("cor", size = 4))) +
+  labs(title = "Gráfico de Pares con Correlaciones")
+```
+
+::: {.cell-output-display}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-1.png){width=672}
+:::
+
+```{.r .cell-code}
+# Matrixplot de correlaciones con corrplot
+corrplot(cor_matrix, method = "circle", type = "upper",
+         tl.col = "black", tl.srt = 45,
+         title = "Matriz de Correlaciones")
+```
+
+::: {.cell-output-display}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-2.png){width=672}
+:::
+:::
+
 
 ## Pregunta 10 (**2 puntos**)
 
@@ -4955,7 +4992,7 @@ barplot(table(length_rewiews))
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-16-1.png){width=672}
 :::
 
 ```{.r .cell-code}
@@ -4965,7 +5002,7 @@ barplot(table(length_description))
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-2.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-16-2.png){width=672}
 :::
 :::
 
@@ -5143,7 +5180,7 @@ ggplot(tbl2,aes(x=Log_Rank,y=Log_Freq))+
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-18-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-19-1.png){width=672}
 :::
 :::
 
