@@ -373,6 +373,23 @@ corrplot(cor_matrix, method = "circle", type = "upper",
          tl.col = "black", tl.srt = 45,
          title = "Matriz de Correlaciones")
 ```
+#### Para las conclusiones de los datos, nos hemos fijado principalmente en el gráfico de pares, no obstante la matriz de correlaciones también realza las conclusiones.
+
+### Interpretación del gráfico de pares con correlaciones:  
+El gráfico analiza la relación entre cuatro dimensiones de las reseñas: rating general, limpieza, ubicación y valor.  
+  
+**Por un lado tenemos la relación con el rating general**  
+-**Valor (review_scores_value)**: Correlación alta y positiva (r = 0.784). Por lo cual, indica que la percepción de “precio–calidad” es el factor más asociado a la calificación general. A mayor valoración del valor recibido, mayor es el rating total.  
+-**Limpieza (review_scores_cleanliness)**: Correlación fuerte (r = 0.711). La limpieza es un factor clave en la satisfacción global del huésped.  
+-**Ubicación (review_scores_location)**: Correlación moderada (r = 0.464). La ubicación influye, pero menos que limpieza y valor.  
+**Por lo que podemos concluir, que el rating general depende principalmente de valor y limpieza, más que de la ubicación.**  
+  
+**También vemos las siguientes relaciones:**  
+-**Limpieza – Valor (r = 0.647)**: Con una relación fuerte, los alojamientos más limpios tienden a percibirse como de mejor valor.  
+-**Ubicación – Valor (r = 0.480)**: Relación más moderada: una buena ubicación mejora la percepción del valor, pero no la determina completamente.  
+-**Ubicación – Limpieza (r = 0.340)**: Relación entre débil y moderada, lo que sugiere que son relativamente independientes.  
+  
+**Además observamos que en la forma de las distribuciones las distribuciones están sesgadas hacia valores altos (4–5). Lo que indica una alta satisfacción general y poca variabilidad en puntuaciones bajas.**
 
 ## Pregunta 10 (**2 puntos**)
 

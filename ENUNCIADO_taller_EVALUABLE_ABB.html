@@ -4941,6 +4941,23 @@ sample estimates:
 </div>
 </div>
 </div>
+<section id="para-las-conclusiones-de-los-datos-nos-hemos-fijado-principalmente-en-el-gráfico-de-pares-no-obstante-la-matriz-de-correlaciones-también-realza-las-conclusiones." class="level4">
+<h4 class="anchored" data-anchor-id="para-las-conclusiones-de-los-datos-nos-hemos-fijado-principalmente-en-el-gráfico-de-pares-no-obstante-la-matriz-de-correlaciones-también-realza-las-conclusiones.">Para las conclusiones de los datos, nos hemos fijado principalmente en el gráfico de pares, no obstante la matriz de correlaciones también realza las conclusiones.</h4>
+</section>
+<section id="interpretación-del-gráfico-de-pares-con-correlaciones" class="level3">
+<h3 class="anchored" data-anchor-id="interpretación-del-gráfico-de-pares-con-correlaciones">Interpretación del gráfico de pares con correlaciones:</h3>
+<p>El gráfico analiza la relación entre cuatro dimensiones de las reseñas: rating general, limpieza, ubicación y valor.</p>
+<p><strong>Por un lado tenemos la relación con el rating general</strong><br>
+-<strong>Valor (review_scores_value)</strong>: Correlación alta y positiva (r = 0.784). Por lo cual, indica que la percepción de “precio–calidad” es el factor más asociado a la calificación general. A mayor valoración del valor recibido, mayor es el rating total.<br>
+-<strong>Limpieza (review_scores_cleanliness)</strong>: Correlación fuerte (r = 0.711). La limpieza es un factor clave en la satisfacción global del huésped.<br>
+-<strong>Ubicación (review_scores_location)</strong>: Correlación moderada (r = 0.464). La ubicación influye, pero menos que limpieza y valor.<br>
+<strong>Por lo que podemos concluir, que el rating general depende principalmente de valor y limpieza, más que de la ubicación.</strong></p>
+<p><strong>También vemos las siguientes relaciones:</strong><br>
+-<strong>Limpieza – Valor (r = 0.647)</strong>: Con una relación fuerte, los alojamientos más limpios tienden a percibirse como de mejor valor.<br>
+-<strong>Ubicación – Valor (r = 0.480)</strong>: Relación más moderada: una buena ubicación mejora la percepción del valor, pero no la determina completamente.<br>
+-<strong>Ubicación – Limpieza (r = 0.340)</strong>: Relación entre débil y moderada, lo que sugiere que son relativamente independientes.</p>
+<p><strong>Además observamos que en la forma de las distribuciones las distribuciones están sesgadas hacia valores altos (4–5). Lo que indica una alta satisfacción general y poca variabilidad en puntuaciones bajas.</strong></p>
+</section>
 </section>
 <section id="pregunta-10-2-puntos" class="level2">
 <h2 class="anchored" data-anchor-id="pregunta-10-2-puntos">Pregunta 10 (<strong>2 puntos</strong>)</h2>
@@ -5957,65 +5974,82 @@ F-statistic:  5237 on 1 and 580 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb52-403"><a href="#cb52-403" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.col =</span> <span class="st">"black"</span>, <span class="at">tl.srt =</span> <span class="dv">45</span>,</span>
 <span id="cb52-404"><a href="#cb52-404" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"Matriz de Correlaciones"</span>)</span>
 <span id="cb52-405"><a href="#cb52-405" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-406"><a href="#cb52-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-407"><a href="#cb52-407" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 10 (**2 puntos**)</span></span>
-<span id="cb52-408"><a href="#cb52-408" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-409"><a href="#cb52-409" aria-hidden="true" tabindex="-1"></a>La <span class="co">[</span><span class="ot">Zipf's law es una ley empírica</span><span class="co">](https://en.wikipedia.org/wiki/Zipf%27s_law#Word_frequencies_in_natural_languages)</span> que dice que la frecuencia de las palabras en un texto es inversamente proporcional a su rango. Decidid si la ley se ajusta a los datos de la longitud de los comentarios de los apartamentos de la muestra "2025-09-21" Mallorca, haced lo mismo para description de <span class="in">`listings0`</span>. Para ello, haced un análisis de regresión lineal de la frecuencia de las longitudes de los comentarios/descripciones de los apartamentos de Mallorca y el rango de las longitudes de los comentarios. Justificad la respuesta, estadísticamente y gráficamente.</span>
-<span id="cb52-410"><a href="#cb52-410" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-411"><a href="#cb52-411" aria-hidden="true" tabindex="-1"></a>Como ayuda estudiar el siguiente código, utilizadlo y comentadlo.</span>
-<span id="cb52-412"><a href="#cb52-412" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-413"><a href="#cb52-413" aria-hidden="true" tabindex="-1"></a>Resolución del problema:</span>
-<span id="cb52-414"><a href="#cb52-414" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-417"><a href="#cb52-417" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-418"><a href="#cb52-418" aria-hidden="true" tabindex="-1"></a><span class="co"># analisis de la longitud de los comentarios</span></span>
-<span id="cb52-419"><a href="#cb52-419" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb52-420"><a href="#cb52-420" aria-hidden="true" tabindex="-1"></a><span class="co"># para las reseñas</span></span>
-<span id="cb52-421"><a href="#cb52-421" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reviews)</span>
-<span id="cb52-422"><a href="#cb52-422" aria-hidden="true" tabindex="-1"></a>length_rewiews<span class="ot">=</span>stringr<span class="sc">::</span><span class="fu">str_count</span>(reviews<span class="sc">$</span>comments,<span class="st">"</span><span class="sc">\\</span><span class="st">w+"</span>)</span>
-<span id="cb52-423"><a href="#cb52-423" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(length_rewiews))</span>
-<span id="cb52-424"><a href="#cb52-424" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-425"><a href="#cb52-425" aria-hidden="true" tabindex="-1"></a><span class="co">#para las descripciones</span></span>
-<span id="cb52-426"><a href="#cb52-426" aria-hidden="true" tabindex="-1"></a>length_description<span class="ot">=</span>stringr<span class="sc">::</span><span class="fu">str_count</span>(listings0<span class="sc">$</span>description,<span class="st">"</span><span class="sc">\\</span><span class="st">w+"</span>)</span>
-<span id="cb52-427"><a href="#cb52-427" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(length_description))</span>
-<span id="cb52-428"><a href="#cb52-428" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-406"><a href="#cb52-406" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Para las conclusiones de los datos, nos hemos fijado principalmente en el gráfico de pares, no obstante la matriz de correlaciones también realza las conclusiones.</span></span>
+<span id="cb52-407"><a href="#cb52-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-408"><a href="#cb52-408" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretación del gráfico de pares con correlaciones:  </span></span>
+<span id="cb52-409"><a href="#cb52-409" aria-hidden="true" tabindex="-1"></a>El gráfico analiza la relación entre cuatro dimensiones de las reseñas: rating general, limpieza, ubicación y valor.  </span>
+<span id="cb52-410"><a href="#cb52-410" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-411"><a href="#cb52-411" aria-hidden="true" tabindex="-1"></a>**Por un lado tenemos la relación con el rating general**  </span>
+<span id="cb52-412"><a href="#cb52-412" aria-hidden="true" tabindex="-1"></a>-**Valor (review_scores_value)**: Correlación alta y positiva (r = 0.784). Por lo cual, indica que la percepción de “precio–calidad” es el factor más asociado a la calificación general. A mayor valoración del valor recibido, mayor es el rating total.  </span>
+<span id="cb52-413"><a href="#cb52-413" aria-hidden="true" tabindex="-1"></a>-**Limpieza (review_scores_cleanliness)**: Correlación fuerte (r = 0.711). La limpieza es un factor clave en la satisfacción global del huésped.  </span>
+<span id="cb52-414"><a href="#cb52-414" aria-hidden="true" tabindex="-1"></a>-**Ubicación (review_scores_location)**: Correlación moderada (r = 0.464). La ubicación influye, pero menos que limpieza y valor.  </span>
+<span id="cb52-415"><a href="#cb52-415" aria-hidden="true" tabindex="-1"></a>**Por lo que podemos concluir, que el rating general depende principalmente de valor y limpieza, más que de la ubicación.**  </span>
+<span id="cb52-416"><a href="#cb52-416" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-417"><a href="#cb52-417" aria-hidden="true" tabindex="-1"></a>**También vemos las siguientes relaciones:**  </span>
+<span id="cb52-418"><a href="#cb52-418" aria-hidden="true" tabindex="-1"></a>-**Limpieza – Valor (r = 0.647)**: Con una relación fuerte, los alojamientos más limpios tienden a percibirse como de mejor valor.  </span>
+<span id="cb52-419"><a href="#cb52-419" aria-hidden="true" tabindex="-1"></a>-**Ubicación – Valor (r = 0.480)**: Relación más moderada: una buena ubicación mejora la percepción del valor, pero no la determina completamente.  </span>
+<span id="cb52-420"><a href="#cb52-420" aria-hidden="true" tabindex="-1"></a>-**Ubicación – Limpieza (r = 0.340)**: Relación entre débil y moderada, lo que sugiere que son relativamente independientes.  </span>
+<span id="cb52-421"><a href="#cb52-421" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-422"><a href="#cb52-422" aria-hidden="true" tabindex="-1"></a>**Además observamos que en la forma de las distribuciones las distribuciones están sesgadas hacia valores altos (4–5). Lo que indica una alta satisfacción general y poca variabilidad en puntuaciones bajas.**</span>
+<span id="cb52-423"><a href="#cb52-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-424"><a href="#cb52-424" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 10 (**2 puntos**)</span></span>
+<span id="cb52-425"><a href="#cb52-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-426"><a href="#cb52-426" aria-hidden="true" tabindex="-1"></a>La <span class="co">[</span><span class="ot">Zipf's law es una ley empírica</span><span class="co">](https://en.wikipedia.org/wiki/Zipf%27s_law#Word_frequencies_in_natural_languages)</span> que dice que la frecuencia de las palabras en un texto es inversamente proporcional a su rango. Decidid si la ley se ajusta a los datos de la longitud de los comentarios de los apartamentos de la muestra "2025-09-21" Mallorca, haced lo mismo para description de <span class="in">`listings0`</span>. Para ello, haced un análisis de regresión lineal de la frecuencia de las longitudes de los comentarios/descripciones de los apartamentos de Mallorca y el rango de las longitudes de los comentarios. Justificad la respuesta, estadísticamente y gráficamente.</span>
+<span id="cb52-427"><a href="#cb52-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-428"><a href="#cb52-428" aria-hidden="true" tabindex="-1"></a>Como ayuda estudiar el siguiente código, utilizadlo y comentadlo.</span>
 <span id="cb52-429"><a href="#cb52-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-430"><a href="#cb52-430" aria-hidden="true" tabindex="-1"></a>Y ahora se calculan los rango os lo dejo para reviews par desctption lo haceís vosotros</span>
+<span id="cb52-430"><a href="#cb52-430" aria-hidden="true" tabindex="-1"></a>Resolución del problema:</span>
 <span id="cb52-431"><a href="#cb52-431" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-434"><a href="#cb52-434" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-435"><a href="#cb52-435" aria-hidden="true" tabindex="-1"></a>aux<span class="ot">=</span><span class="fu">table</span>(length_rewiews)</span>
-<span id="cb52-436"><a href="#cb52-436" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aux)</span>
-<span id="cb52-437"><a href="#cb52-437" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">names</span>(aux))</span>
-<span id="cb52-438"><a href="#cb52-438" aria-hidden="true" tabindex="-1"></a>tbl<span class="ot">=</span><span class="fu">tibble</span>( <span class="at">L=</span><span class="fu">as.numeric</span>(<span class="fu">names</span>(aux)),<span class="at">Freq=</span><span class="fu">as.numeric</span>(aux),</span>
-<span id="cb52-439"><a href="#cb52-439" aria-hidden="true" tabindex="-1"></a>            <span class="at">Rank=</span><span class="fu">rank</span>(L),<span class="at">Log_Freq=</span><span class="fu">log</span>(Freq),<span class="at">Log_Rank=</span><span class="fu">log</span>(Rank))</span>
-<span id="cb52-440"><a href="#cb52-440" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(tbl)</span>
-<span id="cb52-441"><a href="#cb52-441" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-442"><a href="#cb52-442" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-445"><a href="#cb52-445" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-446"><a href="#cb52-446" aria-hidden="true" tabindex="-1"></a>tbl2<span class="ot">=</span>tbl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&lt;</span><span class="dv">1000</span>)</span>
-<span id="cb52-447"><a href="#cb52-447" aria-hidden="true" tabindex="-1"></a>sol1<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Rank)</span>
-<span id="cb52-448"><a href="#cb52-448" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol1)</span>
-<span id="cb52-449"><a href="#cb52-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-450"><a href="#cb52-450" aria-hidden="true" tabindex="-1"></a>sol2<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Log_Rank)</span>
-<span id="cb52-451"><a href="#cb52-451" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol2)</span>
-<span id="cb52-452"><a href="#cb52-452" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-453"><a href="#cb52-453" aria-hidden="true" tabindex="-1"></a>sol3<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Log_Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Log_Rank)</span>
-<span id="cb52-454"><a href="#cb52-454" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol3)</span>
-<span id="cb52-455"><a href="#cb52-455" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-456"><a href="#cb52-456" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-457"><a href="#cb52-457" aria-hidden="true" tabindex="-1"></a>Voy a hacer la regresión lineal de log(Freq) contra log(Rank) que es la que mejor se ajusta</span>
-<span id="cb52-458"><a href="#cb52-458" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-459"><a href="#cb52-459" aria-hidden="true" tabindex="-1"></a>$$\log(Freq) = a + b \log(Rank) + \epsilon $$</span>
-<span id="cb52-460"><a href="#cb52-460" aria-hidden="true" tabindex="-1"></a>donde $a$ es la ordenada en el origen y $b$ la pendiente de la recta de regresión lineal. Si la ley de Zipf se cumple $b$ debe ser cercano a -1.</span>
-<span id="cb52-461"><a href="#cb52-461" aria-hidden="true" tabindex="-1"></a>La representación gráfica es la siguiente:</span>
-<span id="cb52-464"><a href="#cb52-464" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-465"><a href="#cb52-465" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb52-466"><a href="#cb52-466" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tbl2,<span class="fu">aes</span>(<span class="at">x=</span>Log_Rank,<span class="at">y=</span>Log_Freq))<span class="sc">+</span></span>
-<span id="cb52-467"><a href="#cb52-467" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb52-468"><a href="#cb52-468" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>,<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
-<span id="cb52-469"><a href="#cb52-469" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Ley de Zipf para la longitud de los comentarios"</span>,</span>
-<span id="cb52-470"><a href="#cb52-470" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Log(Rango)"</span>,<span class="at">y=</span><span class="st">"Log(Frecuencia)"</span>)</span>
-<span id="cb52-471"><a href="#cb52-471" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-472"><a href="#cb52-472" aria-hidden="true" tabindex="-1"></a>El modelo con menor R² es el de log(Freq) contra log(Rank) con un R²= <span class="in">`r round(summary(sol3)$r.squared,4)`</span>. La pendiente es <span class="in">`r round(coef(sol3)[2],4)`</span>. Por tanto, la ley de Zipf **se cumple/no se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.</span>
+<span id="cb52-435"><a href="#cb52-435" aria-hidden="true" tabindex="-1"></a><span class="co"># analisis de la longitud de los comentarios</span></span>
+<span id="cb52-436"><a href="#cb52-436" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb52-437"><a href="#cb52-437" aria-hidden="true" tabindex="-1"></a><span class="co"># para las reseñas</span></span>
+<span id="cb52-438"><a href="#cb52-438" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reviews)</span>
+<span id="cb52-439"><a href="#cb52-439" aria-hidden="true" tabindex="-1"></a>length_rewiews<span class="ot">=</span>stringr<span class="sc">::</span><span class="fu">str_count</span>(reviews<span class="sc">$</span>comments,<span class="st">"</span><span class="sc">\\</span><span class="st">w+"</span>)</span>
+<span id="cb52-440"><a href="#cb52-440" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(length_rewiews))</span>
+<span id="cb52-441"><a href="#cb52-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-442"><a href="#cb52-442" aria-hidden="true" tabindex="-1"></a><span class="co">#para las descripciones</span></span>
+<span id="cb52-443"><a href="#cb52-443" aria-hidden="true" tabindex="-1"></a>length_description<span class="ot">=</span>stringr<span class="sc">::</span><span class="fu">str_count</span>(listings0<span class="sc">$</span>description,<span class="st">"</span><span class="sc">\\</span><span class="st">w+"</span>)</span>
+<span id="cb52-444"><a href="#cb52-444" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(length_description))</span>
+<span id="cb52-445"><a href="#cb52-445" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-446"><a href="#cb52-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-447"><a href="#cb52-447" aria-hidden="true" tabindex="-1"></a>Y ahora se calculan los rango os lo dejo para reviews par desctption lo haceís vosotros</span>
+<span id="cb52-448"><a href="#cb52-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-451"><a href="#cb52-451" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-452"><a href="#cb52-452" aria-hidden="true" tabindex="-1"></a>aux<span class="ot">=</span><span class="fu">table</span>(length_rewiews)</span>
+<span id="cb52-453"><a href="#cb52-453" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aux)</span>
+<span id="cb52-454"><a href="#cb52-454" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">names</span>(aux))</span>
+<span id="cb52-455"><a href="#cb52-455" aria-hidden="true" tabindex="-1"></a>tbl<span class="ot">=</span><span class="fu">tibble</span>( <span class="at">L=</span><span class="fu">as.numeric</span>(<span class="fu">names</span>(aux)),<span class="at">Freq=</span><span class="fu">as.numeric</span>(aux),</span>
+<span id="cb52-456"><a href="#cb52-456" aria-hidden="true" tabindex="-1"></a>            <span class="at">Rank=</span><span class="fu">rank</span>(L),<span class="at">Log_Freq=</span><span class="fu">log</span>(Freq),<span class="at">Log_Rank=</span><span class="fu">log</span>(Rank))</span>
+<span id="cb52-457"><a href="#cb52-457" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(tbl)</span>
+<span id="cb52-458"><a href="#cb52-458" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-459"><a href="#cb52-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-462"><a href="#cb52-462" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-463"><a href="#cb52-463" aria-hidden="true" tabindex="-1"></a>tbl2<span class="ot">=</span>tbl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&lt;</span><span class="dv">1000</span>)</span>
+<span id="cb52-464"><a href="#cb52-464" aria-hidden="true" tabindex="-1"></a>sol1<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Rank)</span>
+<span id="cb52-465"><a href="#cb52-465" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol1)</span>
+<span id="cb52-466"><a href="#cb52-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-467"><a href="#cb52-467" aria-hidden="true" tabindex="-1"></a>sol2<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Log_Rank)</span>
+<span id="cb52-468"><a href="#cb52-468" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol2)</span>
+<span id="cb52-469"><a href="#cb52-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-470"><a href="#cb52-470" aria-hidden="true" tabindex="-1"></a>sol3<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Log_Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Log_Rank)</span>
+<span id="cb52-471"><a href="#cb52-471" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol3)</span>
+<span id="cb52-472"><a href="#cb52-472" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-473"><a href="#cb52-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-474"><a href="#cb52-474" aria-hidden="true" tabindex="-1"></a>Voy a hacer la regresión lineal de log(Freq) contra log(Rank) que es la que mejor se ajusta</span>
+<span id="cb52-475"><a href="#cb52-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-476"><a href="#cb52-476" aria-hidden="true" tabindex="-1"></a>$$\log(Freq) = a + b \log(Rank) + \epsilon $$</span>
+<span id="cb52-477"><a href="#cb52-477" aria-hidden="true" tabindex="-1"></a>donde $a$ es la ordenada en el origen y $b$ la pendiente de la recta de regresión lineal. Si la ley de Zipf se cumple $b$ debe ser cercano a -1.</span>
+<span id="cb52-478"><a href="#cb52-478" aria-hidden="true" tabindex="-1"></a>La representación gráfica es la siguiente:</span>
+<span id="cb52-481"><a href="#cb52-481" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-482"><a href="#cb52-482" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb52-483"><a href="#cb52-483" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tbl2,<span class="fu">aes</span>(<span class="at">x=</span>Log_Rank,<span class="at">y=</span>Log_Freq))<span class="sc">+</span></span>
+<span id="cb52-484"><a href="#cb52-484" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb52-485"><a href="#cb52-485" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>,<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
+<span id="cb52-486"><a href="#cb52-486" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Ley de Zipf para la longitud de los comentarios"</span>,</span>
+<span id="cb52-487"><a href="#cb52-487" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Log(Rango)"</span>,<span class="at">y=</span><span class="st">"Log(Frecuencia)"</span>)</span>
+<span id="cb52-488"><a href="#cb52-488" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-489"><a href="#cb52-489" aria-hidden="true" tabindex="-1"></a>El modelo con menor R² es el de log(Freq) contra log(Rank) con un R²= <span class="in">`r round(summary(sol3)$r.squared,4)`</span>. La pendiente es <span class="in">`r round(coef(sol3)[2],4)`</span>. Por tanto, la ley de Zipf **se cumple/no se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.</span>
 </code><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
