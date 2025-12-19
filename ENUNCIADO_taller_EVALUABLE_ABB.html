@@ -4808,7 +4808,16 @@ mean of x mean of y
 <section id="pregunta-7-1punto" class="level2">
 <h2 class="anchored" data-anchor-id="pregunta-7-1punto">Pregunta 7 (<strong>1punto</strong>)</h2>
 <p>Calcular la proporción de apartamentos de los periodos 2025-06-15 y 2025-09-21 con media de valoración <code>review_scores_rating</code> mayor que 4 en Palma y en Pollença son iguales contra que son distintas.</p>
-<p>Resolución del problema:</p>
+<p>Resolución del problema:<br>
+<strong>Hipotesis nula y alternativa:</strong><br>
+<span class="math display">
+\left\{
+\begin{array}{lr}
+H_0: &amp; p_{2025-06-15} = p_{2025-09-21} \\
+H_1: &amp; p_{2025-06-15} \ne p_{2025-09-21}
+\end{array}
+\right.
+</span></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -4868,12 +4877,13 @@ sample estimates:
 0.7715003 0.7840552 </code></pre>
 </div>
 </div>
-<p>Conclusión de los resultados obtenidos: Hemos realizado un contraste de igualdad de proporciones para comparar el porcentaje de apartamentos con review_scores_rating &gt; 4 (entre los periodos 2025-06-15 y 2025-09-21), de forma independiente para los municipios de Palma y Pollença.</p>
+<p><strong>Conclusión de los resultados obtenidos:</strong><br>
+Hemos realizado un contraste de igualdad de proporciones para comparar el porcentaje de apartamentos con review_scores_rating &gt; 4 (entre los periodos 2025-06-15 y 2025-09-21), de forma independiente para los municipios de Palma y Pollença.</p>
 <p>En ambos casos se aplicó un test bilateral de igualdad de proporciones (prop.test).</p>
-<p>Los resultados obtenidos fueron:</p>
-<p>Palma: p-value = 0.8687 → no se rechaza H₀. No hay evidencia de diferencias significativas entre los dos periodos.</p>
-<p>Pollença: p-value = 0.4181 → no se rechaza H₀. Tampoco se observan diferencias significativas entre periodos.</p>
-<p>Por tanto para ninguno de los dos municipios existen diferencias estadísticamente significativas en la proporción de apartamentos con valoración mayor que 4 entre los periodos comparados.</p>
+<p><strong>Los resultados obtenidos fueron:</strong></p>
+<p><strong>Palma:</strong> p-value = 0.8687 → no se rechaza H₀. No hay evidencia de diferencias significativas entre los dos periodos.</p>
+<p><strong>Pollença:</strong> p-value = 0.4181 → no se rechaza H₀. Tampoco se observan diferencias significativas entre periodos.</p>
+<p>Por tanto para <strong>ninguno</strong> de los dos municipios <strong>existen diferencias estadísticamente significativas</strong> en la proporción de apartamentos con valoración mayor que 4 entre los periodos comparados.</p>
 </section>
 <section id="pregunta-8-1punto" class="level2">
 <h2 class="anchored" data-anchor-id="pregunta-8-1punto">Pregunta 8 (<strong>1punto</strong>)</h2>
@@ -5888,168 +5898,177 @@ F-statistic:  5237 on 1 and 580 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb52-311"><a href="#cb52-311" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-312"><a href="#cb52-312" aria-hidden="true" tabindex="-1"></a>Calcular la proporción de apartamentos de los periodos 2025-06-15 y  2025-09-21  con media de valoración <span class="in">`review_scores_rating`</span> mayor que 4 en Palma  y en Pollença son iguales contra que son distintas.</span>
 <span id="cb52-313"><a href="#cb52-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-314"><a href="#cb52-314" aria-hidden="true" tabindex="-1"></a>Resolución del problema:</span>
-<span id="cb52-317"><a href="#cb52-317" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-318"><a href="#cb52-318" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> listings0 <span class="sc">%&gt;%</span></span>
-<span id="cb52-319"><a href="#cb52-319" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">%in%</span> <span class="fu">c</span>(<span class="fu">as.Date</span>(<span class="st">"2025-06-15"</span>), <span class="fu">as.Date</span>(<span class="st">"2025-09-21"</span>)),</span>
-<span id="cb52-320"><a href="#cb52-320" aria-hidden="true" tabindex="-1"></a>         neighbourhood_cleansed <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Palma de Mallorca"</span>, <span class="st">"Pollença"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb52-321"><a href="#cb52-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">high_rating =</span> review_scores_rating <span class="sc">&gt;</span> <span class="dv">4</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb52-322"><a href="#cb52-322" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(neighbourhood_cleansed, date) <span class="sc">%&gt;%</span></span>
-<span id="cb52-323"><a href="#cb52-323" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb52-324"><a href="#cb52-324" aria-hidden="true" tabindex="-1"></a>    <span class="at">successes =</span> <span class="fu">sum</span>(high_rating, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb52-325"><a href="#cb52-325" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
-<span id="cb52-326"><a href="#cb52-326" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb52-327"><a href="#cb52-327" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb52-328"><a href="#cb52-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-329"><a href="#cb52-329" aria-hidden="true" tabindex="-1"></a><span class="co"># Test Palma</span></span>
-<span id="cb52-330"><a href="#cb52-330" aria-hidden="true" tabindex="-1"></a>prop_test_palma <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(</span>
-<span id="cb52-331"><a href="#cb52-331" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> df<span class="sc">$</span>successes[df<span class="sc">$</span>neighbourhood_cleansed <span class="sc">==</span> <span class="st">"Palma de Mallorca"</span>],</span>
-<span id="cb52-332"><a href="#cb52-332" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> df<span class="sc">$</span>n[df<span class="sc">$</span>neighbourhood_cleansed <span class="sc">==</span> <span class="st">"Palma de Mallorca"</span>]</span>
-<span id="cb52-333"><a href="#cb52-333" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb52-334"><a href="#cb52-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-335"><a href="#cb52-335" aria-hidden="true" tabindex="-1"></a><span class="co"># Test Pollença</span></span>
-<span id="cb52-336"><a href="#cb52-336" aria-hidden="true" tabindex="-1"></a>prop_test_pollenca <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(</span>
-<span id="cb52-337"><a href="#cb52-337" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> df<span class="sc">$</span>successes[df<span class="sc">$</span>neighbourhood_cleansed <span class="sc">==</span> <span class="st">"Pollença"</span>],</span>
-<span id="cb52-338"><a href="#cb52-338" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> df<span class="sc">$</span>n[df<span class="sc">$</span>neighbourhood_cleansed <span class="sc">==</span> <span class="st">"Pollença"</span>]</span>
-<span id="cb52-339"><a href="#cb52-339" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb52-340"><a href="#cb52-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-341"><a href="#cb52-341" aria-hidden="true" tabindex="-1"></a>prop_test_palma</span>
-<span id="cb52-342"><a href="#cb52-342" aria-hidden="true" tabindex="-1"></a>prop_test_pollenca</span>
-<span id="cb52-343"><a href="#cb52-343" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-344"><a href="#cb52-344" aria-hidden="true" tabindex="-1"></a>Conclusión de los resultados obtenidos:</span>
-<span id="cb52-345"><a href="#cb52-345" aria-hidden="true" tabindex="-1"></a> Hemos realizado un contraste de igualdad de proporciones para comparar el porcentaje de apartamentos con review_scores_rating &gt; 4 (entre los periodos 2025-06-15 y 2025-09-21), de forma independiente para los municipios de Palma y Pollença.</span>
-<span id="cb52-346"><a href="#cb52-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-347"><a href="#cb52-347" aria-hidden="true" tabindex="-1"></a>En ambos casos se aplicó un test bilateral de igualdad de proporciones (prop.test).</span>
-<span id="cb52-348"><a href="#cb52-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-349"><a href="#cb52-349" aria-hidden="true" tabindex="-1"></a>Los resultados obtenidos fueron:</span>
-<span id="cb52-350"><a href="#cb52-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-351"><a href="#cb52-351" aria-hidden="true" tabindex="-1"></a>Palma: p-value = 0.8687 → no se rechaza H₀.</span>
-<span id="cb52-352"><a href="#cb52-352" aria-hidden="true" tabindex="-1"></a>No hay evidencia de diferencias significativas entre los dos periodos.</span>
-<span id="cb52-353"><a href="#cb52-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-354"><a href="#cb52-354" aria-hidden="true" tabindex="-1"></a>Pollença: p-value = 0.4181 → no se rechaza H₀.</span>
-<span id="cb52-355"><a href="#cb52-355" aria-hidden="true" tabindex="-1"></a>Tampoco se observan diferencias significativas entre periodos.</span>
-<span id="cb52-356"><a href="#cb52-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-357"><a href="#cb52-357" aria-hidden="true" tabindex="-1"></a>Por tanto para ninguno de los dos municipios existen diferencias estadísticamente significativas en la proporción de apartamentos con valoración mayor que 4 entre los periodos comparados.</span>
-<span id="cb52-358"><a href="#cb52-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-359"><a href="#cb52-359" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 8 (**1punto**)</span></span>
-<span id="cb52-360"><a href="#cb52-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-361"><a href="#cb52-361" aria-hidden="true" tabindex="-1"></a>Agrupa las variables <span class="in">`review_scores_rating`</span> y <span class="in">`review_scores_location`</span> de <span class="in">`listings0`</span> en 5 categorías cada una y construid una tabla de contingencia con las dos variables agrupadas. Agrupar de forma que no cruces de categorías vacías. Contratar si esta varibles son independientes con  un test $\chi^2$. </span>
+<span id="cb52-314"><a href="#cb52-314" aria-hidden="true" tabindex="-1"></a>Resolución del problema:  </span>
+<span id="cb52-315"><a href="#cb52-315" aria-hidden="true" tabindex="-1"></a>**Hipotesis nula y alternativa:**  </span>
+<span id="cb52-316"><a href="#cb52-316" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb52-317"><a href="#cb52-317" aria-hidden="true" tabindex="-1"></a>\left<span class="sc">\{</span></span>
+<span id="cb52-318"><a href="#cb52-318" aria-hidden="true" tabindex="-1"></a>\begin{array}{lr}</span>
+<span id="cb52-319"><a href="#cb52-319" aria-hidden="true" tabindex="-1"></a>H_0: &amp; p_{2025-06-15} = p_{2025-09-21} <span class="sc">\\</span></span>
+<span id="cb52-320"><a href="#cb52-320" aria-hidden="true" tabindex="-1"></a>H_1: &amp; p_{2025-06-15} \ne p_{2025-09-21}</span>
+<span id="cb52-321"><a href="#cb52-321" aria-hidden="true" tabindex="-1"></a>\end{array}</span>
+<span id="cb52-322"><a href="#cb52-322" aria-hidden="true" tabindex="-1"></a>\right.</span>
+<span id="cb52-323"><a href="#cb52-323" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb52-326"><a href="#cb52-326" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-327"><a href="#cb52-327" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> listings0 <span class="sc">%&gt;%</span></span>
+<span id="cb52-328"><a href="#cb52-328" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">%in%</span> <span class="fu">c</span>(<span class="fu">as.Date</span>(<span class="st">"2025-06-15"</span>), <span class="fu">as.Date</span>(<span class="st">"2025-09-21"</span>)),</span>
+<span id="cb52-329"><a href="#cb52-329" aria-hidden="true" tabindex="-1"></a>         neighbourhood_cleansed <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Palma de Mallorca"</span>, <span class="st">"Pollença"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb52-330"><a href="#cb52-330" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">high_rating =</span> review_scores_rating <span class="sc">&gt;</span> <span class="dv">4</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb52-331"><a href="#cb52-331" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(neighbourhood_cleansed, date) <span class="sc">%&gt;%</span></span>
+<span id="cb52-332"><a href="#cb52-332" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb52-333"><a href="#cb52-333" aria-hidden="true" tabindex="-1"></a>    <span class="at">successes =</span> <span class="fu">sum</span>(high_rating, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb52-334"><a href="#cb52-334" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb52-335"><a href="#cb52-335" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb52-336"><a href="#cb52-336" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb52-337"><a href="#cb52-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-338"><a href="#cb52-338" aria-hidden="true" tabindex="-1"></a><span class="co"># Test Palma</span></span>
+<span id="cb52-339"><a href="#cb52-339" aria-hidden="true" tabindex="-1"></a>prop_test_palma <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(</span>
+<span id="cb52-340"><a href="#cb52-340" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> df<span class="sc">$</span>successes[df<span class="sc">$</span>neighbourhood_cleansed <span class="sc">==</span> <span class="st">"Palma de Mallorca"</span>],</span>
+<span id="cb52-341"><a href="#cb52-341" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> df<span class="sc">$</span>n[df<span class="sc">$</span>neighbourhood_cleansed <span class="sc">==</span> <span class="st">"Palma de Mallorca"</span>]</span>
+<span id="cb52-342"><a href="#cb52-342" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb52-343"><a href="#cb52-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-344"><a href="#cb52-344" aria-hidden="true" tabindex="-1"></a><span class="co"># Test Pollença</span></span>
+<span id="cb52-345"><a href="#cb52-345" aria-hidden="true" tabindex="-1"></a>prop_test_pollenca <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(</span>
+<span id="cb52-346"><a href="#cb52-346" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> df<span class="sc">$</span>successes[df<span class="sc">$</span>neighbourhood_cleansed <span class="sc">==</span> <span class="st">"Pollença"</span>],</span>
+<span id="cb52-347"><a href="#cb52-347" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> df<span class="sc">$</span>n[df<span class="sc">$</span>neighbourhood_cleansed <span class="sc">==</span> <span class="st">"Pollença"</span>]</span>
+<span id="cb52-348"><a href="#cb52-348" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb52-349"><a href="#cb52-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-350"><a href="#cb52-350" aria-hidden="true" tabindex="-1"></a>prop_test_palma</span>
+<span id="cb52-351"><a href="#cb52-351" aria-hidden="true" tabindex="-1"></a>prop_test_pollenca</span>
+<span id="cb52-352"><a href="#cb52-352" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-353"><a href="#cb52-353" aria-hidden="true" tabindex="-1"></a>**Conclusión de los resultados obtenidos:**  </span>
+<span id="cb52-354"><a href="#cb52-354" aria-hidden="true" tabindex="-1"></a>Hemos realizado un contraste de igualdad de proporciones para comparar el porcentaje de apartamentos con review_scores_rating &gt; 4 (entre los periodos 2025-06-15 y 2025-09-21), de forma independiente para los municipios de Palma y Pollença.</span>
+<span id="cb52-355"><a href="#cb52-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-356"><a href="#cb52-356" aria-hidden="true" tabindex="-1"></a>En ambos casos se aplicó un test bilateral de igualdad de proporciones (prop.test).</span>
+<span id="cb52-357"><a href="#cb52-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-358"><a href="#cb52-358" aria-hidden="true" tabindex="-1"></a>**Los resultados obtenidos fueron:**</span>
+<span id="cb52-359"><a href="#cb52-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-360"><a href="#cb52-360" aria-hidden="true" tabindex="-1"></a>**Palma:** p-value = 0.8687 → no se rechaza H₀.</span>
+<span id="cb52-361"><a href="#cb52-361" aria-hidden="true" tabindex="-1"></a>No hay evidencia de diferencias significativas entre los dos periodos.</span>
 <span id="cb52-362"><a href="#cb52-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-363"><a href="#cb52-363" aria-hidden="true" tabindex="-1"></a>Buscar información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde  la salida de chisq.test interpretarlo  en esta caso</span>
-<span id="cb52-364"><a href="#cb52-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-363"><a href="#cb52-363" aria-hidden="true" tabindex="-1"></a>**Pollença:** p-value = 0.4181 → no se rechaza H₀.</span>
+<span id="cb52-364"><a href="#cb52-364" aria-hidden="true" tabindex="-1"></a>Tampoco se observan diferencias significativas entre periodos.</span>
 <span id="cb52-365"><a href="#cb52-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-368"><a href="#cb52-368" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-369"><a href="#cb52-369" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">cut</span>(listings0<span class="sc">$</span>review_scores_rating,<span class="dv">5</span>),</span>
-<span id="cb52-370"><a href="#cb52-370" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cut</span>(listings0<span class="sc">$</span>review_scores_location,<span class="dv">5</span>))</span>
-<span id="cb52-371"><a href="#cb52-371" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-372"><a href="#cb52-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-366"><a href="#cb52-366" aria-hidden="true" tabindex="-1"></a>Por tanto para **ninguno** de los dos municipios **existen diferencias estadísticamente significativas** en la proporción de apartamentos con valoración mayor que 4 entre los periodos comparados.</span>
+<span id="cb52-367"><a href="#cb52-367" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-368"><a href="#cb52-368" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 8 (**1punto**)</span></span>
+<span id="cb52-369"><a href="#cb52-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-370"><a href="#cb52-370" aria-hidden="true" tabindex="-1"></a>Agrupa las variables <span class="in">`review_scores_rating`</span> y <span class="in">`review_scores_location`</span> de <span class="in">`listings0`</span> en 5 categorías cada una y construid una tabla de contingencia con las dos variables agrupadas. Agrupar de forma que no cruces de categorías vacías. Contratar si esta varibles son independientes con  un test $\chi^2$. </span>
+<span id="cb52-371"><a href="#cb52-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-372"><a href="#cb52-372" aria-hidden="true" tabindex="-1"></a>Buscar información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde  la salida de chisq.test interpretarlo  en esta caso</span>
 <span id="cb52-373"><a href="#cb52-373" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-374"><a href="#cb52-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-375"><a href="#cb52-375" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 9 (**3 puntos**)</span></span>
-<span id="cb52-376"><a href="#cb52-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-377"><a href="#cb52-377" aria-hidden="true" tabindex="-1"></a>Construye un data set con las variables </span>
-<span id="cb52-378"><a href="#cb52-378" aria-hidden="true" tabindex="-1"></a>review_scores_rating, review_scores_cleanliness, review_scores_location, review_scores_value de listings0 y  el municipio/zona <span class="in">`neighbourhood_cleansed`</span></span>
-<span id="cb52-379"><a href="#cb52-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-380"><a href="#cb52-380" aria-hidden="true" tabindex="-1"></a>Calcula la matriz de correlaciones entre estas variables y haz un gráfico de pares  de variables que muestre las correlaciones (<span class="co">[</span><span class="ot">ggpairs</span><span class="co">](https://r-charts.com/correlation/ggpairs/)</span>) con la librería GGally. Comenta los resultados.</span>
+<span id="cb52-377"><a href="#cb52-377" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-378"><a href="#cb52-378" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">cut</span>(listings0<span class="sc">$</span>review_scores_rating,<span class="dv">5</span>),</span>
+<span id="cb52-379"><a href="#cb52-379" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cut</span>(listings0<span class="sc">$</span>review_scores_location,<span class="dv">5</span>))</span>
+<span id="cb52-380"><a href="#cb52-380" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb52-381"><a href="#cb52-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-382"><a href="#cb52-382" aria-hidden="true" tabindex="-1"></a>Haz un <span class="in">`matrixplot`</span> de las correlaciones con la librería <span class="in">`corrplot`</span>. Comenta los resultados.</span>
-<span id="cb52-383"><a href="#cb52-383" aria-hidden="true" tabindex="-1"></a>Resolución del problema:</span>
-<span id="cb52-386"><a href="#cb52-386" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-387"><a href="#cb52-387" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb52-388"><a href="#cb52-388" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
-<span id="cb52-389"><a href="#cb52-389" aria-hidden="true" tabindex="-1"></a>data_corr <span class="ot">&lt;-</span> listings0 <span class="sc">%&gt;%</span></span>
-<span id="cb52-390"><a href="#cb52-390" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(review_scores_rating,</span>
-<span id="cb52-391"><a href="#cb52-391" aria-hidden="true" tabindex="-1"></a>         review_scores_cleanliness,</span>
-<span id="cb52-392"><a href="#cb52-392" aria-hidden="true" tabindex="-1"></a>         review_scores_location,</span>
-<span id="cb52-393"><a href="#cb52-393" aria-hidden="true" tabindex="-1"></a>         review_scores_value,</span>
-<span id="cb52-394"><a href="#cb52-394" aria-hidden="true" tabindex="-1"></a>         neighbourhood_cleansed)</span>
-<span id="cb52-395"><a href="#cb52-395" aria-hidden="true" tabindex="-1"></a><span class="co"># Matriz de correlaciones</span></span>
-<span id="cb52-396"><a href="#cb52-396" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(data_corr <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>neighbourhood_cleansed), <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span>
-<span id="cb52-397"><a href="#cb52-397" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de pares con ggpairs</span></span>
-<span id="cb52-398"><a href="#cb52-398" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(data_corr <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>neighbourhood_cleansed),</span>
-<span id="cb52-399"><a href="#cb52-399" aria-hidden="true" tabindex="-1"></a>        <span class="at">upper =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">"cor"</span>, <span class="at">size =</span> <span class="dv">4</span>))) <span class="sc">+</span></span>
-<span id="cb52-400"><a href="#cb52-400" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Gráfico de Pares con Correlaciones"</span>)</span>
-<span id="cb52-401"><a href="#cb52-401" aria-hidden="true" tabindex="-1"></a><span class="co"># Matrixplot de correlaciones con corrplot</span></span>
-<span id="cb52-402"><a href="#cb52-402" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">"circle"</span>, <span class="at">type =</span> <span class="st">"upper"</span>,</span>
-<span id="cb52-403"><a href="#cb52-403" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.col =</span> <span class="st">"black"</span>, <span class="at">tl.srt =</span> <span class="dv">45</span>,</span>
-<span id="cb52-404"><a href="#cb52-404" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"Matriz de Correlaciones"</span>)</span>
-<span id="cb52-405"><a href="#cb52-405" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-406"><a href="#cb52-406" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Para las conclusiones de los datos, nos hemos fijado principalmente en el gráfico de pares, no obstante la matriz de correlaciones también realza las conclusiones.</span></span>
-<span id="cb52-407"><a href="#cb52-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-408"><a href="#cb52-408" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretación del gráfico de pares con correlaciones:  </span></span>
-<span id="cb52-409"><a href="#cb52-409" aria-hidden="true" tabindex="-1"></a>El gráfico analiza la relación entre cuatro dimensiones de las reseñas: rating general, limpieza, ubicación y valor.  </span>
-<span id="cb52-410"><a href="#cb52-410" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb52-411"><a href="#cb52-411" aria-hidden="true" tabindex="-1"></a>**Por un lado tenemos la relación con el rating general**  </span>
-<span id="cb52-412"><a href="#cb52-412" aria-hidden="true" tabindex="-1"></a>-**Valor (review_scores_value)**: Correlación alta y positiva (r = 0.784). Por lo cual, indica que la percepción de “precio–calidad” es el factor más asociado a la calificación general. A mayor valoración del valor recibido, mayor es el rating total.  </span>
-<span id="cb52-413"><a href="#cb52-413" aria-hidden="true" tabindex="-1"></a>-**Limpieza (review_scores_cleanliness)**: Correlación fuerte (r = 0.711). La limpieza es un factor clave en la satisfacción global del huésped.  </span>
-<span id="cb52-414"><a href="#cb52-414" aria-hidden="true" tabindex="-1"></a>-**Ubicación (review_scores_location)**: Correlación moderada (r = 0.464). La ubicación influye, pero menos que limpieza y valor.  </span>
-<span id="cb52-415"><a href="#cb52-415" aria-hidden="true" tabindex="-1"></a>**Por lo que podemos concluir, que el rating general depende principalmente de valor y limpieza, más que de la ubicación.**  </span>
-<span id="cb52-416"><a href="#cb52-416" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb52-417"><a href="#cb52-417" aria-hidden="true" tabindex="-1"></a>**También vemos las siguientes relaciones:**  </span>
-<span id="cb52-418"><a href="#cb52-418" aria-hidden="true" tabindex="-1"></a>-**Limpieza – Valor (r = 0.647)**: Con una relación fuerte, los alojamientos más limpios tienden a percibirse como de mejor valor.  </span>
-<span id="cb52-419"><a href="#cb52-419" aria-hidden="true" tabindex="-1"></a>-**Ubicación – Valor (r = 0.480)**: Relación más moderada: una buena ubicación mejora la percepción del valor, pero no la determina completamente.  </span>
-<span id="cb52-420"><a href="#cb52-420" aria-hidden="true" tabindex="-1"></a>-**Ubicación – Limpieza (r = 0.340)**: Relación entre débil y moderada, lo que sugiere que son relativamente independientes.  </span>
-<span id="cb52-421"><a href="#cb52-421" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb52-422"><a href="#cb52-422" aria-hidden="true" tabindex="-1"></a>**Además observamos que en la forma de las distribuciones las distribuciones están sesgadas hacia valores altos (4–5). Lo que indica una alta satisfacción general y poca variabilidad en puntuaciones bajas.**</span>
-<span id="cb52-423"><a href="#cb52-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-424"><a href="#cb52-424" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 10 (**2 puntos**)</span></span>
-<span id="cb52-425"><a href="#cb52-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-426"><a href="#cb52-426" aria-hidden="true" tabindex="-1"></a>La <span class="co">[</span><span class="ot">Zipf's law es una ley empírica</span><span class="co">](https://en.wikipedia.org/wiki/Zipf%27s_law#Word_frequencies_in_natural_languages)</span> que dice que la frecuencia de las palabras en un texto es inversamente proporcional a su rango. Decidid si la ley se ajusta a los datos de la longitud de los comentarios de los apartamentos de la muestra "2025-09-21" Mallorca, haced lo mismo para description de <span class="in">`listings0`</span>. Para ello, haced un análisis de regresión lineal de la frecuencia de las longitudes de los comentarios/descripciones de los apartamentos de Mallorca y el rango de las longitudes de los comentarios. Justificad la respuesta, estadísticamente y gráficamente.</span>
-<span id="cb52-427"><a href="#cb52-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-428"><a href="#cb52-428" aria-hidden="true" tabindex="-1"></a>Como ayuda estudiar el siguiente código, utilizadlo y comentadlo.</span>
-<span id="cb52-429"><a href="#cb52-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-430"><a href="#cb52-430" aria-hidden="true" tabindex="-1"></a>Resolución del problema:</span>
-<span id="cb52-431"><a href="#cb52-431" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-434"><a href="#cb52-434" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-435"><a href="#cb52-435" aria-hidden="true" tabindex="-1"></a><span class="co"># analisis de la longitud de los comentarios</span></span>
-<span id="cb52-436"><a href="#cb52-436" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb52-437"><a href="#cb52-437" aria-hidden="true" tabindex="-1"></a><span class="co"># para las reseñas</span></span>
-<span id="cb52-438"><a href="#cb52-438" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reviews)</span>
-<span id="cb52-439"><a href="#cb52-439" aria-hidden="true" tabindex="-1"></a>length_rewiews<span class="ot">=</span>stringr<span class="sc">::</span><span class="fu">str_count</span>(reviews<span class="sc">$</span>comments,<span class="st">"</span><span class="sc">\\</span><span class="st">w+"</span>)</span>
-<span id="cb52-440"><a href="#cb52-440" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(length_rewiews))</span>
-<span id="cb52-441"><a href="#cb52-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-442"><a href="#cb52-442" aria-hidden="true" tabindex="-1"></a><span class="co">#para las descripciones</span></span>
-<span id="cb52-443"><a href="#cb52-443" aria-hidden="true" tabindex="-1"></a>length_description<span class="ot">=</span>stringr<span class="sc">::</span><span class="fu">str_count</span>(listings0<span class="sc">$</span>description,<span class="st">"</span><span class="sc">\\</span><span class="st">w+"</span>)</span>
-<span id="cb52-444"><a href="#cb52-444" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(length_description))</span>
-<span id="cb52-445"><a href="#cb52-445" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-446"><a href="#cb52-446" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-447"><a href="#cb52-447" aria-hidden="true" tabindex="-1"></a>Y ahora se calculan los rango os lo dejo para reviews par desctption lo haceís vosotros</span>
-<span id="cb52-448"><a href="#cb52-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-451"><a href="#cb52-451" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-452"><a href="#cb52-452" aria-hidden="true" tabindex="-1"></a>aux<span class="ot">=</span><span class="fu">table</span>(length_rewiews)</span>
-<span id="cb52-453"><a href="#cb52-453" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aux)</span>
-<span id="cb52-454"><a href="#cb52-454" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">names</span>(aux))</span>
-<span id="cb52-455"><a href="#cb52-455" aria-hidden="true" tabindex="-1"></a>tbl<span class="ot">=</span><span class="fu">tibble</span>( <span class="at">L=</span><span class="fu">as.numeric</span>(<span class="fu">names</span>(aux)),<span class="at">Freq=</span><span class="fu">as.numeric</span>(aux),</span>
-<span id="cb52-456"><a href="#cb52-456" aria-hidden="true" tabindex="-1"></a>            <span class="at">Rank=</span><span class="fu">rank</span>(L),<span class="at">Log_Freq=</span><span class="fu">log</span>(Freq),<span class="at">Log_Rank=</span><span class="fu">log</span>(Rank))</span>
-<span id="cb52-457"><a href="#cb52-457" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(tbl)</span>
-<span id="cb52-458"><a href="#cb52-458" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-459"><a href="#cb52-459" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-462"><a href="#cb52-462" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-463"><a href="#cb52-463" aria-hidden="true" tabindex="-1"></a>tbl2<span class="ot">=</span>tbl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&lt;</span><span class="dv">1000</span>)</span>
-<span id="cb52-464"><a href="#cb52-464" aria-hidden="true" tabindex="-1"></a>sol1<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Rank)</span>
-<span id="cb52-465"><a href="#cb52-465" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol1)</span>
-<span id="cb52-466"><a href="#cb52-466" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-467"><a href="#cb52-467" aria-hidden="true" tabindex="-1"></a>sol2<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Log_Rank)</span>
-<span id="cb52-468"><a href="#cb52-468" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol2)</span>
-<span id="cb52-469"><a href="#cb52-469" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-470"><a href="#cb52-470" aria-hidden="true" tabindex="-1"></a>sol3<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Log_Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Log_Rank)</span>
-<span id="cb52-471"><a href="#cb52-471" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol3)</span>
-<span id="cb52-472"><a href="#cb52-472" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-473"><a href="#cb52-473" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-474"><a href="#cb52-474" aria-hidden="true" tabindex="-1"></a>Voy a hacer la regresión lineal de log(Freq) contra log(Rank) que es la que mejor se ajusta</span>
+<span id="cb52-382"><a href="#cb52-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-383"><a href="#cb52-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-384"><a href="#cb52-384" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 9 (**3 puntos**)</span></span>
+<span id="cb52-385"><a href="#cb52-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-386"><a href="#cb52-386" aria-hidden="true" tabindex="-1"></a>Construye un data set con las variables </span>
+<span id="cb52-387"><a href="#cb52-387" aria-hidden="true" tabindex="-1"></a>review_scores_rating, review_scores_cleanliness, review_scores_location, review_scores_value de listings0 y  el municipio/zona <span class="in">`neighbourhood_cleansed`</span></span>
+<span id="cb52-388"><a href="#cb52-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-389"><a href="#cb52-389" aria-hidden="true" tabindex="-1"></a>Calcula la matriz de correlaciones entre estas variables y haz un gráfico de pares  de variables que muestre las correlaciones (<span class="co">[</span><span class="ot">ggpairs</span><span class="co">](https://r-charts.com/correlation/ggpairs/)</span>) con la librería GGally. Comenta los resultados.</span>
+<span id="cb52-390"><a href="#cb52-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-391"><a href="#cb52-391" aria-hidden="true" tabindex="-1"></a>Haz un <span class="in">`matrixplot`</span> de las correlaciones con la librería <span class="in">`corrplot`</span>. Comenta los resultados.</span>
+<span id="cb52-392"><a href="#cb52-392" aria-hidden="true" tabindex="-1"></a>Resolución del problema:</span>
+<span id="cb52-395"><a href="#cb52-395" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-396"><a href="#cb52-396" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb52-397"><a href="#cb52-397" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb52-398"><a href="#cb52-398" aria-hidden="true" tabindex="-1"></a>data_corr <span class="ot">&lt;-</span> listings0 <span class="sc">%&gt;%</span></span>
+<span id="cb52-399"><a href="#cb52-399" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(review_scores_rating,</span>
+<span id="cb52-400"><a href="#cb52-400" aria-hidden="true" tabindex="-1"></a>         review_scores_cleanliness,</span>
+<span id="cb52-401"><a href="#cb52-401" aria-hidden="true" tabindex="-1"></a>         review_scores_location,</span>
+<span id="cb52-402"><a href="#cb52-402" aria-hidden="true" tabindex="-1"></a>         review_scores_value,</span>
+<span id="cb52-403"><a href="#cb52-403" aria-hidden="true" tabindex="-1"></a>         neighbourhood_cleansed)</span>
+<span id="cb52-404"><a href="#cb52-404" aria-hidden="true" tabindex="-1"></a><span class="co"># Matriz de correlaciones</span></span>
+<span id="cb52-405"><a href="#cb52-405" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(data_corr <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>neighbourhood_cleansed), <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span>
+<span id="cb52-406"><a href="#cb52-406" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de pares con ggpairs</span></span>
+<span id="cb52-407"><a href="#cb52-407" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(data_corr <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>neighbourhood_cleansed),</span>
+<span id="cb52-408"><a href="#cb52-408" aria-hidden="true" tabindex="-1"></a>        <span class="at">upper =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">"cor"</span>, <span class="at">size =</span> <span class="dv">4</span>))) <span class="sc">+</span></span>
+<span id="cb52-409"><a href="#cb52-409" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Gráfico de Pares con Correlaciones"</span>)</span>
+<span id="cb52-410"><a href="#cb52-410" aria-hidden="true" tabindex="-1"></a><span class="co"># Matrixplot de correlaciones con corrplot</span></span>
+<span id="cb52-411"><a href="#cb52-411" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">"circle"</span>, <span class="at">type =</span> <span class="st">"upper"</span>,</span>
+<span id="cb52-412"><a href="#cb52-412" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.col =</span> <span class="st">"black"</span>, <span class="at">tl.srt =</span> <span class="dv">45</span>,</span>
+<span id="cb52-413"><a href="#cb52-413" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"Matriz de Correlaciones"</span>)</span>
+<span id="cb52-414"><a href="#cb52-414" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-415"><a href="#cb52-415" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Para las conclusiones de los datos, nos hemos fijado principalmente en el gráfico de pares, no obstante la matriz de correlaciones también realza las conclusiones.</span></span>
+<span id="cb52-416"><a href="#cb52-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-417"><a href="#cb52-417" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretación del gráfico de pares con correlaciones:  </span></span>
+<span id="cb52-418"><a href="#cb52-418" aria-hidden="true" tabindex="-1"></a>El gráfico analiza la relación entre cuatro dimensiones de las reseñas: rating general, limpieza, ubicación y valor.  </span>
+<span id="cb52-419"><a href="#cb52-419" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-420"><a href="#cb52-420" aria-hidden="true" tabindex="-1"></a>**Por un lado tenemos la relación con el rating general**  </span>
+<span id="cb52-421"><a href="#cb52-421" aria-hidden="true" tabindex="-1"></a>-**Valor (review_scores_value)**: Correlación alta y positiva (r = 0.784). Por lo cual, indica que la percepción de “precio–calidad” es el factor más asociado a la calificación general. A mayor valoración del valor recibido, mayor es el rating total.  </span>
+<span id="cb52-422"><a href="#cb52-422" aria-hidden="true" tabindex="-1"></a>-**Limpieza (review_scores_cleanliness)**: Correlación fuerte (r = 0.711). La limpieza es un factor clave en la satisfacción global del huésped.  </span>
+<span id="cb52-423"><a href="#cb52-423" aria-hidden="true" tabindex="-1"></a>-**Ubicación (review_scores_location)**: Correlación moderada (r = 0.464). La ubicación influye, pero menos que limpieza y valor.  </span>
+<span id="cb52-424"><a href="#cb52-424" aria-hidden="true" tabindex="-1"></a>**Por lo que podemos concluir, que el rating general depende principalmente de valor y limpieza, más que de la ubicación.**  </span>
+<span id="cb52-425"><a href="#cb52-425" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-426"><a href="#cb52-426" aria-hidden="true" tabindex="-1"></a>**También vemos las siguientes relaciones:**  </span>
+<span id="cb52-427"><a href="#cb52-427" aria-hidden="true" tabindex="-1"></a>-**Limpieza – Valor (r = 0.647)**: Con una relación fuerte, los alojamientos más limpios tienden a percibirse como de mejor valor.  </span>
+<span id="cb52-428"><a href="#cb52-428" aria-hidden="true" tabindex="-1"></a>-**Ubicación – Valor (r = 0.480)**: Relación más moderada: una buena ubicación mejora la percepción del valor, pero no la determina completamente.  </span>
+<span id="cb52-429"><a href="#cb52-429" aria-hidden="true" tabindex="-1"></a>-**Ubicación – Limpieza (r = 0.340)**: Relación entre débil y moderada, lo que sugiere que son relativamente independientes.  </span>
+<span id="cb52-430"><a href="#cb52-430" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-431"><a href="#cb52-431" aria-hidden="true" tabindex="-1"></a>**Además observamos que en la forma de las distribuciones las distribuciones están sesgadas hacia valores altos (4–5). Lo que indica una alta satisfacción general y poca variabilidad en puntuaciones bajas.**</span>
+<span id="cb52-432"><a href="#cb52-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-433"><a href="#cb52-433" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pregunta 10 (**2 puntos**)</span></span>
+<span id="cb52-434"><a href="#cb52-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-435"><a href="#cb52-435" aria-hidden="true" tabindex="-1"></a>La <span class="co">[</span><span class="ot">Zipf's law es una ley empírica</span><span class="co">](https://en.wikipedia.org/wiki/Zipf%27s_law#Word_frequencies_in_natural_languages)</span> que dice que la frecuencia de las palabras en un texto es inversamente proporcional a su rango. Decidid si la ley se ajusta a los datos de la longitud de los comentarios de los apartamentos de la muestra "2025-09-21" Mallorca, haced lo mismo para description de <span class="in">`listings0`</span>. Para ello, haced un análisis de regresión lineal de la frecuencia de las longitudes de los comentarios/descripciones de los apartamentos de Mallorca y el rango de las longitudes de los comentarios. Justificad la respuesta, estadísticamente y gráficamente.</span>
+<span id="cb52-436"><a href="#cb52-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-437"><a href="#cb52-437" aria-hidden="true" tabindex="-1"></a>Como ayuda estudiar el siguiente código, utilizadlo y comentadlo.</span>
+<span id="cb52-438"><a href="#cb52-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-439"><a href="#cb52-439" aria-hidden="true" tabindex="-1"></a>Resolución del problema:</span>
+<span id="cb52-440"><a href="#cb52-440" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-443"><a href="#cb52-443" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-444"><a href="#cb52-444" aria-hidden="true" tabindex="-1"></a><span class="co"># analisis de la longitud de los comentarios</span></span>
+<span id="cb52-445"><a href="#cb52-445" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb52-446"><a href="#cb52-446" aria-hidden="true" tabindex="-1"></a><span class="co"># para las reseñas</span></span>
+<span id="cb52-447"><a href="#cb52-447" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reviews)</span>
+<span id="cb52-448"><a href="#cb52-448" aria-hidden="true" tabindex="-1"></a>length_rewiews<span class="ot">=</span>stringr<span class="sc">::</span><span class="fu">str_count</span>(reviews<span class="sc">$</span>comments,<span class="st">"</span><span class="sc">\\</span><span class="st">w+"</span>)</span>
+<span id="cb52-449"><a href="#cb52-449" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(length_rewiews))</span>
+<span id="cb52-450"><a href="#cb52-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-451"><a href="#cb52-451" aria-hidden="true" tabindex="-1"></a><span class="co">#para las descripciones</span></span>
+<span id="cb52-452"><a href="#cb52-452" aria-hidden="true" tabindex="-1"></a>length_description<span class="ot">=</span>stringr<span class="sc">::</span><span class="fu">str_count</span>(listings0<span class="sc">$</span>description,<span class="st">"</span><span class="sc">\\</span><span class="st">w+"</span>)</span>
+<span id="cb52-453"><a href="#cb52-453" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(length_description))</span>
+<span id="cb52-454"><a href="#cb52-454" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-455"><a href="#cb52-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-456"><a href="#cb52-456" aria-hidden="true" tabindex="-1"></a>Y ahora se calculan los rango os lo dejo para reviews par desctption lo haceís vosotros</span>
+<span id="cb52-457"><a href="#cb52-457" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-460"><a href="#cb52-460" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-461"><a href="#cb52-461" aria-hidden="true" tabindex="-1"></a>aux<span class="ot">=</span><span class="fu">table</span>(length_rewiews)</span>
+<span id="cb52-462"><a href="#cb52-462" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aux)</span>
+<span id="cb52-463"><a href="#cb52-463" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">names</span>(aux))</span>
+<span id="cb52-464"><a href="#cb52-464" aria-hidden="true" tabindex="-1"></a>tbl<span class="ot">=</span><span class="fu">tibble</span>( <span class="at">L=</span><span class="fu">as.numeric</span>(<span class="fu">names</span>(aux)),<span class="at">Freq=</span><span class="fu">as.numeric</span>(aux),</span>
+<span id="cb52-465"><a href="#cb52-465" aria-hidden="true" tabindex="-1"></a>            <span class="at">Rank=</span><span class="fu">rank</span>(L),<span class="at">Log_Freq=</span><span class="fu">log</span>(Freq),<span class="at">Log_Rank=</span><span class="fu">log</span>(Rank))</span>
+<span id="cb52-466"><a href="#cb52-466" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(tbl)</span>
+<span id="cb52-467"><a href="#cb52-467" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-468"><a href="#cb52-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-471"><a href="#cb52-471" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-472"><a href="#cb52-472" aria-hidden="true" tabindex="-1"></a>tbl2<span class="ot">=</span>tbl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&gt;</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Rank<span class="sc">&lt;</span><span class="dv">1000</span>)</span>
+<span id="cb52-473"><a href="#cb52-473" aria-hidden="true" tabindex="-1"></a>sol1<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Rank)</span>
+<span id="cb52-474"><a href="#cb52-474" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol1)</span>
 <span id="cb52-475"><a href="#cb52-475" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-476"><a href="#cb52-476" aria-hidden="true" tabindex="-1"></a>$$\log(Freq) = a + b \log(Rank) + \epsilon $$</span>
-<span id="cb52-477"><a href="#cb52-477" aria-hidden="true" tabindex="-1"></a>donde $a$ es la ordenada en el origen y $b$ la pendiente de la recta de regresión lineal. Si la ley de Zipf se cumple $b$ debe ser cercano a -1.</span>
-<span id="cb52-478"><a href="#cb52-478" aria-hidden="true" tabindex="-1"></a>La representación gráfica es la siguiente:</span>
-<span id="cb52-481"><a href="#cb52-481" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-482"><a href="#cb52-482" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb52-483"><a href="#cb52-483" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tbl2,<span class="fu">aes</span>(<span class="at">x=</span>Log_Rank,<span class="at">y=</span>Log_Freq))<span class="sc">+</span></span>
-<span id="cb52-484"><a href="#cb52-484" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb52-485"><a href="#cb52-485" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>,<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
-<span id="cb52-486"><a href="#cb52-486" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Ley de Zipf para la longitud de los comentarios"</span>,</span>
-<span id="cb52-487"><a href="#cb52-487" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Log(Rango)"</span>,<span class="at">y=</span><span class="st">"Log(Frecuencia)"</span>)</span>
-<span id="cb52-488"><a href="#cb52-488" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-489"><a href="#cb52-489" aria-hidden="true" tabindex="-1"></a>El modelo con menor R² es el de log(Freq) contra log(Rank) con un R²= <span class="in">`r round(summary(sol3)$r.squared,4)`</span>. La pendiente es <span class="in">`r round(coef(sol3)[2],4)`</span>. Por tanto, la ley de Zipf **se cumple/no se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.</span>
+<span id="cb52-476"><a href="#cb52-476" aria-hidden="true" tabindex="-1"></a>sol2<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Log_Rank)</span>
+<span id="cb52-477"><a href="#cb52-477" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol2)</span>
+<span id="cb52-478"><a href="#cb52-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-479"><a href="#cb52-479" aria-hidden="true" tabindex="-1"></a>sol3<span class="ot">=</span><span class="fu">lm</span>(tbl2<span class="sc">$</span>Log_Freq<span class="sc">~</span>tbl2<span class="sc">$</span>Log_Rank)</span>
+<span id="cb52-480"><a href="#cb52-480" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sol3)</span>
+<span id="cb52-481"><a href="#cb52-481" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-482"><a href="#cb52-482" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-483"><a href="#cb52-483" aria-hidden="true" tabindex="-1"></a>Voy a hacer la regresión lineal de log(Freq) contra log(Rank) que es la que mejor se ajusta</span>
+<span id="cb52-484"><a href="#cb52-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-485"><a href="#cb52-485" aria-hidden="true" tabindex="-1"></a>$$\log(Freq) = a + b \log(Rank) + \epsilon $$</span>
+<span id="cb52-486"><a href="#cb52-486" aria-hidden="true" tabindex="-1"></a>donde $a$ es la ordenada en el origen y $b$ la pendiente de la recta de regresión lineal. Si la ley de Zipf se cumple $b$ debe ser cercano a -1.</span>
+<span id="cb52-487"><a href="#cb52-487" aria-hidden="true" tabindex="-1"></a>La representación gráfica es la siguiente:</span>
+<span id="cb52-490"><a href="#cb52-490" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-491"><a href="#cb52-491" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb52-492"><a href="#cb52-492" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tbl2,<span class="fu">aes</span>(<span class="at">x=</span>Log_Rank,<span class="at">y=</span>Log_Freq))<span class="sc">+</span></span>
+<span id="cb52-493"><a href="#cb52-493" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb52-494"><a href="#cb52-494" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>,<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
+<span id="cb52-495"><a href="#cb52-495" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Ley de Zipf para la longitud de los comentarios"</span>,</span>
+<span id="cb52-496"><a href="#cb52-496" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Log(Rango)"</span>,<span class="at">y=</span><span class="st">"Log(Frecuencia)"</span>)</span>
+<span id="cb52-497"><a href="#cb52-497" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-498"><a href="#cb52-498" aria-hidden="true" tabindex="-1"></a>El modelo con menor R² es el de log(Freq) contra log(Rank) con un R²= <span class="in">`r round(summary(sol3)$r.squared,4)`</span>. La pendiente es <span class="in">`r round(coef(sol3)[2],4)`</span>. Por tanto, la ley de Zipf **se cumple/no se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.</span>
 </code><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

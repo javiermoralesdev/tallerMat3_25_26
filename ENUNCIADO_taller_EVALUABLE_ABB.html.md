@@ -4782,7 +4782,16 @@ Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de 
 
 Calcular la proporción de apartamentos de los periodos 2025-06-15 y  2025-09-21  con media de valoración `review_scores_rating` mayor que 4 en Palma  y en Pollença son iguales contra que son distintas.
 
-Resolución del problema:
+Resolución del problema:  
+**Hipotesis nula y alternativa:**  
+$$
+\left\{
+\begin{array}{lr}
+H_0: & p_{2025-06-15} = p_{2025-09-21} \\
+H_1: & p_{2025-06-15} \ne p_{2025-09-21}
+\end{array}
+\right.
+$$
 
 ::: {.cell}
 
@@ -4856,20 +4865,20 @@ sample estimates:
 :::
 :::
 
-Conclusión de los resultados obtenidos:
- Hemos realizado un contraste de igualdad de proporciones para comparar el porcentaje de apartamentos con review_scores_rating > 4 (entre los periodos 2025-06-15 y 2025-09-21), de forma independiente para los municipios de Palma y Pollença.
+**Conclusión de los resultados obtenidos:**  
+Hemos realizado un contraste de igualdad de proporciones para comparar el porcentaje de apartamentos con review_scores_rating > 4 (entre los periodos 2025-06-15 y 2025-09-21), de forma independiente para los municipios de Palma y Pollença.
 
 En ambos casos se aplicó un test bilateral de igualdad de proporciones (prop.test).
 
-Los resultados obtenidos fueron:
+**Los resultados obtenidos fueron:**
 
-Palma: p-value = 0.8687 → no se rechaza H₀.
+**Palma:** p-value = 0.8687 → no se rechaza H₀.
 No hay evidencia de diferencias significativas entre los dos periodos.
 
-Pollença: p-value = 0.4181 → no se rechaza H₀.
+**Pollença:** p-value = 0.4181 → no se rechaza H₀.
 Tampoco se observan diferencias significativas entre periodos.
 
-Por tanto para ninguno de los dos municipios existen diferencias estadísticamente significativas en la proporción de apartamentos con valoración mayor que 4 entre los periodos comparados.
+Por tanto para **ninguno** de los dos municipios **existen diferencias estadísticamente significativas** en la proporción de apartamentos con valoración mayor que 4 entre los periodos comparados.
 
 ## Pregunta 8 (**1punto**)
 
