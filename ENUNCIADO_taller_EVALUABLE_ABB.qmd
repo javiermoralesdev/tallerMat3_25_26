@@ -647,7 +647,14 @@ ggplot(tbl2,aes(x=Log_Rank,y=Log_Freq))+
   labs(title="Ley de Zipf para la longitud de los comentarios",
        x="Log(Rango)",y="Log(Frecuencia)")
 ```
-El modelo con mayor R² es el de log(Freq) contra log(Rank) con un R²= `r round(summary(sol3)$r.squared,4)`. La pendiente es `r round(coef(sol3)[2],4)`. Por tanto, la ley de Zipf **se cumple/no se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.
+El modelo que presenta **mayor R²** es el correspondiente a la regresión de log(Freq) frente a log(Rank), con un valor de  
+$R^2 =$ `r round(summary(sol3)$r.squared,4)`.  
+
+La pendiente estimada es  
+$b =$ `r round(coef(sol3)[2],4)`.
+
+Dado que la relación en escala log–log es aproximadamente lineal, el ajuste es elevado y la pendiente es cercana a \(-1\), se concluye que **la ley de Zipf se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.
+
 
 #### Análisis para las descripciones
 
