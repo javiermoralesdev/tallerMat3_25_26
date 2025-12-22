@@ -285,7 +285,7 @@ Con los datos de `listings0`, contrastar si las medias de los precios en Alcudia
 Haced un diagrama de caja comparativo de los precios en Alcudia por periodo y coméntalo.  
 ### Resolución del problema:  
 
-El contraste es:
+#### Contraste de hipótesis:  
 
 $$
 \left\{\begin{array}{l}
@@ -295,10 +295,6 @@ H_1: \mu_{15junio} < \mu_{21septiembre}
 $$
 
 Para ello se usa un **test t de dos muestras dependientes**, con un nivel de significación del 5%.
-
----
-
-### 1. Filtrado de datos
 
 ```{r}
 library(dplyr)
@@ -347,7 +343,7 @@ Comparar con un bopxlot de las valoraciones medias `review_scores_rating` para A
 Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.
 
 ### Resolución del problema:  
-### Gráfico bopxlot
+#### Gráfico bopxlot
 ```{r}
 library(ggplot2)
 listings0 %>%
@@ -366,7 +362,7 @@ listings0 %>%
         plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
         axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-### Gráfico bopxlot con Jitter
+#### Gráfico bopxlot con Jitter
 ```{r}
 listings0 %>%
   filter(neighbourhood_cleansed %in% c("Alcúdia", "Palma de Mallorca", "Calvià", "Pollença")) %>%
@@ -403,36 +399,57 @@ listings0 %>%
 - **En Pollença**, el jitter revela claramente una distribución más heterogénea, con una cola inferior más pronunciada y una mayor presencia de apartamentos con valoraciones bajas.  
 
 ## Pregunta 6 (**1 punto**)
-Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de valoración `review_scores_rating` mayor que 4 en Alcudia y en Calvià son iguales contra que son distintas. Construid un intervalo de confianza para la diferencia de proporciones.
+Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de valoración `review_scores_rating` mayor que 4 en Alcudia y en Calvià son iguales contra que son distintas. Construid un intervalo de confianza para la diferencia de proporciones.  
 
-### 1. Filtrado de los datos
-
+### Resolución del problema 
+#### Contraste de hipótesis:  
+$$
+\left\{
+\begin{array}{lr}
+H_0: & p_{Alcúdia} = p_{Calvià} \\
+H_1: & p_{Alcúdia} \ne p_{Calvià}
+\end{array}
+\right.
+$$
 ```{r}
 library(dplyr)
 
+# Filtrado de los datos
 df6 <- listings0 %>%
   filter(neighbourhood_cleansed %in% c("Alcúdia", "Calvià"),
-         date == as.Date("2025-09-21"))
+         date == as.Date("2025-09-21")) %>%
+  mutate(success = review_scores_rating > 4)
 
-df6 <- df6 %>%
-mutate(success = review_scores_rating > 4)
-
+# Conteo de éxitos y tamaños muestrales
 conteos <- df6 %>%
-group_by(neighbourhood_cleansed) %>%
-summarise(
-x = sum(success, na.rm = TRUE),   # nº de apartamentos con rating > 4
-n = n()                           # total de apartamentos
-)
+  group_by(neighbourhood_cleansed) %>%
+  summarise(
+    x = sum(success, na.rm = TRUE),
+    n = n(),                         
+    .groups = "drop"
+  )
 
 conteos
 
-x <- conteos$x # éxitos
-n <- conteos$n # totales
+# Test de igualdad de proporciones + intervalo de confianza
+x <- conteos$x
+n <- conteos$n
 
+prop_test <- prop.test(
+  x = x,
+  n = n,
+  alternative = "two.sided",
+  conf.level = 0.95
+)
 
-prop.test(x, n)
-
+prop_test
 ```
+#### Conclusiones de los resultados obtenidos:  
+Las proporciones muestrales de apartamentos con valoración media superior a 4 son del 89.53 % en Alcúdia y del 86.89 % en Calvià.
+
+Dado que el p-valor es 0.3566, bastante más mayor que 0 y el nivel de significación, que suele ser del 5%. No se rechaza la hipótesis nula, y no existe evidencia estadística suficiente para afirmar que las proporciones sean distintas entre ambos municipios.
+
+El intervalo de confianza al 95% para la diferencia de proporciones es [−0.0294, 0.0823]. Dado que este intervalo contiene el valor 0, se refuerza la conclusión de que no se detectan diferencias significativas entre las proporciones analizadas.  
 
 ## Pregunta 7 (**1punto**)
 
@@ -495,7 +512,7 @@ Agrupa las variables `review_scores_rating` y `review_scores_location` de `listi
 
 Buscar información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde  la salida de chisq.test interpretarlo  en esta caso
 
-### 1. Crear categorías para ambas variables
+### Resolución del problema
 
 ```{r}
 library(dplyr)
@@ -535,7 +552,7 @@ H_1: \text{Las variables no son independientes}
 \end{array}\right.
 $$
 
-Dado que el $p$-valor es menor que 0.05, se rechaza la hipótesis nula. Por lo tanto, hay evidencia suficiente para afirmar que las variables `review_scores_rating` y `review_scores_location` no son independientes.
+Dado que el $p$-valor es prácticamente nulo (p-value<2.2e-16), y obviamente menor a un nivel de significancia del 5%, se rechaza la hipótesis nula. Por lo tanto, hay evidencia suficiente para afirmar que las variables `review_scores_rating` y `review_scores_location` no son independientes.
 
 ## Pregunta 9 (**3 puntos**)
 
@@ -591,8 +608,6 @@ La [Zipf's law es una ley empírica](https://en.wikipedia.org/wiki/Zipf%27s_law#
 
 Como ayuda estudiar el siguiente código, utilizadlo y comentadlo.
 
-#### Resolución del problema:
-
 ```{r}
 # analisis de la longitud de los comentarios
 library(stringr)
@@ -614,11 +629,12 @@ aux=table(length_rewiews)
 head(aux)
 head(names(aux))
 tbl=tibble( L=as.numeric(names(aux)),Freq=as.numeric(aux),
-            Rank=rank(L),Log_Freq=log(Freq),Log_Rank=log(Rank))
+            Rank=rank(-Freq),Log_Freq=log(Freq),Log_Rank=log(Rank))
 str(tbl)
 ```
 
 ```{r}
+# Se excluyen los rangos extremos para evitar el efecto de colas poco pobladas y mejorar la estabilidad del ajuste lineal.
 tbl2=tbl %>% filter(Rank>10) %>% filter(Rank<1000)
 sol1=lm(tbl2$Freq~tbl2$Rank)
 summary(sol1)
@@ -630,7 +646,9 @@ sol3=lm(tbl2$Log_Freq~tbl2$Log_Rank)
 summary(sol3)
 ```
 
-Voy a hacer la regresión lineal de log(Freq) contra log(Rank) que es la que mejor se ajusta
+#### Resolución del problema:  
+
+Vamos a hacer la regresión lineal de log(Freq) contra log(Rank) que es la que mejor se ajusta
 
 $$\log(Freq) = a + b \log(Rank) + \epsilon $$
 
@@ -652,9 +670,6 @@ $R^2 =$ `r round(summary(sol3)$r.squared,4)`.
 La pendiente estimada es  
 $b =$ `r round(coef(sol3)[2],4)`.
 
-Dado que la relación en escala log–log es aproximadamente lineal, el ajuste es elevado y la pendiente es cercana a \(-1\), se concluye que **la ley de Zipf se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.
-
-
 #### Análisis para las descripciones
 
 ```{r}
@@ -662,7 +677,7 @@ aux_d <- table(length_description)
 tbl_d <- tibble(
 L = as.numeric(names(aux_d)),
 Freq = as.numeric(aux_d),
-Rank = rank(L),
+Rank = rank(-Freq),
 Log_Freq = log(Freq),
 Log_Rank = log(Rank)
 )
@@ -683,4 +698,5 @@ y = "Log(Frecuencia)")
 En el caso de las descripciones, el ajuste log–log presenta un $R^2$ de  
 $R^2 =$ `r round(summary(sol_d)$r.squared,4)`,  con una pendiente $b =$ `r round(coef(sol_d)[2],4)`.
 
-El gráfico en escala log–log muestra una relación aproximadamente lineal y la pendiente es cercana a $-1$, por lo que **la ley de Zipf también se cumple** para la longitud de las descripciones.
+#### Conclusiones finales:  
+El análisis en escala log–log muestra una relación aproximadamente lineal entre la frecuencia y el rango de las longitudes, tanto en los comentarios como en las descripciones. Sin embargo, las pendientes estimadas se alejan del valor teórico −1 de la ley de Zipf, por lo que la ley de Zipf estrictamente no se cumple, aunque los datos encajan muy bien con la ley de Zipf.

@@ -4831,7 +4831,7 @@ Con los datos de `listings0`, contrastar si las medias de los precios en Alcudia
 Haced un diagrama de caja comparativo de los precios en Alcudia por periodo y coméntalo.  
 ### Resolución del problema:  
 
-El contraste es:
+#### Contraste de hipótesis:  
 
 $$
 \left\{\begin{array}{l}
@@ -4841,10 +4841,6 @@ H_1: \mu_{15junio} < \mu_{21septiembre}
 $$
 
 Para ello se usa un **test t de dos muestras dependientes**, con un nivel de significación del 5%.
-
----
-
-### 1. Filtrado de datos
 
 
 ::: {.cell}
@@ -4923,7 +4919,7 @@ Comparar con un bopxlot de las valoraciones medias `review_scores_rating` para A
 Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.
 
 ### Resolución del problema:  
-### Gráfico bopxlot
+#### Gráfico bopxlot
 
 ::: {.cell}
 
@@ -4951,7 +4947,7 @@ listings0 %>%
 :::
 :::
 
-### Gráfico bopxlot con Jitter
+#### Gráfico bopxlot con Jitter
 
 ::: {.cell}
 
@@ -4997,29 +4993,38 @@ listings0 %>%
 - **En Pollença**, el jitter revela claramente una distribución más heterogénea, con una cola inferior más pronunciada y una mayor presencia de apartamentos con valoraciones bajas.  
 
 ## Pregunta 6 (**1 punto**)
-Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de valoración `review_scores_rating` mayor que 4 en Alcudia y en Calvià son iguales contra que son distintas. Construid un intervalo de confianza para la diferencia de proporciones.
+Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de valoración `review_scores_rating` mayor que 4 en Alcudia y en Calvià son iguales contra que son distintas. Construid un intervalo de confianza para la diferencia de proporciones.  
 
-### 1. Filtrado de los datos
-
+### Resolución del problema 
+#### Contraste de hipótesis:  
+$$
+\left\{
+\begin{array}{lr}
+H_0: & p_{Alcúdia} = p_{Calvià} \\
+H_1: & p_{Alcúdia} \ne p_{Calvià}
+\end{array}
+\right.
+$$
 
 ::: {.cell}
 
 ```{.r .cell-code}
 library(dplyr)
 
+# Filtrado de los datos
 df6 <- listings0 %>%
   filter(neighbourhood_cleansed %in% c("Alcúdia", "Calvià"),
-         date == as.Date("2025-09-21"))
+         date == as.Date("2025-09-21")) %>%
+  mutate(success = review_scores_rating > 4)
 
-df6 <- df6 %>%
-mutate(success = review_scores_rating > 4)
-
+# Conteo de éxitos y tamaños muestrales
 conteos <- df6 %>%
-group_by(neighbourhood_cleansed) %>%
-summarise(
-x = sum(success, na.rm = TRUE),   # nº de apartamentos con rating > 4
-n = n()                           # total de apartamentos
-)
+  group_by(neighbourhood_cleansed) %>%
+  summarise(
+    x = sum(success, na.rm = TRUE),
+    n = n(),                         
+    .groups = "drop"
+  )
 
 conteos
 ```
@@ -5038,11 +5043,18 @@ conteos
 :::
 
 ```{.r .cell-code}
-x <- conteos$x # éxitos
-n <- conteos$n # totales
+# Test de igualdad de proporciones + intervalo de confianza
+x <- conteos$x
+n <- conteos$n
 
+prop_test <- prop.test(
+  x = x,
+  n = n,
+  alternative = "two.sided",
+  conf.level = 0.95
+)
 
-prop.test(x, n)
+prop_test
 ```
 
 ::: {.cell-output .cell-output-stdout}
@@ -5065,6 +5077,12 @@ sample estimates:
 :::
 :::
 
+#### Conclusiones de los resultados obtenidos:  
+Las proporciones muestrales de apartamentos con valoración media superior a 4 son del 89.53 % en Alcúdia y del 86.89 % en Calvià.
+
+Dado que el p-valor es 0.3566, bastante más mayor que 0 y el nivel de significación, que suele ser del 5%. No se rechaza la hipótesis nula, y no existe evidencia estadística suficiente para afirmar que las proporciones sean distintas entre ambos municipios.
+
+El intervalo de confianza al 95% para la diferencia de proporciones es [−0.0294, 0.0823]. Dado que este intervalo contiene el valor 0, se refuerza la conclusión de que no se detectan diferencias significativas entre las proporciones analizadas.  
 
 ## Pregunta 7 (**1punto**)
 
@@ -5173,7 +5191,7 @@ Agrupa las variables `review_scores_rating` y `review_scores_location` de `listi
 
 Buscar información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde  la salida de chisq.test interpretarlo  en esta caso
 
-### 1. Crear categorías para ambas variables
+### Resolución del problema
 
 
 ::: {.cell}
@@ -5259,7 +5277,7 @@ H_1: \text{Las variables no son independientes}
 \end{array}\right.
 $$
 
-Dado que el $p$-valor es menor que 0.05, se rechaza la hipótesis nula. Por lo tanto, hay evidencia suficiente para afirmar que las variables `review_scores_rating` y `review_scores_location` no son independientes.
+Dado que el $p$-valor es prácticamente nulo (p-value<2.2e-16), y obviamente menor a un nivel de significancia del 5%, se rechaza la hipótesis nula. Por lo tanto, hay evidencia suficiente para afirmar que las variables `review_scores_rating` y `review_scores_location` no son independientes.
 
 ## Pregunta 9 (**3 puntos**)
 
@@ -5330,8 +5348,6 @@ El gráfico analiza la relación entre cuatro dimensiones de las reseñas: ratin
 La [Zipf's law es una ley empírica](https://en.wikipedia.org/wiki/Zipf%27s_law#Word_frequencies_in_natural_languages) que dice que la frecuencia de las palabras en un texto es inversamente proporcional a su rango. Decidid si la ley se ajusta a los datos de la longitud de los comentarios de los apartamentos de la muestra "2025-09-21" Mallorca, haced lo mismo para description de `listings0`. Para ello, haced un análisis de regresión lineal de la frecuencia de las longitudes de los comentarios/descripciones de los apartamentos de Mallorca y el rango de las longitudes de los comentarios. Justificad la respuesta, estadísticamente y gráficamente.
 
 Como ayuda estudiar el siguiente código, utilizadlo y comentadlo.
-
-#### Resolución del problema:
 
 
 ::: {.cell}
@@ -5417,7 +5433,7 @@ head(names(aux))
 
 ```{.r .cell-code}
 tbl=tibble( L=as.numeric(names(aux)),Freq=as.numeric(aux),
-            Rank=rank(L),Log_Freq=log(Freq),Log_Rank=log(Rank))
+            Rank=rank(-Freq),Log_Freq=log(Freq),Log_Rank=log(Rank))
 str(tbl)
 ```
 
@@ -5427,9 +5443,9 @@ str(tbl)
 tibble [592 × 5] (S3: tbl_df/tbl/data.frame)
  $ L       : num [1:592] 0 1 2 3 4 5 6 7 8 9 ...
  $ Freq    : num [1:592] 1418 3444 7045 4221 5165 ...
- $ Rank    : num [1:592] 1 2 3 4 5 6 7 8 9 10 ...
+ $ Rank    : num [1:592] 89 48 1 38 22 11 2 7 4 5 ...
  $ Log_Freq: num [1:592] 7.26 8.14 8.86 8.35 8.55 ...
- $ Log_Rank: num [1:592] 0 0.693 1.099 1.386 1.609 ...
+ $ Log_Rank: num [1:592] 4.49 3.87 0 3.64 3.09 ...
 ```
 
 
@@ -5441,6 +5457,7 @@ tibble [592 × 5] (S3: tbl_df/tbl/data.frame)
 ::: {.cell}
 
 ```{.r .cell-code}
+# Se excluyen los rangos extremos para evitar el efecto de colas poco pobladas y mejorar la estabilidad del ajuste lineal.
 tbl2=tbl %>% filter(Rank>10) %>% filter(Rank<1000)
 sol1=lm(tbl2$Freq~tbl2$Rank)
 summary(sol1)
@@ -5454,19 +5471,19 @@ Call:
 lm(formula = tbl2$Freq ~ tbl2$Rank)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--1031.8  -786.9  -201.4   452.6  4046.6 
+   Min     1Q Median     3Q    Max 
+-996.2 -759.4 -177.7  573.3 3747.4 
 
 Coefficients:
              Estimate Std. Error t value Pr(>|t|)    
-(Intercept) 2141.9530    85.2279   25.13   <2e-16 ***
-tbl2$Rank     -5.1260     0.2469  -20.76   <2e-16 ***
+(Intercept) 2083.4423    81.4688   25.57   <2e-16 ***
+tbl2$Rank     -4.9888     0.2362  -21.12   <2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 1001 on 580 degrees of freedom
-Multiple R-squared:  0.4263,	Adjusted R-squared:  0.4253 
-F-statistic: 430.9 on 1 and 580 DF,  p-value: < 2.2e-16
+Residual standard error: 955 on 580 degrees of freedom
+Multiple R-squared:  0.4348,	Adjusted R-squared:  0.4338 
+F-statistic: 446.2 on 1 and 580 DF,  p-value: < 2.2e-16
 ```
 
 
@@ -5486,18 +5503,18 @@ lm(formula = tbl2$Freq ~ tbl2$Log_Rank)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--896.17 -547.03    7.73  443.85 1629.79 
+-826.61 -535.35  -23.07  391.80 1476.20 
 
 Coefficients:
               Estimate Std. Error t value Pr(>|t|)    
-(Intercept)    8267.68     162.94   50.74   <2e-16 ***
-tbl2$Log_Rank -1405.73      29.51  -47.63   <2e-16 ***
+(Intercept)    7983.05     154.31   51.73   <2e-16 ***
+tbl2$Log_Rank -1356.65      27.95  -48.54   <2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 596.2 on 580 degrees of freedom
-Multiple R-squared:  0.7964,	Adjusted R-squared:  0.796 
-F-statistic:  2269 on 1 and 580 DF,  p-value: < 2.2e-16
+Residual standard error: 564.6 on 580 degrees of freedom
+Multiple R-squared:  0.8025,	Adjusted R-squared:  0.8021 
+F-statistic:  2356 on 1 and 580 DF,  p-value: < 2.2e-16
 ```
 
 
@@ -5517,18 +5534,18 @@ lm(formula = tbl2$Log_Freq ~ tbl2$Log_Rank)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--4.3152 -0.5008  0.0081  0.5191  1.6510 
+-4.3823 -0.3818 -0.0966  0.3697  1.5570 
 
 Coefficients:
               Estimate Std. Error t value Pr(>|t|)    
-(Intercept)   20.58666    0.24105   85.40   <2e-16 ***
-tbl2$Log_Rank -3.15950    0.04366  -72.36   <2e-16 ***
+(Intercept)   20.64888    0.22586   91.42   <2e-16 ***
+tbl2$Log_Rank -3.17156    0.04091  -77.53   <2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.882 on 580 degrees of freedom
-Multiple R-squared:  0.9003,	Adjusted R-squared:  0.9001 
-F-statistic:  5237 on 1 and 580 DF,  p-value: < 2.2e-16
+Residual standard error: 0.8263 on 580 degrees of freedom
+Multiple R-squared:  0.912,	Adjusted R-squared:  0.9118 
+F-statistic:  6011 on 1 and 580 DF,  p-value: < 2.2e-16
 ```
 
 
@@ -5536,7 +5553,9 @@ F-statistic:  5237 on 1 and 580 DF,  p-value: < 2.2e-16
 :::
 
 
-Voy a hacer la regresión lineal de log(Freq) contra log(Rank) que es la que mejor se ajusta
+#### Resolución del problema:  
+
+Vamos a hacer la regresión lineal de log(Freq) contra log(Rank) que es la que mejor se ajusta
 
 $$\log(Freq) = a + b \log(Rank) + \epsilon $$
 
@@ -5562,13 +5581,10 @@ ggplot(tbl2,aes(x=Log_Rank,y=Log_Freq))+
 :::
 
 El modelo que presenta **mayor R²** es el correspondiente a la regresión de log(Freq) frente a log(Rank), con un valor de  
-$R^2 =$ 0.9003.  
+$R^2 =$ 0.912.  
 
 La pendiente estimada es  
-$b =$ -3.1595.
-
-Dado que la relación en escala log–log es aproximadamente lineal, el ajuste es elevado y la pendiente es cercana a \(-1\), se concluye que **la ley de Zipf se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.
-
+$b =$ -3.1716.
 
 #### Análisis para las descripciones
 
@@ -5580,7 +5596,7 @@ aux_d <- table(length_description)
 tbl_d <- tibble(
 L = as.numeric(names(aux_d)),
 Freq = as.numeric(aux_d),
-Rank = rank(L),
+Rank = rank(-Freq),
 Log_Freq = log(Freq),
 Log_Rank = log(Rank)
 )
@@ -5600,18 +5616,18 @@ lm(formula = tbl2_d$Log_Freq ~ tbl2_d$Log_Rank)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--3.8352 -1.3976 -0.1771  1.3056  3.0703 
+-2.6204 -1.0177 -0.1647  1.0702  1.7943 
 
 Coefficients:
                 Estimate Std. Error t value Pr(>|t|)    
-(Intercept)      13.2490     0.9782  13.545  < 2e-16 ***
-tbl2_d$Log_Rank  -1.9913     0.2317  -8.596 2.16e-14 ***
+(Intercept)      15.6112     0.6657   23.45   <2e-16 ***
+tbl2_d$Log_Rank  -2.6195     0.1577  -16.61   <2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 1.726 on 131 degrees of freedom
-Multiple R-squared:  0.3607,	Adjusted R-squared:  0.3558 
-F-statistic:  73.9 on 1 and 131 DF,  p-value: 2.158e-14
+Residual standard error: 1.175 on 131 degrees of freedom
+Multiple R-squared:  0.6782,	Adjusted R-squared:  0.6757 
+F-statistic: 276.1 on 1 and 131 DF,  p-value: < 2.2e-16
 ```
 
 
@@ -5633,6 +5649,7 @@ y = "Log(Frecuencia)")
 
 
 En el caso de las descripciones, el ajuste log–log presenta un $R^2$ de  
-$R^2 =$ 0.3607,  con una pendiente $b =$ -1.9913.
+$R^2 =$ 0.6782,  con una pendiente $b =$ -2.6195.
 
-El gráfico en escala log–log muestra una relación aproximadamente lineal y la pendiente es cercana a $-1$, por lo que **la ley de Zipf también se cumple** para la longitud de las descripciones.
+#### Conclusiones finales:  
+El análisis en escala log–log muestra una relación aproximadamente lineal entre la frecuencia y el rango de las longitudes, tanto en los comentarios como en las descripciones. Sin embargo, las pendientes estimadas se alejan del valor teórico −1 de la ley de Zipf, por lo que la ley de Zipf estrictamente no se cumple, aunque los datos encajan muy bien con la ley de Zipf.
