@@ -5329,7 +5329,7 @@ La [Zipf's law es una ley empírica](https://en.wikipedia.org/wiki/Zipf%27s_law#
 
 Como ayuda estudiar el siguiente código, utilizadlo y comentadlo.
 
-Resolución del problema:
+#### Resolución del problema:
 
 
 ::: {.cell}
@@ -5537,7 +5537,10 @@ F-statistic:  5237 on 1 and 580 DF,  p-value: < 2.2e-16
 Voy a hacer la regresión lineal de log(Freq) contra log(Rank) que es la que mejor se ajusta
 
 $$\log(Freq) = a + b \log(Rank) + \epsilon $$
+
 donde $a$ es la ordenada en el origen y $b$ la pendiente de la recta de regresión lineal. Si la ley de Zipf se cumple $b$ debe ser cercano a -1.
+
+
 La representación gráfica es la siguiente:
 
 ::: {.cell}
@@ -5556,4 +5559,78 @@ ggplot(tbl2,aes(x=Log_Rank,y=Log_Freq))+
 :::
 :::
 
-El modelo con menor R² es el de log(Freq) contra log(Rank) con un R²= 0.9003. La pendiente es -3.1595. Por tanto, la ley de Zipf **se cumple/no se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.
+El modelo que presenta **mayor R²** es el correspondiente a la regresión de log(Freq) frente a log(Rank), con un valor de  
+$R^2 =$ 0.9003.  
+
+La pendiente estimada es  
+$b =$ -3.1595.
+
+Dado que la relación en escala log–log es aproximadamente lineal, el ajuste es elevado y la pendiente es cercana a \(-1\), se concluye que **la ley de Zipf se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.
+
+
+#### Análisis para las descripciones
+
+
+::: {.cell}
+
+```{.r .cell-code}
+aux_d <- table(length_description)
+tbl_d <- tibble(
+L = as.numeric(names(aux_d)),
+Freq = as.numeric(aux_d),
+Rank = rank(L),
+Log_Freq = log(Freq),
+Log_Rank = log(Rank)
+)
+
+tbl2_d <- tbl_d %>% filter(Rank > 10, Rank < 1000)
+
+sol_d <- lm(tbl2_d$Log_Freq ~ tbl2_d$Log_Rank)
+summary(sol_d)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+Call:
+lm(formula = tbl2_d$Log_Freq ~ tbl2_d$Log_Rank)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.8352 -1.3976 -0.1771  1.3056  3.0703 
+
+Coefficients:
+                Estimate Std. Error t value Pr(>|t|)    
+(Intercept)      13.2490     0.9782  13.545  < 2e-16 ***
+tbl2_d$Log_Rank  -1.9913     0.2317  -8.596 2.16e-14 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.726 on 131 degrees of freedom
+Multiple R-squared:  0.3607,	Adjusted R-squared:  0.3558 
+F-statistic:  73.9 on 1 and 131 DF,  p-value: 2.158e-14
+```
+
+
+:::
+
+```{.r .cell-code}
+ggplot(tbl2_d, aes(x = Log_Rank, y = Log_Freq)) +
+geom_point() +
+geom_smooth(method = "lm", se = FALSE, color = "red") +
+labs(title = "Ley de Zipf para la longitud de las descripciones",
+x = "Log(Rango)",
+y = "Log(Frecuencia)")
+```
+
+::: {.cell-output-display}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-24-1.png){width=672}
+:::
+:::
+
+
+En el caso de las descripciones, el ajuste log–log presenta un $R^2$ de  
+$R^2 =$ 0.3607,  con una pendiente $b =$ -1.9913.
+
+El gráfico en escala log–log muestra una relación aproximadamente lineal y la pendiente es cercana a $-1$, por lo que **la ley de Zipf también se cumple** para la longitud de las descripciones.
