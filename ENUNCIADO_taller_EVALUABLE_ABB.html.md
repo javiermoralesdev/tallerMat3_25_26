@@ -94,13 +94,7 @@ listings0= listings0 %>%
 :::
 
 
-<<<<<<< HEAD
-Ahora  analizamos  las fechas de los scrapings y el número de veces que aparecen cada  apartamentos.
-
-
-=======
 Ahora analizamos las fechas de los scrapings y el número de veces que aparecen cada apartamentos.
->>>>>>> javi
 
 
 ::: {.cell}
@@ -304,7 +298,7 @@ geojson_sf <- sf::st_read("data/mallorca/2025-09-21/neighbourhoods.geojson")
 
 ```
 Reading layer `neighbourhoods' from data source 
-  `/home/javier/Documentos/Dev/R/tallerMat3_25_26/data/mallorca/2025-09-21/neighbourhoods.geojson' 
+  `C:\Users\pausa\Documents\GitHub\tallerMat3_25_26\data\mallorca\2025-09-21\neighbourhoods.geojson' 
   using driver `GeoJSON'
 Simple feature collection with 53 features and 2 fields
 Geometry type: MULTIPOLYGON
@@ -361,7 +355,6 @@ listings0 %>%
     median_reviews = median(number_of_reviews, na.rm = TRUE)
   ) %>%
   ungroup() %>%
-<<<<<<< HEAD
   kable(
     format = "html", 
     col.names = c("Municipio", "Fecha", "Media Precio", "Desv. Típica Precio",
@@ -375,19 +368,10 @@ listings0 %>%
   ) %>%
   row_spec(0, background = "#2B3E50", color = "#EBEBEB") %>%  # <---- Color cabecera
   scroll_box(width = "1700px", height = "500px")
-=======
-  kable(format = "html", 
-        col.names = c("Municipio", "Fecha", "Media Precio", "Desv. Típica Precio", "Mediana Precio", 
-                      "Media Nº Reseñas", "Desv. Típica Nº Reseñas", "Mediana Nº Reseñas"),
-        caption = "Estadísticos descriptivos de Precio y Número de Reseñas por Municipio y Periodo") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)%>% 
- scroll_box(width = "1250px", height = "400px")
->>>>>>> javi
 ```
 
 ::: {.cell-output-display}
 `````{=html}
-<<<<<<< HEAD
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:1700px; "><table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>Estadísticos descriptivos de Precio y Número de Reseñas por Municipio y Periodo</caption>
  <thead>
@@ -400,20 +384,6 @@ listings0 %>%
    <th style="text-align:right;color: rgba(235, 235, 235, 255) !important;background-color: rgba(43, 62, 80, 255) !important;position: sticky; top:0; background-color: #FFFFFF;"> Media Nº Reseñas </th>
    <th style="text-align:right;color: rgba(235, 235, 235, 255) !important;background-color: rgba(43, 62, 80, 255) !important;position: sticky; top:0; background-color: #FFFFFF;"> Desv. Típica Nº Reseñas </th>
    <th style="text-align:right;color: rgba(235, 235, 235, 255) !important;background-color: rgba(43, 62, 80, 255) !important;position: sticky; top:0; background-color: #FFFFFF;"> Mediana Nº Reseñas </th>
-=======
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:1250px; "><table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<caption>Estadísticos descriptivos de Precio y Número de Reseñas por Municipio y Periodo</caption>
- <thead>
-  <tr>
-   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> Municipio </th>
-   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> Fecha </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Media Precio </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Desv. Típica Precio </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Mediana Precio </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Media Nº Reseñas </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Desv. Típica Nº Reseñas </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Mediana Nº Reseñas </th>
->>>>>>> javi
   </tr>
  </thead>
 <tbody>
@@ -4868,7 +4838,88 @@ H_1: \mu_{15junio} < \mu_{21septiembre}
 \end{array}\right.
 $$
 
-<<<<<<< HEAD
+Para ello se usa un **test t de dos muestras independientes**, con un nivel de significación del 5%.
+
+---
+
+### 1. Filtrado de datos
+
+
+::: {.cell}
+
+```{.r .cell-code}
+library(dplyr)
+df4 <- listings0 %>%
+  filter(neighbourhood_cleansed == "Alcúdia",
+         date %in% as.Date(c("2025-06-15", "2025-09-21"))) %>%
+  group_by(id) %>%
+  filter(n() == 2) %>%
+  arrange(id, date)
+
+
+precios_0615 <- df4 %>%
+filter(date == as.Date("2025-06-15"))
+
+precios_0921 <- df4 %>%
+filter(date == as.Date("2025-09-21"))
+
+
+t.test(
+precios_0615$price,
+precios_0921$price,
+alternative = "less"
+)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+	Welch Two Sample t-test
+
+data:  precios_0615$price and precios_0921$price
+t = 0.88858, df = 1822.3, p-value = 0.8128
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+     -Inf 263.4871
+sample estimates:
+mean of x mean of y 
+ 909.0679  816.6827 
+```
+
+
+:::
+:::
+
+Dado que el $p$-valor es mayor que 0.05, no se rechaza la hipótesis nula. Por lo tanto, no hay evidencia suficiente para afirmar que el precio medio en Alcúdia el 15 de junio de 2025 es menor que el 21 de septiembre de 2025.
+
+
+::: {.cell}
+
+```{.r .cell-code}
+library(ggplot2)
+
+ggplot(df4, aes(x = factor(date), y = price)) +
+geom_boxplot() +
+labs(title = "Comparación de precios en Alcúdia",
+x = "Fecha",
+y = "Precio") +
+theme_minimal()
+```
+
+::: {.cell-output-display}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-13-1.png){width=672}
+:::
+:::
+
+
+Como se puede apreciar en el diagrama anterior, los precios en Alcúdia parecen ser similares en ambos periodos. No se observan diferencias significativas en la distribución de los precios entre las dos fechas. Lo que refuerza la conclusión del contraste de hipótesis.
+
+## Pregunta 5 (**1 punto**)
+
+Comparar con un bopxlot de las valoraciones medias `review_scores_rating` para Alcudia, Palma, Calvià y
+Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.
+
 ### Resolución del problema:  
 ### Gráfico bopxlot
 
@@ -4894,7 +4945,7 @@ listings0 %>%
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-11-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-14-1.png){width=672}
 :::
 :::
 
@@ -4922,7 +4973,7 @@ listings0 %>%
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-12-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-1.png){width=672}
 :::
 :::
 
@@ -4945,6 +4996,72 @@ listings0 %>%
 
 ## Pregunta 6 (**1 punto**)
 Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de valoración `review_scores_rating` mayor que 4 en Alcudia y en Calvià son iguales contra que son distintas. Construid un intervalo de confianza para la diferencia de proporciones.
+
+### 1. Filtrado de los datos
+
+
+::: {.cell}
+
+```{.r .cell-code}
+library(dplyr)
+
+df6 <- listings0 %>%
+  filter(neighbourhood_cleansed %in% c("Alcúdia", "Calvià"),
+         date == as.Date("2025-09-21"))
+
+df6 <- df6 %>%
+mutate(success = review_scores_rating > 4)
+
+conteos <- df6 %>%
+group_by(neighbourhood_cleansed) %>%
+summarise(
+x = sum(success, na.rm = TRUE),   # nº de apartamentos con rating > 4
+n = n()                           # total de apartamentos
+)
+
+conteos
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+# A tibble: 2 × 3
+  neighbourhood_cleansed     x     n
+  <chr>                  <int> <int>
+1 Alcúdia                  855   955
+2 Calvià                   159   183
+```
+
+
+:::
+
+```{.r .cell-code}
+x <- conteos$x # éxitos
+n <- conteos$n # totales
+
+
+prop.test(x, n)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+	2-sample test for equality of proportions with continuity correction
+
+data:  x out of n
+X-squared = 0.84987, df = 1, p-value = 0.3566
+alternative hypothesis: two.sided
+95 percent confidence interval:
+ -0.02944199  0.08231298
+sample estimates:
+   prop 1    prop 2 
+0.8952880 0.8688525 
+```
+
+
+:::
+:::
 
 
 ## Pregunta 7 (**1punto**)
@@ -5050,172 +5167,9 @@ Por tanto para **ninguno** de los dos municipios **existen diferencias estadíst
 
 ## Pregunta 8 (**1punto**)
 
-Agrupa las variables `review_scores_rating` y `review_scores_location` de `listings0` en 5 categorías cada una y construid una tabla de contingencia con las dos variables agrupadas. Agrupar de forma que no cruces de categorías vacías. Contratar si esta varibles son independientes con  un test $\chi^2$. 
-
-Buscar información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde  la salida de chisq.test interpretarlo  en esta caso
-=======
-Para ello se usa un **test t de dos muestras independientes**, con un nivel de significación del 5%.
-
----
->>>>>>> javi
-
-### 1. Filtrado de datos
-
-
-::: {.cell}
-
-```{.r .cell-code}
-library(dplyr)
-df4 <- listings0 %>%
-  filter(neighbourhood_cleansed == "Alcúdia",
-         date %in% as.Date(c("2025-06-15", "2025-09-21"))) %>%
-  group_by(id) %>%
-  filter(n() == 2) %>%
-  arrange(id, date)
-
-
-precios_0615 <- df4 %>%
-filter(date == as.Date("2025-06-15"))
-
-precios_0921 <- df4 %>%
-filter(date == as.Date("2025-09-21"))
-
-
-t.test(
-precios_0615$price,
-precios_0921$price,
-alternative = "less"
-)
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-
-	Welch Two Sample t-test
-
-data:  precios_0615$price and precios_0921$price
-t = 0.88858, df = 1822.3, p-value = 0.8128
-alternative hypothesis: true difference in means is less than 0
-95 percent confidence interval:
-     -Inf 263.4871
-sample estimates:
-mean of x mean of y 
- 909.0679  816.6827 
-```
-
-
-:::
-:::
-
-Dado que el $p$-valor es mayor que 0.05, no se rechaza la hipótesis nula. Por lo tanto, no hay evidencia suficiente para afirmar que el precio medio en Alcúdia el 15 de junio de 2025 es menor que el 21 de septiembre de 2025.
-
-
-::: {.cell}
-
-```{.r .cell-code}
-library(ggplot2)
-
-ggplot(df4, aes(x = factor(date), y = price)) +
-geom_boxplot() +
-labs(title = "Comparación de precios en Alcúdia",
-x = "Fecha",
-y = "Precio") +
-theme_minimal()
-```
-
-::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-12-1.png){width=672}
-:::
-:::
-
-
-Como se puede apreciar en el diagrama anterior, los precios en Alcúdia parecen ser similares en ambos periodos. No se observan diferencias significativas en la distribución de los precios entre las dos fechas. Lo que refuerza la conclusión del contraste de hipótesis.
-
-## Pregunta 5 (**1 punto**)
-
-Comparar con un bopxlot de las valoraciones medias `review_scores_rating` para Alcudia, Palma, Calvià y Pollença. Hacer el gráfico con ggplot2 y todo lujo de destalles.
-
-## Pregunta 6 (**1 punto**)
-
-Calcular la proporción de apartamentos de la muestra "2025-09-21" con media de valoración `review_scores_rating` mayor que 4 en Alcudia y en Calvià son iguales contra que son distintas. Construid un intervalo de confianza para la diferencia de proporciones.
-
-### 1. Filtrado de los datos
-
-
-::: {.cell}
-
-```{.r .cell-code}
-library(dplyr)
-
-df6 <- listings0 %>%
-  filter(neighbourhood_cleansed %in% c("Alcúdia", "Calvià"),
-         date == as.Date("2025-09-21"))
-
-df6 <- df6 %>%
-mutate(success = review_scores_rating > 4)
-
-conteos <- df6 %>%
-group_by(neighbourhood_cleansed) %>%
-summarise(
-x = sum(success, na.rm = TRUE),   # nº de apartamentos con rating > 4
-n = n()                           # total de apartamentos
-)
-
-conteos
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-# A tibble: 2 × 3
-  neighbourhood_cleansed     x     n
-  <chr>                  <int> <int>
-1 Alcúdia                  855   955
-2 Calvià                   159   183
-```
-
-
-:::
-
-```{.r .cell-code}
-x <- conteos$x # éxitos
-n <- conteos$n # totales
-
-
-prop.test(x, n)
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-
-	2-sample test for equality of proportions with continuity correction
-
-data:  x out of n
-X-squared = 0.84987, df = 1, p-value = 0.3566
-alternative hypothesis: two.sided
-95 percent confidence interval:
- -0.02944199  0.08231298
-sample estimates:
-   prop 1    prop 2 
-0.8952880 0.8688525 
-```
-
-
-:::
-:::
-
-
-## Pregunta 7 (**1punto**)
-
-Calcular la proporción de apartamentos de los periodos 2025-06-15 y 2025-09-21 con media de valoración `review_scores_rating` mayor que 4 en Palma y en Pollença son iguales contra que son distintas.
-
-## Pregunta 8 (**1punto**)
-
 Agrupa las variables `review_scores_rating` y `review_scores_location` de `listings0` en 5 categorías cada una y construid una tabla de contingencia con las dos variables agrupadas. Agrupar de forma que no cruces de categorías vacías. Contratar si esta varibles son independientes con un test $\chi^2$.
 
-Buscan información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde la salida de chisq.test interpretarlo en esta caso
+Buscar información sobre el coeficiente de contingencia de Carl Pearson, cacularlo desde  la salida de chisq.test interpretarlo  en esta caso
 
 ### 1. Crear categorías para ambas variables
 
@@ -5336,7 +5290,7 @@ ggpairs(data_corr %>% select(-neighbourhood_cleansed),
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-19-1.png){width=672}
 :::
 
 ```{.r .cell-code}
@@ -5347,7 +5301,7 @@ corrplot(cor_matrix, method = "circle", type = "upper",
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-2.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-19-2.png){width=672}
 :::
 :::
 
@@ -5410,11 +5364,7 @@ barplot(table(length_rewiews))
 ```
 
 ::: {.cell-output-display}
-<<<<<<< HEAD
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-16-1.png){width=672}
-=======
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-1.png){width=672}
->>>>>>> javi
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-20-1.png){width=672}
 :::
 
 ```{.r .cell-code}
@@ -5424,11 +5374,7 @@ barplot(table(length_description))
 ```
 
 ::: {.cell-output-display}
-<<<<<<< HEAD
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-16-2.png){width=672}
-=======
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-15-2.png){width=672}
->>>>>>> javi
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-20-2.png){width=672}
 :::
 :::
 
@@ -5587,7 +5533,6 @@ F-statistic:  5237 on 1 and 580 DF,  p-value: < 2.2e-16
 :::
 :::
 
-<<<<<<< HEAD
 
 Voy a hacer la regresión lineal de log(Freq) contra log(Rank) que es la que mejor se ajusta
 
@@ -5607,10 +5552,8 @@ ggplot(tbl2,aes(x=Log_Rank,y=Log_Freq))+
 ```
 
 ::: {.cell-output-display}
-![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-19-1.png){width=672}
+![](ENUNCIADO_taller_EVALUABLE_ABB_files/figure-html/unnamed-chunk-23-1.png){width=672}
 :::
 :::
 
 El modelo con menor R² es el de log(Freq) contra log(Rank) con un R²= 0.9003. La pendiente es -3.1595. Por tanto, la ley de Zipf **se cumple/no se cumple** para la longitud de los comentarios de los apartamentos de Mallorca.
-=======
->>>>>>> javi
