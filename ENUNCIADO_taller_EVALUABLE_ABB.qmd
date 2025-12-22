@@ -17,7 +17,7 @@ format:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE,
-                      warning = FALSE,cache=FALSE)
+                      warning = FALSE,cache=TRUE)
 # packages
 library(tidyverse)
 ```
@@ -185,8 +185,9 @@ listings0 %>%
 ## Pregunta 2 (**1punto**)
 
 Consideremos las variables `price` y `number_of_reviews` de Pollença y Palma del periodo "2024-09-13", del fichero `listing_common0_select.RData`. Estudiad si estos datos se aproximan a una distribución normal gráficamente. Para ello, dibujad el histograma, la función "kernel-density" que aproxima la densidad y la densidad de la normal de media y varianza las de las muestras de las variables `price` (para precios mayores de 50 y menores de 400) y `number_of_reviews` para Palma y\
-Pollença
+Pollença  
 
+### Resolución del problema:  
 ```{r}
 load("clean_data/mallorca/listing_common0_select.RData")
 
@@ -199,7 +200,6 @@ date == as.Date("2024-09-13"),
 price > 50, price < 400)
 
 str(df2)
-
 # Función para graficar histograma de una variable
 plot_histogram_with_density <- function(data, variable, title) {
   ggplot(data, aes_string(x = variable)) +
@@ -240,10 +240,8 @@ plot_histogram_with_density(
   "number_of_reviews",
   "Histograma y Densidad de Número de Reseñas en Pollença (2024-09-13)"
 )
-
-
 ```
-Como se puede observar en los siguientes gráficos, la variable que más se aproxima a la normal es el precio en Pollença. Las demás variables tienen una media demasiado desplazada a la derecha. Esto puede deberse a que, en comparación al número de apartamentos y de alquileres, la cantidad de reseñas es bastante menor puesto que, proporcionalmente, pocos clientes dejan reseñas
+Como se puede observar en los siguientes gráficos, a pesar de que ninguno se aproxima mucho a una normal, la variable que más se aproxima a la normal es el precio en Pollença. Las demás variables tienen una media demasiado desplazada a la derecha. Esto puede deberse a que, en comparación al número de apartamentos y de alquileres, la cantidad de reseñas es bastante menor puesto que, proporcionalmente, pocos clientes dejan reseñas
 
 
 ## Pregunta 3 (**1punto**)
@@ -284,7 +282,8 @@ Al realizar el contraste, nos damos cuenta que los alojamientos en Alcúdia son 
 
 Con los datos de `listings0`, contrastar si las medias de los precios en Alcudia entre los periodos 2025-06-15 y 2025-09-21 son iguales contra que son menores en 2023. Construid la hipótesis nula y alternativa, calculad el $p$-valor y el intervalo de confianza asociado al contraste.
 
-Haced un diagrama de caja comparativo de los precios en Alcudia por periodo y coméntalo.
+Haced un diagrama de caja comparativo de los precios en Alcudia por periodo y coméntalo.  
+### Resolución del problema:  
 
 El contraste es:
 
@@ -295,7 +294,7 @@ H_1: \mu_{15junio} < \mu_{21septiembre}
 \end{array}\right.
 $$
 
-Para ello se usa un **test t de dos muestras independientes**, con un nivel de significación del 5%.
+Para ello se usa un **test t de dos muestras dependientes**, con un nivel de significación del 5%.
 
 ---
 
